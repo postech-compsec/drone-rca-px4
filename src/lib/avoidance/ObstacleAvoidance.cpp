@@ -48,8 +48,12 @@ static constexpr uint64_t TIME_BEFORE_FAILSAFE = 500_ms;
 static constexpr uint64_t Z_PROGRESS_TIMEOUT_US = 2_s;
 
 ObstacleAvoidance::ObstacleAvoidance(ModuleParams *parent) :
+	ModuleParams(parent)
 	// correction start
-	ModuleParams(parent), _module_id(0)
+	, _module_id(0)
+	, _pub_traj_wp_avoidance_desired(ORB_ID(vehicle_trajectory_waypoint_desired), _module_id)
+	, _pub_pos_control_status(ORB_ID(position_controller_status), _module_id)
+	, _pub_vehicle_command(ORB_ID(vehicle_command), _module_id)
 	// correction end
 {
 	_desired_waypoint = empty_trajectory_waypoint;
@@ -61,14 +65,17 @@ ObstacleAvoidance::ObstacleAvoidance(ModuleParams *parent) :
 
 ObstacleAvoidance::ObstacleAvoidance(ModuleParams *parent, uint _publisher_id) :
 	ModuleParams(parent)
+	// correction start
+	, _module_id(_publisher_id)
+	, _pub_traj_wp_avoidance_desired(ORB_ID(vehicle_trajectory_waypoint_desired), _module_id)
+	, _pub_pos_control_status(ORB_ID(position_controller_status), _module_id)
+	, _pub_vehicle_command(ORB_ID(vehicle_command), _module_id)
+	// correction end
 {
 	_desired_waypoint = empty_trajectory_waypoint;
 	_failsafe_position.setNaN();
 	_avoidance_point_not_valid_hysteresis.set_hysteresis_time_from(false, TIME_BEFORE_FAILSAFE);
 	_no_progress_z_hysteresis.set_hysteresis_time_from(false, Z_PROGRESS_TIMEOUT_US);
-	// correction start
-	_module_id = _publisher_id;
-	// correction end
 
 }
 
