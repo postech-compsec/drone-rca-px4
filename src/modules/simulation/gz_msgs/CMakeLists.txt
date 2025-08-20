@@ -18,6 +18,12 @@ if (Protobuf_FOUND)
         ${PROTO_HDRS}
     )
 
+    # correction for build
+    # C++17 및 double-promotion 경고만 비활성화
+    target_compile_features(px4_gz_msgs PUBLIC cxx_std_17)
+    target_compile_options(px4_gz_msgs PRIVATE -Wno-error=double-promotion -Wno-double-promotion)
+    # correction done
+
     target_include_directories(px4_gz_msgs
         PUBLIC
             ${CMAKE_CURRENT_BINARY_DIR}
@@ -27,6 +33,13 @@ if (Protobuf_FOUND)
     if (Protobuf_VERSION VERSION_LESS "3.8")
         target_compile_options(px4_gz_msgs PRIVATE -Wno-error=float-equal)
     endif()
+
+    # correction for build
+    set_target_properties(px4_gz_msgs PROPERTIES
+        CXX_STANDARD 17
+	CXX_STANDARD_REQUIRED YES
+    )
+    # correction done
 
     # Export the binary dir for other modules
     set(PX4_GZ_MSGS_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "")
