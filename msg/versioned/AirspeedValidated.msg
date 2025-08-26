@@ -1,5 +1,8 @@
 uint32 MESSAGE_VERSION = 1
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp				# time since system start (microseconds)
 
 float32 indicated_airspeed_m_s			# [m/s] Indicated airspeed (IAS), set to NAN if invalid

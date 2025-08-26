@@ -7,6 +7,9 @@
 # The reply will include the published request_id, allowing correlation of all arming check information for a particular request.
 # The reply will also include the registration_id for each external component, provided to it during the registration process (RegisterExtComponentReply).
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp  # [us] Time since system start.

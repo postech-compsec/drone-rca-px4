@@ -1,6 +1,9 @@
 # Vehicle Command uORB message. Used for commanding a mission / action / etc.
 # Follows the MAVLink COMMAND_INT / COMMAND_LONG definition
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp # [us] Time since system start.

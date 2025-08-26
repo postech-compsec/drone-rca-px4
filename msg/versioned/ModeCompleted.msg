@@ -3,6 +3,9 @@
 # Note that this is not always published (e.g. when a user switches modes or on
 # failsafe activation)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp				 # time since system start (microseconds)

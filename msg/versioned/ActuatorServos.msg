@@ -3,6 +3,9 @@
 # Normalised output setpoint for up to 8 servos.
 # Published by the vehicle's allocation and consumed by the actuator output drivers.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp         # [us] Time since system start

@@ -2,6 +2,9 @@
 # Used by the fw_lateral_longitudinal_control module and TECS to constrain FixedWingLongitudinalSetpoint messages
 # and configure the resultant setpoints.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp                        # time since system start (microseconds)

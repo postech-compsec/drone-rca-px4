@@ -1,5 +1,8 @@
 # VEHICLE_VTOL_STATE, should match 1:1 MAVLinks's MAV_VTOL_STATE
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint8 VEHICLE_VTOL_STATE_UNDEFINED = 0

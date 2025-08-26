@@ -1,5 +1,8 @@
 # Configurable overrides by (external) modes or mode executors
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp		# time since system start (microseconds)

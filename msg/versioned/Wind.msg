@@ -3,6 +3,9 @@
 # Contains the system-wide estimate of horizontal wind velocity and its variance.
 # Published by the navigation filter (EKF2) for use by other flight modules and libraries.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp # [us] Time since system start

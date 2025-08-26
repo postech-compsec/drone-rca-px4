@@ -1,5 +1,8 @@
 uint32 MESSAGE_VERSION = 1
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp		# time since system start (microseconds)
 
 float32 yaw_sp_move_rate	# rad/s (commanded by user)

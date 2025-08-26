@@ -3,6 +3,9 @@
 # If pitch_direct and throttle_direct are not both finite, then the controller relies on altitude/height_rate and equivalent_airspeed to control vertical motion.
 # If both altitude and height_rate are NAN, the controller maintains the current altitude.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp                        # time since system start (microseconds)

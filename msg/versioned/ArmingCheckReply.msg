@@ -7,6 +7,9 @@
 # Note that the external component is identified by its registration_id, which is allocated to the component during registration (arming_check_id in RegisterExtComponentReply).
 # The message is not used by internal/FMU components, as their mode requirements are known at compile time.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION  = 1
 
 uint64 timestamp # [us] Time since system start.

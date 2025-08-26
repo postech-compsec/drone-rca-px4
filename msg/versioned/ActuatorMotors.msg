@@ -3,6 +3,9 @@
 # Normalised thrust setpoint for up to 12 motors.
 # Published by the vehicle's allocation and consumed by the ESC protocol drivers e.g. PWM, DSHOT, UAVCAN.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp         # [us] Time since system start

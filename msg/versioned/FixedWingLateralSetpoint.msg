@@ -2,6 +2,9 @@
 # Used by the fw_lateral_longitudinal_control module
 # At least one of course, airspeed_direction, or lateral_acceleration must be finite.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp                        # time since system start (microseconds)

@@ -1,4 +1,4 @@
-## msg/make_publisherid_pubtimestamp.py ##
+## msg/versioned/make_publisherid_pubtimestamp.py ##
 
 import os
 

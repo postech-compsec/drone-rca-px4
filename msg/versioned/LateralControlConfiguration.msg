@@ -1,6 +1,9 @@
 # Fixed Wing Lateral Control Configuration message
 # Used by the fw_lateral_longitudinal_control module to constrain FixedWingLateralSetpoint messages.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 MESSAGE_VERSION = 0
 
 uint64 timestamp          # time since system start (microseconds)
