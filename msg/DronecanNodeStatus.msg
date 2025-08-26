@@ -1,5 +1,8 @@
 uint64 timestamp					# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint16 node_id						# The node ID which this data comes from
 
 # From the uavcan.protocol.NodeStatus message

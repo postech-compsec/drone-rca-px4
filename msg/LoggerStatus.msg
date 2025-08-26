@@ -1,5 +1,8 @@
 uint64 timestamp               # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 LOGGER_TYPE_FULL    = 0  # Normal, full size log
 uint8 LOGGER_TYPE_MISSION = 1  # reduced mission log (e.g. for geotagging)
 uint8 type

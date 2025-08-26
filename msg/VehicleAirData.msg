@@ -3,6 +3,9 @@
 # Data from the currently selected barometer (plus ambient temperature from the source specified in temperature_source).
 # Includes calculated data such as barometric altitude and air density.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp             # [us] Time since system start
 uint64 timestamp_sample      # [us] Timestamp of the raw data
 uint32 baro_device_id        # Unique device ID for the selected barometer

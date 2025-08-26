@@ -1,5 +1,8 @@
 uint64 timestamp				# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 # Topic to test individual actuator output functions
 
 uint8 ACTION_RELEASE_CONTROL = 0	# exit test mode for the given function

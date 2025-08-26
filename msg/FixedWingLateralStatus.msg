@@ -1,6 +1,9 @@
 # Fixed Wing Lateral Status message
 # Published by the fw_lateral_longitudinal_control module to report the resultant lateral setpoint
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp                         # time since system start (microseconds)
 
 float32 lateral_acceleration_setpoint    # [m/s^2] [FRD] resultant lateral acceleration setpoint

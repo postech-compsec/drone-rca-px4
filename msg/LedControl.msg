@@ -1,6 +1,9 @@
 # LED control: control a single or multiple LED's.
 # These are the externally visible LED's, not the board LED's
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp		# time since system start (microseconds)
 
 # colors

@@ -1,5 +1,8 @@
 uint64 timestamp	# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 client_id
 uint8 request_type	# id/read/write/clear
 uint8 item			# dm_item_t

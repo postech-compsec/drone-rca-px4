@@ -1,6 +1,9 @@
 # Local setpoint constraints in NED frame
 # setting something to NaN means that no limit is provided
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # time since system start (microseconds)
 
 float32 speed_up # in meters/sec

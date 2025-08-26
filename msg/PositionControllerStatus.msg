@@ -1,5 +1,8 @@
 uint64 timestamp		# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32 nav_roll		# Roll setpoint [rad]
 float32 nav_pitch		# Pitch setpoint [rad]
 float32 nav_bearing 		# Bearing angle[rad]

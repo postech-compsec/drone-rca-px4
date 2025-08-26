@@ -1,6 +1,9 @@
 uint64 timestamp               # time since system start (microseconds)
 uint64 timestamp_sample
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 device_id               # unique device ID for the sensor that does not change between power cycles
 
 float32[2] pixel_flow          # (radians) optical flow in radians where a positive value is produced by a RH rotation of the sensor about the body axis

@@ -1,5 +1,8 @@
 ## Used to command an actuation in the gripper, which is mapped to a specific output in the control allocation module
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp
 
 int8 command		# Commanded state for the gripper

@@ -1,5 +1,8 @@
 # Off-board control mode
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp		# time since system start (microseconds)
 
 bool position

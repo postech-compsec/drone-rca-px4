@@ -4,6 +4,9 @@
 # It allows mapping triggers from various external interfaces like RC channels or MAVLink to cause an action.
 # Request are published by `manual_control` and subscribed by the `commander` and `vtol_att_control` modules.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp  # [us] Time since system start
 
 uint8 action                                     # [@enum ACTION] Requested action

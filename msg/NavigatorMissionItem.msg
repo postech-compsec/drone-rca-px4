@@ -1,5 +1,8 @@
 uint64 timestamp                 # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint16 sequence_current          # Sequence of the current mission item
 
 uint16 nav_cmd

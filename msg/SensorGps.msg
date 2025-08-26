@@ -3,6 +3,9 @@
 uint64 timestamp		# time since system start (microseconds)
 uint64 timestamp_sample
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 device_id                # unique device ID for the sensor that does not change between power cycles
 
 float64 latitude_deg		# Latitude in degrees, allows centimeter level RTK precision

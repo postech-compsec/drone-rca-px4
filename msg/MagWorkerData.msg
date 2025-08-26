@@ -1,6 +1,9 @@
 uint64 timestamp          # time since system start (microseconds)
 uint64 timestamp_sample
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 MAX_MAGS = 4
 
 uint32 done_count

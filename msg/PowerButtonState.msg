@@ -1,5 +1,8 @@
 # power button state notification message
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp			    # time since system start (microseconds)
 
 uint8 PWR_BUTTON_STATE_IDEL = 0             # Button went up without meeting shutdown button down time (delete event)

@@ -1,5 +1,8 @@
 uint64 timestamp                  # [microseconds] time since system start
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32 tracked_target_course     # [rad] Tracked target course in NED local frame (North is course zero)
 float32 follow_angle              # [rad] Current follow angle setting
 

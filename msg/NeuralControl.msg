@@ -4,6 +4,9 @@
 # Publisher: mc_nn_control
 # Subscriber: logger
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 
 float32[15] observation # Observation vector (pos error (3), att (6d), lin vel (3), ang vel (3))

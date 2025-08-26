@@ -6,3 +6,6 @@ uint8 frame      # The coordinate system of the fields: x, y, z.
 int32 x          # X coordinate of center point. Coordinate system depends on frame field: local = x position in meters * 1e4, global = latitude in degrees * 1e7.
 int32 y        	 # Y coordinate of center point. Coordinate system depends on frame field: local = y position in meters * 1e4, global = latitude in degrees * 1e7.
 float32 z        # Altitude of center point. Coordinate system depends on frame field.
+
+uint8 publisher_id
+uint64 pub_timestamp

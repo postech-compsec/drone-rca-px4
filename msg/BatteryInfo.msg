@@ -3,6 +3,9 @@
 # Static or near-invariant battery information.
 # Should be streamed at low rate.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 
 uint8 id # Must match the id in the battery_status message for the same battery

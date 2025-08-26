@@ -1,5 +1,8 @@
 # A logging message, output with PX4_WARN, PX4_ERR, PX4_INFO
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp		# time since system start (microseconds)
 
 uint8 severity # log level (same as in the linux kernel, starting with 0)

@@ -1,5 +1,8 @@
 # Rover Velocity Status
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 float32 measured_speed_body_x # [m/s] [@range -inf (Backwards), inf (Forwards)] [@frame Body] Measured speed in body x direction
 float32 adjusted_speed_body_x_setpoint # [m/s] [@range -inf (Backwards), inf (Forwards)] [@frame Body] Speed setpoint in body x direction that is being tracked (Applied slew rates)

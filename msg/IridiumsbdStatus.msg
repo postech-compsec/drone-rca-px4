@@ -13,3 +13,6 @@ bool tx_buf_write_pending           # indicates if a tx buffer write is pending
 bool tx_session_pending             # indicates if a tx session is pending
 bool rx_read_pending                # indicates if a rx read is pending
 bool rx_session_pending             # indicates if a rx session is pending
+
+uint8 publisher_id
+uint64 pub_timestamp

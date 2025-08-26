@@ -1,5 +1,8 @@
 # Auxiliary control fields for fixed-wing runway takeoff/landing
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 # Passes information from the FixedWingModeManager to the FixedWingAttitudeController
 
 uint64 timestamp # [us] time since system start

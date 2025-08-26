@@ -1,5 +1,8 @@
 # Rover Rate Status
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 float32 measured_yaw_rate # [rad/s] [@range -inf, inf] [@frame NED] Measured yaw rate
 float32 adjusted_yaw_rate_setpoint # [rad/s] [@range -inf, inf] [@frame NED] Yaw rate setpoint that is being tracked (Applied slew rates)

@@ -6,6 +6,9 @@ uint8 GF_ACTION_RTL = 3                 # switch to AUTO|RTL
 uint8 GF_ACTION_TERMINATE = 4           # flight termination
 uint8 GF_ACTION_LAND = 5                # switch to AUTO|LAND
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 bool geofence_max_dist_triggered	# true the check for max distance from Home is triggered
 bool geofence_max_alt_triggered		# true the check for max altitude above Home is triggered
 bool geofence_custom_fence_triggered	# true the check for custom inclusion/exclusion geofence(s) is triggered

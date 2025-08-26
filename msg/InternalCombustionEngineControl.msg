@@ -1,5 +1,8 @@
 uint64 timestamp        		# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 bool ignition_on          		# activate/deactivate ignition (spark plug)
 float32 throttle_control		# setpoint for throttle actuator, with slew rate if enabled, idles with 0 [norm] [@range 0,1] [@uncontrolled NAN to stop motor]
 float32 choke_control			# setpoint for choke actuator, 1: fully closed [norm] [@range 0,1]

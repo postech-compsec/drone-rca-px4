@@ -2,6 +2,9 @@
 #
 # This is currently used only for logging cell status from MAVLink.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp  # [us] Time since system start
 
 uint16 status                            # [@enum STATUS_FLAG] Status bitmap

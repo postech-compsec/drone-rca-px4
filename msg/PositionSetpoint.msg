@@ -1,5 +1,8 @@
 # this file is only used in the position_setpoint triple as a dependency
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp		# time since system start (microseconds)
 
 uint8 SETPOINT_TYPE_POSITION=0	# position setpoint

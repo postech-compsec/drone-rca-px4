@@ -2,6 +2,9 @@
 # These fields are scaled and offset-compensated where possible and do not
 # change with board revisions and sensor updates.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp                                # time since system start (microseconds)
 
 int32 RELATIVE_TIMESTAMP_INVALID = 2147483647   # (0x7fffffff) If one of the relative timestamps is set to this value, it means the associated sensor values are invalid

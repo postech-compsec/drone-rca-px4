@@ -2,6 +2,9 @@
 uint64 timestamp # [us] time since system start (microseconds)
 uint32 uptime	 # [ms] time since system boot of the companion (milliseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 type	 # type of onboard computer 0: Mission computer primary, 1: Mission computer backup 1, 2: Mission computer backup 2, 3: Compute node, 4-5: Compute spares, 6-9: Payload computers.
 
 uint8[8] cpu_cores # CPU usage on the component in percent

@@ -1,5 +1,8 @@
 uint64 timestamp		# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 flags
 uint8 gimbal_device_id
 uint8 primary_control_sysid

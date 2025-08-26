@@ -97,7 +97,7 @@ static constexpr bool operator ==(const actuator_armed_s &a, const actuator_arme
 		a.termination == b.termination &&
 		a.in_esc_calibration_mode == b.in_esc_calibration_mode);
 }
-static_assert(sizeof(actuator_armed_s) == 16, "actuator_armed equality operator review");
+static_assert(sizeof(actuator_armed_s) == 24, "actuator_armed equality operator review");
 
 #if defined(BOARD_HAS_POWER_CONTROL)
 static orb_advert_t tune_control_pub = nullptr;

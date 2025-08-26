@@ -1,5 +1,8 @@
 uint64 timestamp			# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 
 uint64 STATUS_FLAG_OFF                              = 1       # Generator is off.
 uint64 STATUS_FLAG_READY                            = 2       # Generator is ready to start generating power.

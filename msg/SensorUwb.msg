@@ -1,6 +1,9 @@
 # UWB distance contains the distance information measured by an ultra-wideband positioning system,
 # such as Pozyx or NXP Rddrone.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 	timestamp		# time since system start (microseconds)
 
 uint32 	sessionid		# UWB SessionID

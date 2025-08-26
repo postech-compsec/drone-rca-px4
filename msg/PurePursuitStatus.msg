@@ -1,5 +1,8 @@
 # Pure pursuit status
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 float32 lookahead_distance # [m] [@range 0, inf] Lookahead distance of pure the pursuit controller
 float32 target_bearing # [rad] [@range -pi, pi] [@frame NED] Target bearing calculated by the pure pursuit controller

@@ -1,5 +1,8 @@
 uint64 timestamp			# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 SOURCE_PROTOCOL_UNKNOWN = 0
 uint8 SOURCE_PROTOCOL_MAVLINK = 1
 uint8 SOURCE_PROTOCOL_DDS     = 2

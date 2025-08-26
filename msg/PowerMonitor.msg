@@ -1,5 +1,8 @@
 # power monitor message
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp			# Time since system start (microseconds)
 
 float32 voltage_v			# Voltage in volts, 0 if unknown

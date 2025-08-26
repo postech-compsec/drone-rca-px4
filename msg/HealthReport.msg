@@ -1,5 +1,8 @@
 uint64 timestamp # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 can_arm_mode_flags              # bitfield for each flight mode (NAVIGATION_STATE_*) if arming is possible
 uint64 can_run_mode_flags              # bitfield for each flight mode if it can run
 

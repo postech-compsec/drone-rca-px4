@@ -1,6 +1,9 @@
 uint64 timestamp                          # time since system start (microseconds)
 uint64 timestamp_sample                   # the timestamp of the raw data (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 
 # filter control status
 uint32 control_status_changes # number of filter control status (cs) changes

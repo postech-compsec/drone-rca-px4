@@ -3,6 +3,9 @@
 #
 uint64 timestamp # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 device_id_primary       # current primary device id for reference
 
 uint32[4] device_ids

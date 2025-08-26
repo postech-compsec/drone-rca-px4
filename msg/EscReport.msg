@@ -7,6 +7,9 @@ float32 esc_temperature					# Temperature measured from current ESC [degC] - if 
 uint8 esc_address					# Address of current ESC (in most cases 1-8 / must be set by driver)
 uint8 esc_cmdcount					# Counter of number of commands
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 esc_state					# State of ESC - depend on Vendor
 
 uint8 actuator_function				# actuator output function (one of Motor1...MotorN)

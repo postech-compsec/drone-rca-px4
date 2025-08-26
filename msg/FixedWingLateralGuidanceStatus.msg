@@ -1,6 +1,9 @@
 # Fixed Wing Lateral Guidance Status message
 # Published by fw_pos_control module to report the resultant lateral setpoints and NPFG debug outputs
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp                # time since system start (microseconds)
 
 float32 course_setpoint         # [rad] [@range -pi, pi] Desired direction of travel over ground w.r.t (true) North. Set by guidance law

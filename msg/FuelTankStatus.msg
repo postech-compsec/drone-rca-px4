@@ -1,5 +1,8 @@
 uint64 timestamp                        # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32 maximum_fuel_capacity       	# maximum fuel capacity. Must always be provided, either from the driver or a parameter
 float32 consumed_fuel       		# consumed fuel, NaN if not measured. Should not be inferred from the max fuel capacity
 float32 fuel_consumption_rate     	# fuel consumption rate, NaN if not measured

@@ -1,6 +1,9 @@
 uint64 timestamp		# time since system start (microseconds)
 uint64 timestamp_sample         # the timestamp of the raw data (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32 yaw_composite	# composite yaw from GSF (rad)
 float32 yaw_variance	# composite yaw variance from GSF (rad^2)
 bool yaw_composite_valid

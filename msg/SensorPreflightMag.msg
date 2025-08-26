@@ -4,4 +4,7 @@
 #
 uint64 timestamp # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32 mag_inconsistency_angle # maximum angle between magnetometer instance field vectors in radians.

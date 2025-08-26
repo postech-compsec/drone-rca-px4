@@ -1,5 +1,8 @@
 uint64 timestamp                 # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp_sample          # the timestamp of the raw data (microseconds)
 
 uint8 SWITCH_POS_NONE   = 0      # switch is not mapped

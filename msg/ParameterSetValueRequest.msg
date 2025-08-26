@@ -1,5 +1,8 @@
 # ParameterSetValueRequest : Used by a remote or primary to update the value for a parameter at the other end
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp
 uint16 parameter_index
 

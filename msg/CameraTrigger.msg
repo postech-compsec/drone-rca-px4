@@ -1,6 +1,9 @@
 uint64 timestamp	# time since system start (microseconds)
 uint64 timestamp_utc # UTC timestamp
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint32 seq		# Image sequence number
 bool feedback	# Trigger feedback from camera
 

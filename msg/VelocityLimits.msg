@@ -1,5 +1,8 @@
 # Velocity and yaw rate limits for a multicopter position slow mode only
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # time since system start (microseconds)
 
 # absolute speeds, NAN means use default limit

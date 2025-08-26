@@ -1,5 +1,8 @@
 uint64 timestamp			# time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 RC_INPUT_SOURCE_UNKNOWN = 0
 uint8 RC_INPUT_SOURCE_PX4FMU_PPM = 1
 uint8 RC_INPUT_SOURCE_PX4IO_PPM = 2

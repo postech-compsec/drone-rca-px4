@@ -1,5 +1,8 @@
 # ParameterSetValueResponse : Response to a set value request by either primary or secondary
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp
 uint64 request_timestamp
 uint16 parameter_index

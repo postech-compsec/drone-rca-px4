@@ -1,5 +1,8 @@
 uint64 timestamp                    # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 # FailureDetector status
 bool fd_roll
 bool fd_pitch

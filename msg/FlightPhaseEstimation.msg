@@ -1,5 +1,8 @@
 uint64 timestamp               # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint8 flight_phase 		# Estimate of current flight phase
 
 uint8 FLIGHT_PHASE_UNKNOWN = 0  # vehicle flight phase is unknown

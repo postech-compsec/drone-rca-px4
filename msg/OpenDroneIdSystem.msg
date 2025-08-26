@@ -11,3 +11,6 @@ float32 area_floor
 uint8 category_eu
 uint8 class_eu
 float32 operator_altitude_geo
+
+uint8 publisher_id
+uint64 pub_timestamp

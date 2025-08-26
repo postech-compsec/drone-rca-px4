@@ -2,6 +2,9 @@
 # Telemetry of PID position controller to monitor tracking.
 # NaN means the state was not controlled
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp	# time since system start (microseconds)
 
 float32 x		# in meters NED

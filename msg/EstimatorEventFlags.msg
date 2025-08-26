@@ -1,6 +1,9 @@
 uint64 timestamp                        # time since system start (microseconds)
 uint64 timestamp_sample                 # the timestamp of the raw data (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 # information events
 uint32 information_event_changes        # number of information event changes
 bool gps_checks_passed                  #  0 - true when gps quality checks are passing passed

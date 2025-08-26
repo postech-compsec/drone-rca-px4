@@ -1,5 +1,8 @@
 # Status of the launch detection state machine (fixed-wing only)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # time since system start (microseconds)
 
 uint8 STATE_WAITING_FOR_LAUNCH 			= 0 # waiting for launch

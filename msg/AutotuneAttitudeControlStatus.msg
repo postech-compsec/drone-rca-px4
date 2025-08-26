@@ -1,5 +1,8 @@
 uint64 timestamp                # time since system start (microseconds)
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 float32[5] coeff                # coefficients of the identified discrete-time model
 float32[5] coeff_var            # coefficients' variance of the identified discrete-time model
 float32 fitness                 # fitness of the parameter estimate

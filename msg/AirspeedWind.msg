@@ -6,6 +6,9 @@
 # This message is published by the airspeed selector for debugging purposes, and is not
 # subscribed to by any other modules.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # [us] Time since system start
 uint64 timestamp_sample # [us] Timestamp of the raw data
 

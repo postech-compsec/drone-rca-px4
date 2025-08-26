@@ -1,6 +1,9 @@
 # Trajectory setpoint in NED frame
 # Input to position controller.
 
+uint8 publisher_id
+uint64 pub_timestamp
+
 uint64 timestamp # time since system start (microseconds)
 
 # NED local world frame
