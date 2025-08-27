@@ -71,6 +71,8 @@ void SystemPowerSimulator::Run()
 	sim_system_power.periph_5v_oc = false;
 	sim_system_power.brick_valid = 1;
 
+	sim_system_power.publisher_id = M_SYSTEM_POWER_SIMULATOR;
+	sim_system_power.pub_timestamp = hrt_absolute_time();
 	_system_power_pub.publish(sim_system_power);
 
 	perf_end(_loop_perf);

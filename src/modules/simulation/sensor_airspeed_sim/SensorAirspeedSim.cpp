@@ -146,6 +146,8 @@ void SensorAirspeedSim::Run()
 			differential_pressure.differential_pressure_pa = (double)diff_pressure * 100.0; // hPa to Pa;
 			differential_pressure.temperature = temperature_local;
 			differential_pressure.timestamp = hrt_absolute_time();
+			differential_pressure.publisher_id = M_SENSOR_AIRSPEED_SIM;
+			differential_pressure.pub_timestamp = hrt_absolute_time();
 			_differential_pressure_pub.publish(differential_pressure);
 
 		}

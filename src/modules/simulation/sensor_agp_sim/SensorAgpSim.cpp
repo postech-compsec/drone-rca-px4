@@ -142,6 +142,8 @@ void SensorAgpSim::Run()
 		sample.epv = 5.f;
 
 		sample.timestamp = hrt_absolute_time();
+		sample.publisher_id = M_SENSOR_AGP_SIM;
+		sample.pub_timestamp = hrt_absolute_time();
 		_aux_global_position_pub.publish(sample);
 	}
 

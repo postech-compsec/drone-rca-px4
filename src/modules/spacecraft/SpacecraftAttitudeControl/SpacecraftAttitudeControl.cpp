@@ -132,6 +132,8 @@ SpacecraftAttitudeControl::generate_attitude_setpoint(const Quatf &q, float dt, 
 
 	attitude_setpoint.timestamp = hrt_absolute_time();
 
+	attitude_setpoint.publisher_id = M_SPACECRAFT;
+	attitude_setpoint.pub_timestamp = hrt_absolute_time();
 	_vehicle_attitude_setpoint_pub.publish(attitude_setpoint);
 
 	// update attitude controller setpoint immediately
@@ -219,6 +221,8 @@ SpacecraftAttitudeControl::updateAttitudeControl()
 			rates_setpoint.yaw = rates_sp(2);
 			_thrust_setpoint_body.copyTo(rates_setpoint.thrust_body);
 			rates_setpoint.timestamp = hrt_absolute_time();
+			rates_setpoint.publisher_id = M_SPACECRAFT;
+			rates_setpoint.pub_timestamp = hrt_absolute_time();
 			_vehicle_rates_setpoint_pub.publish(rates_setpoint);
 		}
 

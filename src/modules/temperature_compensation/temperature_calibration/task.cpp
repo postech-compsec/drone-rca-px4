@@ -342,6 +342,8 @@ int TemperatureCalibration::start()
 void TemperatureCalibration::publish_led_control(led_control_s &led_control)
 {
 	led_control.timestamp = hrt_absolute_time();
+	led_control.publisher_id = M_TEMPERATURE_COMPENSATION;
+	led_control.pub_timestamp = hrt_absolute_time();
 	_led_control_pub.publish(led_control);
 }
 

@@ -183,6 +183,8 @@ static void on_topic_update(uxrSession *session, uxrObjectId object_id, uint16_t
 
 			if (ucdr_deserialize_@(sub['simple_base_type'])(*ub, data, time_offset_us)) {
 				//print_message(ORB_ID(@(sub['simple_base_type'])), data);
+				data.publisher_id = M_UXRCE_DDS_CLIENT;
+				data.pub_timestamp = hrt_absolute_time();
 				pubs->@(sub['topic_simple'])_pub.publish(data);
 			}
 		}

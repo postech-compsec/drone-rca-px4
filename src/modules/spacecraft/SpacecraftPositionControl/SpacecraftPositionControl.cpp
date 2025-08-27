@@ -284,6 +284,8 @@ void SpacecraftPositionControl::updatePositionControl()
 			// 	(double)attitude_setpoint.thrust_body[2], (double)attitude_setpoint.q_d[0], (double)attitude_setpoint.q_d[1],
 			// 	(double)attitude_setpoint.q_d[2], (double)attitude_setpoint.q_d[3]);
 			attitude_setpoint.timestamp = hrt_absolute_time();
+			attitude_setpoint.publisher_id = M_SPACECRAFT;
+			attitude_setpoint.pub_timestamp = hrt_absolute_time();
 			_vehicle_attitude_setpoint_pub.publish(attitude_setpoint);
 
 			// publish setpoint
@@ -310,6 +312,8 @@ void SpacecraftPositionControl::publishLocalPositionSetpoint(vehicle_attitude_se
 	local_position_setpoint.thrust[0] = _att_sp.thrust_body[0];
 	local_position_setpoint.thrust[1] = _att_sp.thrust_body[1];
 	local_position_setpoint.thrust[2] = _att_sp.thrust_body[2];
+	local_position_setpoint.publisher_id = M_SPACECRAFT;
+	local_position_setpoint.pub_timestamp = hrt_absolute_time();
 	_local_pos_sp_pub.publish(local_position_setpoint);
 }
 
