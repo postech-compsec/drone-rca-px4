@@ -93,6 +93,8 @@ TEST_F(VehicleOpticalFlowTest, CameraFacingDown)
 {
 	// GIVEN: message with sensor camera facing down
 	distance_sensor_s message = createDistanceSensorMessage(distance_sensor_s::ROTATION_DOWNWARD_FACING);
+	message.publisher_id = M_SENSORS;
+	message.pub_timestamp = hrt_absolute_time();
 	orb_advertise(ORB_ID(distance_sensor), &message);
 
 	// WHEN: update distance sensor
@@ -107,6 +109,8 @@ TEST_F(VehicleOpticalFlowTest, CameraFacingForward)
 {
 	// GIVEN: message with sensor camera facing forward
 	distance_sensor_s message = createDistanceSensorMessage(distance_sensor_s::ROTATION_FORWARD_FACING);
+	message.publisher_id = M_SENSORS;
+	message.pub_timestamp = hrt_absolute_time();
 	orb_advertise(ORB_ID(distance_sensor), &message);
 
 	// WHEN: update distance sensor
