@@ -923,6 +923,8 @@ MissionBase::do_abort_landing()
 	vehicle_command.param5 = _mission_item.lat;
 	vehicle_command.param6 = _mission_item.lon;
 	vehicle_command.param7 = alt_sp;
+	vehicle_command.publisher_id = M_NAVIGATOR;
+	vehicle_command.pub_timestamp = hrt_absolute_time();
 	_navigator->publish_vehicle_command(vehicle_command);
 }
 
