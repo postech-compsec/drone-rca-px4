@@ -76,6 +76,8 @@ void AckermannVelControl::updateVelControl()
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = _timestamp;
 		rover_attitude_setpoint.yaw_setpoint = _bearing_setpoint;
+		rover_attitude_setpoint.publisher_id = M_ROVER_ACKERMANN;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 
 		if (_param_ro_speed_red.get() > FLT_EPSILON) {
@@ -95,6 +97,8 @@ void AckermannVelControl::updateVelControl()
 				speed_setpoint, _vehicle_speed, _param_ro_accel_limit.get(), _param_ro_decel_limit.get(),
 				_param_ro_max_thr_speed.get(), dt);
 		rover_throttle_setpoint.throttle_body_y = NAN;
+		rover_throttle_setpoint.publisher_id = M_ROVER_ACKERMANN;
+		rover_throttle_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_throttle_setpoint_pub.publish(rover_throttle_setpoint);
 
 	}
@@ -108,6 +112,8 @@ void AckermannVelControl::updateVelControl()
 	rover_velocity_status.measured_speed_body_y = NAN;
 	rover_velocity_status.adjusted_speed_body_y_setpoint = NAN;
 	rover_velocity_status.pid_throttle_body_y_integral = NAN;
+	rover_velocity_status.publisher_id = M_ROVER_ACKERMANN;
+	rover_velocity_status.pub_timestamp = hrt_absolute_time();
 	_rover_velocity_status_pub.publish(rover_velocity_status);
 }
 

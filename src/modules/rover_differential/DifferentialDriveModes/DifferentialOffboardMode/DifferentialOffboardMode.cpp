@@ -67,6 +67,8 @@ void DifferentialOffboardMode::offboardControl()
 		rover_position_setpoint.cruising_speed = NAN;
 		rover_position_setpoint.arrival_speed = NAN;
 		rover_position_setpoint.yaw = NAN;
+		rover_position_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_position_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_position_setpoint_pub.publish(rover_position_setpoint);
 
 	} else if (offboard_control_mode.velocity) {
@@ -75,18 +77,24 @@ void DifferentialOffboardMode::offboardControl()
 		rover_velocity_setpoint.timestamp = hrt_absolute_time();
 		rover_velocity_setpoint.speed = velocity_ned.norm();
 		rover_velocity_setpoint.bearing = atan2f(velocity_ned(1), velocity_ned(0));
+		rover_velocity_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_velocity_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_velocity_setpoint_pub.publish(rover_velocity_setpoint);
 
 	} else if (offboard_control_mode.attitude) {
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = hrt_absolute_time();
 		rover_attitude_setpoint.yaw_setpoint = trajectory_setpoint.yaw;
+		rover_attitude_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 
 	} else if (offboard_control_mode.body_rate) {
 		rover_rate_setpoint_s rover_rate_setpoint{};
 		rover_rate_setpoint.timestamp = hrt_absolute_time();
 		rover_rate_setpoint.yaw_rate_setpoint = trajectory_setpoint.yawspeed;
+		rover_rate_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_rate_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_rate_setpoint_pub.publish(rover_rate_setpoint);
 	}
 }

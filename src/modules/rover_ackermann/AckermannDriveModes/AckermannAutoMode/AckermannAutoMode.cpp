@@ -80,6 +80,8 @@ void AckermannAutoMode::autoControl()
 							_waypoint_transition_angle, _max_yaw_rate);
 		rover_position_setpoint.cruising_speed = _cruising_speed;
 		rover_position_setpoint.yaw = NAN;
+		rover_position_setpoint.publisher_id = M_ROVER_ACKERMANN;
+		rover_position_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_position_setpoint_pub.publish(rover_position_setpoint);
 	}
 
@@ -131,6 +133,8 @@ float AckermannAutoMode::updateAcceptanceRadius(const float waypoint_transition_
 	position_controller_status_s pos_ctrl_status{};
 	pos_ctrl_status.acceptance_radius = acceptance_radius;
 	pos_ctrl_status.timestamp = hrt_absolute_time();
+	pos_ctrl_status.publisher_id = M_ROVER_ACKERMANN;
+	pos_ctrl_status.pub_timestamp = hrt_absolute_time();
 	_position_controller_status_pub.publish(pos_ctrl_status);
 	return acceptance_radius;
 }

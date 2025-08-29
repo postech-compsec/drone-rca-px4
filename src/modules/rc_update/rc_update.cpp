@@ -480,6 +480,8 @@ void RCUpdate::Run()
 		_rc.frame_drop_count = input_rc.rc_lost_frame_count;
 
 		/* publish rc_channels topic even if signal is invalid, for debug */
+		_rc.publisher_id = M_RC_UPDATE;
+		_rc.pub_timestamp = hrt_absolute_time();
 		_rc_channels_pub.publish(_rc);
 
 		// only publish manual control if the signal is present and regularly updating
@@ -664,6 +666,8 @@ void RCUpdate::UpdateManualSwitches(const hrt_abstime &timestamp_sample)
 			_manual_switches_last_publish.switch_changes = switch_changes;
 			_manual_switches_last_publish.timestamp_sample = _manual_switches_previous.timestamp_sample;
 			_manual_switches_last_publish.timestamp = hrt_absolute_time();
+			_manual_switches_last_publish.publisher_id = M_RC_UPDATE;
+			_manual_switches_last_publish.pub_timestamp = hrt_absolute_time();
 			_manual_control_switches_pub.publish(_manual_switches_last_publish);
 		}
 	}
@@ -693,6 +697,8 @@ void RCUpdate::UpdateManualControlInput(const hrt_abstime &timestamp_sample)
 
 	// publish manual_control_input topic
 	manual_control_input.timestamp = hrt_absolute_time();
+	manual_control_input.publisher_id = M_RC_UPDATE;
+	manual_control_input.pub_timestamp = hrt_absolute_time();
 	_manual_control_input_pub.publish(manual_control_input);
 	_last_manual_control_input_publish = manual_control_input.timestamp;
 }

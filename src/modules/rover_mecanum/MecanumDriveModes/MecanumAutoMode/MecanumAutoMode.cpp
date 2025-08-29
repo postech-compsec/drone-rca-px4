@@ -89,6 +89,8 @@ void MecanumAutoMode::autoControl()
 		rover_position_setpoint.cruising_speed = cruising_speed;
 		rover_position_setpoint.yaw = PX4_ISFINITE(position_setpoint_triplet.current.yaw) ?
 					      position_setpoint_triplet.current.yaw : NAN;
+		rover_position_setpoint.publisher_id = M_ROVER_MECANUM;
+		rover_position_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_position_setpoint_pub.publish(rover_position_setpoint);
 	}
 }

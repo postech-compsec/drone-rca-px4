@@ -597,10 +597,14 @@ void VehicleMagnetometer::Run()
 								}
 							}
 
+							out.publisher_id = M_SENSORS;
+							out.pub_timestamp = hrt_absolute_time();
 							_vehicle_magnetometer_pub[instance].publish(out);
 
 						} else {
 							// otherwise only ever publish the first instance
+							out.publisher_id = M_SENSORS;
+							out.pub_timestamp = hrt_absolute_time();
 							_vehicle_magnetometer_pub[0].publish(out);
 						}
 					}
@@ -726,6 +730,8 @@ void VehicleMagnetometer::calcMagInconsistency()
 		preflt.mag_inconsistency_angle = mag_angle_diff_max;
 
 		preflt.timestamp = hrt_absolute_time();
+		preflt.publisher_id = M_SENSORS;
+		preflt.pub_timestamp = hrt_absolute_time();
 		_sensor_preflight_mag_pub.publish(preflt);
 	}
 }
@@ -768,6 +774,8 @@ void VehicleMagnetometer::UpdateStatus()
 		}
 
 		sensors_status.timestamp = hrt_absolute_time();
+		sensors_status.publisher_id = M_SENSORS;
+		sensors_status.pub_timestamp = hrt_absolute_time();
 		_sensors_status_mag_pub.publish(sensors_status);
 	}
 }

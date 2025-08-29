@@ -86,6 +86,8 @@ void MecanumActControl::updateActControl()
 		computeInverseKinematics(adjusted_throttle_x_setpoint, adjusted_throttle_y_setpoint,
 					 _speed_diff_setpoint).copyTo(actuator_motors.control);
 		actuator_motors.timestamp = _timestamp;
+		actuator_motors.publisher_id = M_ROVER_MECANUM;
+		actuator_motors.pub_timestamp = hrt_absolute_time();
 		_actuator_motors_pub.publish(actuator_motors);
 
 	}
@@ -125,5 +127,7 @@ void MecanumActControl::stopVehicle()
 	actuator_motors.control[2] = 0.f;
 	actuator_motors.control[3] = 0.f;
 	actuator_motors.timestamp = _timestamp;
+	actuator_motors.publisher_id = M_ROVER_MECANUM;
+	actuator_motors.pub_timestamp = hrt_absolute_time();
 	_actuator_motors_pub.publish(actuator_motors);
 }

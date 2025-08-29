@@ -241,6 +241,8 @@ bool PayloadDeliverer::send_gripper_vehicle_command(const int32_t gripper_action
 	vcmd.command = vehicle_command_s::VEHICLE_CMD_DO_GRIPPER;
 	vcmd.param2 = gripper_action;
 	// Note: Integer type GRIPPER_ACTION gets formatted into a floating point here.
+	vcmd.publisher_id = M_PAYLOAD_DELIVERER;
+	vcmd.pub_timestamp = hrt_absolute_time();
 	return _vehicle_command_pub.publish(vcmd);
 }
 
@@ -261,6 +263,8 @@ bool PayloadDeliverer::send_gripper_vehicle_command_ack(const hrt_abstime now, c
 
 	vcmd_ack.target_system = target_system;
 	vcmd_ack.target_component = target_component;
+	vcmd_ack.publisher_id = M_PAYLOAD_DELIVERER;
+	vcmd_ack.pub_timestamp = hrt_absolute_time();
 	return _vehicle_command_ack_pub.publish(vcmd_ack);
 }
 

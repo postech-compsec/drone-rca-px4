@@ -82,12 +82,16 @@ void AckermannPosControl::updatePosControl()
 			const float bearing_setpoint = PurePursuit::calcTargetBearing(pure_pursuit_status, _param_pp_lookahd_gain.get(),
 						       _param_pp_lookahd_max.get(), _param_pp_lookahd_min.get(), target_waypoint_ned, _start_ned,
 						       _curr_pos_ned, fabsf(speed_setpoint));
+			pure_pursuit_status.publisher_id = M_ROVER_ACKERMANN;
+			pure_pursuit_status.pub_timestamp = hrt_absolute_time();
 			_pure_pursuit_status_pub.publish(pure_pursuit_status);
 			rover_velocity_setpoint_s rover_velocity_setpoint{};
 			rover_velocity_setpoint.timestamp = timestamp;
 			rover_velocity_setpoint.speed = speed_setpoint;
 			rover_velocity_setpoint.bearing = speed_setpoint > -FLT_EPSILON ? bearing_setpoint : matrix::wrap_pi(
 					bearing_setpoint + M_PI_F);
+			rover_velocity_setpoint.publisher_id = M_ROVER_ACKERMANN;
+			rover_velocity_setpoint.pub_timestamp = hrt_absolute_time();
 			_rover_velocity_setpoint_pub.publish(rover_velocity_setpoint);
 
 		} else {
@@ -95,6 +99,8 @@ void AckermannPosControl::updatePosControl()
 			rover_velocity_setpoint.timestamp = timestamp;
 			rover_velocity_setpoint.speed = 0.f;
 			rover_velocity_setpoint.bearing = _vehicle_yaw;
+			rover_velocity_setpoint.publisher_id = M_ROVER_ACKERMANN;
+			rover_velocity_setpoint.pub_timestamp = hrt_absolute_time();
 			_rover_velocity_setpoint_pub.publish(rover_velocity_setpoint);
 		}
 	}
