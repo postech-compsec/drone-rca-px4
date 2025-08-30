@@ -60,6 +60,8 @@ void actuator_test(int function, float value, int timeout_ms, bool release_contr
 	actuator_test.timeout_ms = timeout_ms;
 
 	uORB::Publication<actuator_test_s> actuator_test_pub{ORB_ID(actuator_test)};
+	actuator_test.publisher_id = M_ACTUATOR_TEST;
+	actuator_test.pub_timestamp = hrt_absolute_time();
 	actuator_test_pub.publish(actuator_test);
 }
 

@@ -59,6 +59,8 @@ static void publish_led_control(led_control_s &led_control)
 	led_control.timestamp = hrt_absolute_time();
 
 	uORB::Publication<led_control_s> led_control_pub{ORB_ID(led_control)};
+	led_control.publisher_id = M_LED_CONTROL;
+	led_control.pub_timestamp = hrt_absolute_time();
 	led_control_pub.publish(led_control);
 }
 

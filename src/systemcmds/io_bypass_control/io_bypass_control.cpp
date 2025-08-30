@@ -106,6 +106,8 @@ int io_bypass_control_main(int argc, char *argv[])
 				actuator_outputs.output[j] = i;
 			}
 
+			actuator_outputs.publisher_id = M_IO_BYPASS_CONTROL;
+			actuator_outputs.pub_timestamp = hrt_absolute_time();
 			publisher.publish(actuator_outputs);
 			px4_usleep(10000);
 		}
