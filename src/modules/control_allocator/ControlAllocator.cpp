@@ -589,6 +589,8 @@ ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdateReaso
 		}
 
 		trims.timestamp = hrt_absolute_time();
+		trims.publisher_id = M_CONTROL_ALLOCATOR;
+		trims.pub_timestamp = hrt_absolute_time();
 		_actuator_servos_trim_pub.publish(trims);
 	}
 }
@@ -642,6 +644,8 @@ ControlAllocator::publish_control_allocator_status(int matrix_index)
 	// Handled motor failures
 	control_allocator_status.handled_motor_failure_mask = _handled_motor_failure_bitmask;
 
+	control_allocator_status.publisher_id = M_CONTROL_ALLOCATOR;
+	control_allocator_status.pub_timestamp = hrt_absolute_time();
 	_control_allocator_status_pub[matrix_index].publish(control_allocator_status);
 }
 
@@ -687,6 +691,8 @@ ControlAllocator::publish_actuator_controls()
 		actuator_motors.control[i] = NAN;
 	}
 
+	actuator_motors.publisher_id = M_CONTROL_ALLOCATOR;
+	actuator_motors.pub_timestamp = hrt_absolute_time();
 	_actuator_motors_pub.publish(actuator_motors);
 
 	// servos
@@ -705,6 +711,8 @@ ControlAllocator::publish_actuator_controls()
 			actuator_servos.control[i] = NAN;
 		}
 
+		actuator_servos.publisher_id = M_CONTROL_ALLOCATOR;
+		actuator_servos.pub_timestamp = hrt_absolute_time();
 		_actuator_servos_pub.publish(actuator_servos);
 	}
 }

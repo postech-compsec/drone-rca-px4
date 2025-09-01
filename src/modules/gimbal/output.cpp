@@ -63,6 +63,8 @@ void OutputBase::publish()
 	}
 
 	mount_orientation.timestamp = hrt_absolute_time();
+	mount_orientation.publisher_id = M_GIMBAL;
+	mount_orientation.pub_timestamp = hrt_absolute_time();
 	_mount_orientation_pub.publish(mount_orientation);
 }
 

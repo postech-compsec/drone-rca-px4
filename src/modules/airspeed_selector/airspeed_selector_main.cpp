@@ -774,8 +774,12 @@ void AirspeedModule::select_airspeed_and_publish()
 		break;
 	}
 
+	airspeed_validated.publisher_id = M_AIRSPEED_SELECTOR;
+	airspeed_validated.pub_timestamp = hrt_absolute_time();
 	_airspeed_validated_pub.publish(airspeed_validated);
 
+	_wind_estimate_sideslip.publisher_id = M_AIRSPEED_SELECTOR;
+	_wind_estimate_sideslip.pub_timestamp = hrt_absolute_time();
 	_wind_est_pub[0].publish(_wind_estimate_sideslip);
 
 	// publish the wind estimator states from all airspeed validators
@@ -792,6 +796,8 @@ void AirspeedModule::select_airspeed_and_publish()
 			wind_est.source = airspeed_wind_s::SOURCE_AS_SENSOR_3;
 		}
 
+		wind_est.publisher_id = M_AIRSPEED_SELECTOR;
+		wind_est.pub_timestamp = hrt_absolute_time();
 		_wind_est_pub[i + 1].publish(wind_est);
 	}
 

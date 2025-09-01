@@ -176,6 +176,8 @@ void TargetEstimator::update()
 	_filter_states.acc_ned_est.copyTo(follow_target_estimator.acc_est);
 	follow_target_estimator.prediction_count = _prediction_count;
 	follow_target_estimator.fusion_count = _fusion_count;
+	follow_target_estimator.publisher_id = M_FLIGHT_MODE_MANAGER;
+	follow_target_estimator.pub_timestamp = hrt_absolute_time();
 	_follow_target_estimator_pub.publish(follow_target_estimator);
 }
 

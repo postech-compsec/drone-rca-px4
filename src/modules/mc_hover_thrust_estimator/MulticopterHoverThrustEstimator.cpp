@@ -240,6 +240,8 @@ void MulticopterHoverThrustEstimator::publishStatus(const hrt_abstime &timestamp
 	status_msg.valid = _valid;
 
 	status_msg.timestamp = hrt_absolute_time();
+	status_msg.publisher_id = M_MC_HOVER_THRUST_ESTIMATOR;
+	status_msg.pub_timestamp = hrt_absolute_time();
 
 	_hover_thrust_ekf_pub.publish(status_msg);
 }
@@ -256,6 +258,8 @@ void MulticopterHoverThrustEstimator::publishInvalidStatus()
 	status_msg.accel_noise_var = NAN;
 
 	status_msg.timestamp = hrt_absolute_time();
+	status_msg.publisher_id = M_MC_HOVER_THRUST_ESTIMATOR;
+	status_msg.pub_timestamp = hrt_absolute_time();
 
 	_hover_thrust_ekf_pub.publish(status_msg);
 }

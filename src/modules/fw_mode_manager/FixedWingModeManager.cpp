@@ -290,6 +290,8 @@ FixedWingModeManager::landing_status_publish()
 	pos_ctrl_landing_status.flaring = _flare_states.flaring;
 	pos_ctrl_landing_status.abort_status = _landing_abort_status;
 	pos_ctrl_landing_status.timestamp = hrt_absolute_time();
+	pos_ctrl_landing_status.publisher_id = M_FW_MODE_MANAGER;
+	pos_ctrl_landing_status.pub_timestamp = hrt_absolute_time();
 
 	_pos_ctrl_landing_status_pub.publish(pos_ctrl_landing_status);
 }
@@ -612,12 +614,16 @@ void FixedWingModeManager::control_idle()
 	fixed_wing_lateral_setpoint_s lateral_ctrl_sp {empty_lateral_control_setpoint};
 	lateral_ctrl_sp.timestamp = now;
 	lateral_ctrl_sp.lateral_acceleration = 0.0f;
+	lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(lateral_ctrl_sp);
 
 	fixed_wing_longitudinal_setpoint_s long_contrl_sp {empty_longitudinal_control_setpoint};
 	long_contrl_sp.timestamp = now;
 	long_contrl_sp.pitch_direct = 0.f;
 	long_contrl_sp.throttle_direct = 0.0f;
+	long_contrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	long_contrl_sp.pub_timestamp = hrt_absolute_time();
 	_longitudinal_ctrl_sp_pub.publish(long_contrl_sp);
 
 	_ctrl_configuration_handler.setThrottleMax(0.0f);
@@ -634,7 +640,9 @@ FixedWingModeManager::control_auto_fixed_bank_alt_hold()
 		.height_rate = NAN,
 		.equivalent_airspeed = NAN,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -653,6 +661,8 @@ FixedWingModeManager::control_auto_fixed_bank_alt_hold()
 	lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	const float roll_body = math::radians(_param_nav_gpsf_r.get()); // open loop loiter bank angle
 	lateral_ctrl_sp.lateral_acceleration = rollAngleToLateralAccel(roll_body);
+	lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(lateral_ctrl_sp);
 }
 
@@ -671,7 +681,9 @@ FixedWingModeManager::control_auto_descend()
 		.height_rate = -descend_rate,
 		.equivalent_airspeed = NAN,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -683,6 +695,8 @@ FixedWingModeManager::control_auto_descend()
 	lateral_ctrl_sp.timestamp = now;
 	const float roll_body = math::radians(_param_nav_gpsf_r.get()); // open loop loiter bank angle
 	lateral_ctrl_sp.lateral_acceleration = rollAngleToLateralAccel(roll_body);
+	lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(lateral_ctrl_sp);
 }
 
@@ -785,7 +799,9 @@ FixedWingModeManager::control_auto_position(const float control_interval, const 
 		.height_rate = NAN,
 		.equivalent_airspeed = target_airspeed,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -820,6 +836,8 @@ FixedWingModeManager::control_auto_position(const float control_interval, const 
 	lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	lateral_ctrl_sp.course = sp.course_setpoint;
 	lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(lateral_ctrl_sp);
 }
 
@@ -838,6 +856,8 @@ FixedWingModeManager::control_auto_velocity(const float control_interval, const 
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
 	const float target_airspeed = pos_sp_curr.cruising_speed > FLT_EPSILON ? pos_sp_curr.cruising_speed : NAN;
@@ -848,7 +868,9 @@ FixedWingModeManager::control_auto_velocity(const float control_interval, const 
 		.height_rate = pos_sp_curr.vz,
 		.equivalent_airspeed = target_airspeed,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -912,6 +934,8 @@ FixedWingModeManager::control_auto_loiter(const float control_interval, const Ve
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -942,7 +966,9 @@ FixedWingModeManager::control_auto_loiter(const float control_interval, const Ve
 		.height_rate = NAN,
 		.equivalent_airspeed = target_airspeed,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -979,6 +1005,8 @@ FixedWingModeManager::controlAutoFigureEight(const float control_interval, const
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -990,7 +1018,9 @@ FixedWingModeManager::controlAutoFigureEight(const float control_interval, const
 		.height_rate = NAN,
 		.equivalent_airspeed = target_airspeed,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1013,6 +1043,8 @@ void FixedWingModeManager::publishFigureEightStatus(const position_setpoint_s po
 	figure_eight_status.x = static_cast<int32_t>(pos_sp.lat * 1e7);
 	figure_eight_status.y = static_cast<int32_t>(pos_sp.lon * 1e7);
 	figure_eight_status.z = pos_sp.alt;
+	figure_eight_status.publisher_id = M_FW_MODE_MANAGER;
+	figure_eight_status.pub_timestamp = hrt_absolute_time();
 
 	_figure_eight_status_pub.publish(figure_eight_status);
 }
@@ -1039,6 +1071,8 @@ FixedWingModeManager::control_auto_path(const float control_interval, const Vect
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
 	const fixed_wing_longitudinal_setpoint_s fw_longitudinal_control_sp = {
@@ -1047,7 +1081,9 @@ FixedWingModeManager::control_auto_path(const float control_interval, const Vect
 		.height_rate = NAN,
 		.equivalent_airspeed = target_airspeed,
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1120,6 +1156,8 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.course = sp.course_setpoint;
 		fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1136,7 +1174,9 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 			.height_rate = NAN,
 			.equivalent_airspeed = takeoff_airspeed,
 			.pitch_direct = _runway_takeoff.getPitch(),
-			.throttle_direct = _runway_takeoff.getThrottle(_param_fw_thr_idle.get())
+			.throttle_direct = _runway_takeoff.getThrottle(_param_fw_thr_idle.get()),
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1157,6 +1197,8 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 		fw_runway_control.timestamp = now;
 		fw_runway_control.wheel_steering_enabled = true;
 		fw_runway_control.wheel_steering_nudging_rate = _param_rwto_nudge.get() ? _manual_control_setpoint.yaw : 0.f;
+		fw_runway_control.publisher_id = M_FW_MODE_MANAGER;
+		fw_runway_control.pub_timestamp = hrt_absolute_time();
 
 		_fixed_wing_runway_control_pub.publish(fw_runway_control);
 
@@ -1214,6 +1256,8 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 			fw_lateral_ctrl_sp.timestamp = now;
 			fw_lateral_ctrl_sp.course = sp.course_setpoint;
 			fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+			fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+			fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 			_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1228,7 +1272,9 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 				.height_rate = _param_fw_t_clmb_max.get(),
 				.equivalent_airspeed = takeoff_airspeed,
 				.pitch_direct = NAN,
-				.throttle_direct = NAN
+				.throttle_direct = NAN,
+				.publisher_id = M_FW_MODE_MANAGER,
+				.pub_timestamp = hrt_absolute_time()
 			};
 
 			_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1244,6 +1290,8 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 			fixed_wing_lateral_setpoint_s fw_lateral_ctrl_sp{empty_lateral_control_setpoint};
 			fw_lateral_ctrl_sp.timestamp = now;
 			fw_lateral_ctrl_sp.lateral_acceleration = 0.f;
+			fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+			fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 			/* Tell the attitude controller to stop integrating while we are waiting for the launch */
 			_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1251,12 +1299,16 @@ FixedWingModeManager::control_auto_takeoff(const hrt_abstime &now, const float c
 			long_control_sp.timestamp = now;
 			long_control_sp.pitch_direct = radians(_takeoff_pitch_min.get());
 			long_control_sp.throttle_direct = _param_fw_thr_idle.get();
+			long_control_sp.publisher_id = M_FW_MODE_MANAGER;
+			long_control_sp.pub_timestamp = hrt_absolute_time();
 			_longitudinal_ctrl_sp_pub.publish(long_control_sp);
 		}
 
 		launch_detection_status_s launch_detection_status;
 		launch_detection_status.timestamp = now;
 		launch_detection_status.launch_detection_state = _launchDetector.getLaunchDetected();
+		launch_detection_status.publisher_id = M_FW_MODE_MANAGER;
+		launch_detection_status.pub_timestamp = hrt_absolute_time();
 		_launch_detection_status_pub.publish(launch_detection_status);
 	}
 
@@ -1297,6 +1349,8 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 		fixed_wing_lateral_setpoint_s fw_lateral_ctrl_sp{empty_lateral_control_setpoint};
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.lateral_acceleration = 0.f; // level wings
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1310,7 +1364,9 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 			.height_rate = _param_fw_t_clmb_max.get(),
 			.equivalent_airspeed = takeoff_airspeed,
 			.pitch_direct = _runway_takeoff.getPitch(),
-			.throttle_direct = _runway_takeoff.getThrottle(_param_fw_thr_idle.get())
+			.throttle_direct = _runway_takeoff.getThrottle(_param_fw_thr_idle.get()),
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1330,6 +1386,8 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 		fw_runway_control.timestamp = now;
 		fw_runway_control.wheel_steering_enabled = true;
 		fw_runway_control.wheel_steering_nudging_rate = _param_rwto_nudge.get() ? _manual_control_setpoint.yaw : 0.f;
+		fw_runway_control.publisher_id = M_FW_MODE_MANAGER;
+		fw_runway_control.pub_timestamp = hrt_absolute_time();
 
 		_fixed_wing_runway_control_pub.publish(fw_runway_control);
 
@@ -1358,6 +1416,8 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 		fixed_wing_lateral_setpoint_s fw_lateral_ctrl_sp{empty_lateral_control_setpoint};
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.lateral_acceleration = 0.f; // level wings
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1369,7 +1429,9 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 			.height_rate = _param_fw_t_clmb_max.get(),
 			.equivalent_airspeed = takeoff_airspeed,
 			.pitch_direct = NAN,
-			.throttle_direct = NAN
+			.throttle_direct = NAN,
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1382,6 +1444,8 @@ FixedWingModeManager::control_auto_takeoff_no_nav(const hrt_abstime &now, const 
 		launch_detection_status_s launch_detection_status;
 		launch_detection_status.timestamp = now;
 		launch_detection_status.launch_detection_state = _launchDetector.getLaunchDetected();
+		launch_detection_status.publisher_id = M_FW_MODE_MANAGER;
+		launch_detection_status.pub_timestamp = hrt_absolute_time();
 		_launch_detection_status_pub.publish(launch_detection_status);
 	}
 
@@ -1472,6 +1536,8 @@ FixedWingModeManager::control_auto_landing_straight(const hrt_abstime &now, cons
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.course = sp.course_setpoint;
 		fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
 		const float roll_wingtip_strike = getMaxRollAngleNearGround(_current_altitude, _takeoff_ground_alt);
@@ -1520,7 +1586,9 @@ FixedWingModeManager::control_auto_landing_straight(const hrt_abstime &now, cons
 			.height_rate = height_rate_setpoint,
 			.equivalent_airspeed = airspeed_land,
 			.pitch_direct = NAN,
-			.throttle_direct = NAN
+			.throttle_direct = NAN,
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1546,6 +1614,8 @@ FixedWingModeManager::control_auto_landing_straight(const hrt_abstime &now, cons
 		fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 		fw_lateral_ctrl_sp.course = sp.course_setpoint;
 		fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
 		_ctrl_configuration_handler.setLateralAccelMax(rollAngleToLateralAccel(getMaxRollAngleNearGround(_current_altitude,
@@ -1564,7 +1634,9 @@ FixedWingModeManager::control_auto_landing_straight(const hrt_abstime &now, cons
 			.height_rate = NAN,
 			.equivalent_airspeed = airspeed_land,
 			.pitch_direct = NAN,
-			.throttle_direct = NAN
+			.throttle_direct = NAN,
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1579,6 +1651,8 @@ FixedWingModeManager::control_auto_landing_straight(const hrt_abstime &now, cons
 	fw_runway_control.wheel_steering_enabled = true;
 	fw_runway_control.wheel_steering_nudging_rate = _param_fw_lnd_nudge.get() > LandingNudgingOption::kNudgingDisabled ?
 			_manual_control_setpoint.yaw : 0.f;
+	fw_runway_control.publisher_id = M_FW_MODE_MANAGER;
+	fw_runway_control.pub_timestamp = hrt_absolute_time();
 
 	_fixed_wing_runway_control_pub.publish(fw_runway_control);
 
@@ -1654,6 +1728,8 @@ FixedWingModeManager::control_auto_landing_circular(const hrt_abstime &now, cons
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.course = sp.course_setpoint;
 		fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 		/* longitudinal guidance */
@@ -1691,7 +1767,9 @@ FixedWingModeManager::control_auto_landing_circular(const hrt_abstime &now, cons
 			.height_rate = height_rate_setpoint,
 			.equivalent_airspeed = airspeed_land,
 			.pitch_direct = NAN,
-			.throttle_direct = NAN
+			.throttle_direct = NAN,
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1712,6 +1790,8 @@ FixedWingModeManager::control_auto_landing_circular(const hrt_abstime &now, cons
 		fw_lateral_ctrl_sp.timestamp = now;
 		fw_lateral_ctrl_sp.course = sp.course_setpoint;
 		fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 
@@ -1729,7 +1809,9 @@ FixedWingModeManager::control_auto_landing_circular(const hrt_abstime &now, cons
 			.height_rate = -glide_slope_sink_rate,
 			.equivalent_airspeed = airspeed_land,
 			.pitch_direct = NAN,
-			.throttle_direct = NAN
+			.throttle_direct = NAN,
+			.publisher_id = M_FW_MODE_MANAGER,
+			.pub_timestamp = hrt_absolute_time()
 		};
 
 		_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1744,6 +1826,8 @@ FixedWingModeManager::control_auto_landing_circular(const hrt_abstime &now, cons
 	fw_runway_control.wheel_steering_enabled = true;
 	fw_runway_control.wheel_steering_nudging_rate = _param_fw_lnd_nudge.get() > LandingNudgingOption::kNudgingDisabled ?
 			_manual_control_setpoint.yaw : 0.f;
+	fw_runway_control.publisher_id = M_FW_MODE_MANAGER;
+	fw_runway_control.pub_timestamp = hrt_absolute_time();
 
 	_fixed_wing_runway_control_pub.publish(fw_runway_control);
 
@@ -1787,7 +1871,9 @@ FixedWingModeManager::control_manual_altitude(const float control_interval, cons
 		.height_rate = height_rate_sp,
 		.equivalent_airspeed = get_manual_airspeed_setpoint(),
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1801,6 +1887,8 @@ FixedWingModeManager::control_manual_altitude(const float control_interval, cons
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 }
 
@@ -1872,6 +1960,8 @@ FixedWingModeManager::control_manual_position(const hrt_abstime now, const float
 			fw_lateral_ctrl_sp.timestamp = now;
 			fw_lateral_ctrl_sp.course = sp.course_setpoint;
 			fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+			fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+			fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 
 			_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 		}
@@ -1883,7 +1973,9 @@ FixedWingModeManager::control_manual_position(const hrt_abstime now, const float
 		.height_rate = height_rate_sp,
 		.equivalent_airspeed = get_manual_airspeed_setpoint(),
 		.pitch_direct = NAN,
-		.throttle_direct = NAN
+		.throttle_direct = NAN,
+		.publisher_id = M_FW_MODE_MANAGER,
+		.pub_timestamp = hrt_absolute_time()
 	};
 
 	_longitudinal_ctrl_sp_pub.publish(fw_longitudinal_control_sp);
@@ -1901,6 +1993,8 @@ FixedWingModeManager::control_manual_position(const hrt_abstime now, const float
 		fixed_wing_lateral_setpoint_s fw_lateral_ctrl_sp{empty_lateral_control_setpoint};
 		fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 		fw_lateral_ctrl_sp.lateral_acceleration = rollAngleToLateralAccel(roll_body);
+		fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+		fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 		_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 	}
 }
@@ -1919,6 +2013,8 @@ void FixedWingModeManager::control_backtransition_heading_hold()
 	fixed_wing_lateral_setpoint_s fw_lateral_ctrl_sp{empty_lateral_control_setpoint};
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.airspeed_direction = _backtrans_heading;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 }
 
@@ -1944,6 +2040,8 @@ void FixedWingModeManager::control_backtransition_line_follow(const Vector2f &gr
 	fw_lateral_ctrl_sp.timestamp = hrt_absolute_time();
 	fw_lateral_ctrl_sp.course = sp.course_setpoint;
 	fw_lateral_ctrl_sp.lateral_acceleration = sp.lateral_acceleration_feedforward;
+	fw_lateral_ctrl_sp.publisher_id = M_FW_MODE_MANAGER;
+	fw_lateral_ctrl_sp.pub_timestamp = hrt_absolute_time();
 	_lateral_ctrl_sp_pub.publish(fw_lateral_ctrl_sp);
 }
 
@@ -2253,6 +2351,8 @@ FixedWingModeManager::Run()
 			landing_gear_s landing_gear = {};
 			landing_gear.landing_gear = _new_landing_gear_position;
 			landing_gear.timestamp = now;
+			landing_gear.publisher_id = M_FW_MODE_MANAGER;
+			landing_gear.pub_timestamp = hrt_absolute_time();
 			_landing_gear_pub.publish(landing_gear);
 		}
 
@@ -2262,11 +2362,15 @@ FixedWingModeManager::Run()
 			normalized_unsigned_setpoint_s flaps_setpoint;
 			flaps_setpoint.normalized_setpoint = _flaps_setpoint;
 			flaps_setpoint.timestamp = now;
+			flaps_setpoint.publisher_id = M_FW_MODE_MANAGER;
+			flaps_setpoint.pub_timestamp = hrt_absolute_time();
 			_flaps_setpoint_pub.publish(flaps_setpoint);
 
 			normalized_unsigned_setpoint_s spoilers_setpoint;
 			spoilers_setpoint.normalized_setpoint = _spoilers_setpoint;
 			spoilers_setpoint.timestamp = now;
+			spoilers_setpoint.publisher_id = M_FW_MODE_MANAGER;
+			spoilers_setpoint.pub_timestamp = hrt_absolute_time();
 			_spoilers_setpoint_pub.publish(spoilers_setpoint);
 		}
 
@@ -2501,6 +2605,8 @@ void FixedWingModeManager::publishLocalPositionSetpoint(const position_setpoint_
 	local_position_setpoint.acceleration[0] = NAN;
 	local_position_setpoint.acceleration[1] = NAN;
 	local_position_setpoint.acceleration[2] = NAN;
+	local_position_setpoint.publisher_id = M_FW_MODE_MANAGER;
+	local_position_setpoint.pub_timestamp = hrt_absolute_time();
 	_local_pos_sp_pub.publish(local_position_setpoint);
 }
 
@@ -2520,6 +2626,8 @@ void FixedWingModeManager::publishOrbitStatus(const position_setpoint_s pos_sp)
 	orbit_status.y = static_cast<double>(pos_sp.lon);
 	orbit_status.z = pos_sp.alt;
 	orbit_status.yaw_behaviour = orbit_status_s::ORBIT_YAW_BEHAVIOUR_HOLD_FRONT_TANGENT_TO_CIRCLE;
+	orbit_status.publisher_id = M_FW_MODE_MANAGER;
+	orbit_status.pub_timestamp = hrt_absolute_time();
 	_orbit_status_pub.publish(orbit_status);
 }
 
@@ -2695,6 +2803,8 @@ void FixedWingModeManager::publish_lateral_guidance_status(const hrt_abstime now
 	fixed_wing_lateral_guidance_status.track_error_bound = _directional_guidance.getTrackErrorBound();
 	fixed_wing_lateral_guidance_status.adapted_period = _directional_guidance.getAdaptedPeriod();
 	fixed_wing_lateral_guidance_status.wind_est_valid = _wind_valid;
+	fixed_wing_lateral_guidance_status.publisher_id = M_FW_MODE_MANAGER;
+	fixed_wing_lateral_guidance_status.pub_timestamp = hrt_absolute_time();
 
 	_fixed_wing_lateral_guidance_status_pub.publish(fixed_wing_lateral_guidance_status);
 }

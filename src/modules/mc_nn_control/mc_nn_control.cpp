@@ -139,6 +139,8 @@ void MulticopterNeuralNetworkControl::RegisterNeuralFlightMode()
 	register_ext_component_request.px4_ros2_api_version = 1;
 	register_ext_component_request.register_arming_check = true;
 	register_ext_component_request.register_mode = true;
+	register_ext_component_request.publisher_id = M_MC_NN_CONTROL;
+	register_ext_component_request.pub_timestamp = hrt_absolute_time();
 	_register_ext_component_request_pub.publish(register_ext_component_request);
 }
 
@@ -151,6 +153,8 @@ void MulticopterNeuralNetworkControl::UnregisterNeuralFlightMode(int8 arming_che
 	strncpy(unregister_ext_component.name, "Neural Control", sizeof(unregister_ext_component.name) - 1);
 	unregister_ext_component.arming_check_id = arming_check_id;
 	unregister_ext_component.mode_id = mode_id;
+	unregister_ext_component.publisher_id = M_MC_NN_CONTROL;
+	unregister_ext_component.pub_timestamp = hrt_absolute_time();
 	_unregister_ext_component_pub.publish(unregister_ext_component);
 }
 
@@ -168,6 +172,8 @@ void MulticopterNeuralNetworkControl::ConfigureNeuralFlightMode(int8 mode_id)
 	config_control_setpoints.flag_control_climb_rate_enabled = true;
 	config_control_setpoints.flag_control_allocation_enabled = false;
 	config_control_setpoints.flag_control_termination_enabled = true;
+	config_control_setpoints.publisher_id = M_MC_NN_CONTROL;
+	config_control_setpoints.pub_timestamp = hrt_absolute_time();
 	_config_control_setpoints_pub.publish(config_control_setpoints);
 }
 
@@ -191,6 +197,8 @@ void MulticopterNeuralNetworkControl::ReplyToArmingCheck(int8 request_id)
 	arming_check_reply.mode_req_global_position = false;
 	arming_check_reply.mode_req_prevent_arming = false;
 	arming_check_reply.mode_req_manual_control = false;
+	arming_check_reply.publisher_id = M_MC_NN_CONTROL;
+	arming_check_reply.pub_timestamp = hrt_absolute_time();
 	_arming_check_reply_pub.publish(arming_check_reply);
 }
 
@@ -370,6 +378,8 @@ void MulticopterNeuralNetworkControl::PublishOutput(float *command_actions)
 	actuator_motors.control[10] = -NAN;
 	actuator_motors.control[11] = -NAN;
 	actuator_motors.reversible_flags = 0;
+	actuator_motors.publisher_id = M_MC_NN_CONTROL;
+	actuator_motors.pub_timestamp = hrt_absolute_time();
 
 	_actuator_motors_pub.publish(actuator_motors);
 }
@@ -573,6 +583,8 @@ void MulticopterNeuralNetworkControl::Run()
 		neural_control.network_output[1] = _output_tensor->data.f[1];
 		neural_control.network_output[2] = _output_tensor->data.f[2];
 		neural_control.network_output[3] = _output_tensor->data.f[3];
+		neural_control.publisher_id = M_MC_NN_CONTROL;
+		neural_control.pub_timestamp = hrt_absolute_time();
 		_neural_control_pub.publish(neural_control);
 	}
 

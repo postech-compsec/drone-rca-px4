@@ -287,6 +287,8 @@ void FwLateralLongitudinalControl::Run()
 			fixed_wing_lateral_status.timestamp = hrt_absolute_time();
 			fixed_wing_lateral_status.lateral_acceleration_setpoint = lateral_accel_sp;
 			fixed_wing_lateral_status.can_run_factor = _can_run_factor;
+			fixed_wing_lateral_status.publisher_id = M_FW_LAT_LON_CONTROL;
+			fixed_wing_lateral_status.pub_timestamp = hrt_absolute_time();
 
 			_fixed_wing_lateral_status_pub.publish(fixed_wing_lateral_status);
 
@@ -311,6 +313,8 @@ void FwLateralLongitudinalControl::Run()
 			q.copyTo(_att_sp.q_d);
 
 			_att_sp.thrust_body[0] = thrust_body_x;
+			_att_sp.publisher_id = M_FW_LAT_LON_CONTROL;
+			_att_sp.pub_timestamp = hrt_absolute_time();
 
 			_attitude_sp_pub.publish(_att_sp);
 
@@ -458,6 +462,8 @@ FwLateralLongitudinalControl::tecs_status_publish(float alt_sp, float equivalent
 	tecs_status.fast_descend_ratio = debug_output.fast_descend;
 
 	tecs_status.timestamp = hrt_absolute_time();
+	tecs_status.publisher_id = M_FW_LAT_LON_CONTROL;
+	tecs_status.pub_timestamp = hrt_absolute_time();
 
 	_tecs_status_pub.publish(tecs_status);
 }

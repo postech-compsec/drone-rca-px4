@@ -149,6 +149,8 @@ CameraFeedback::Run()
 
 		capture.result = 1;
 
+		capture.publisher_id = M_CAMERA_FEEDBACK;
+		capture.pub_timestamp = hrt_absolute_time();
 		_capture_pub.publish(capture);
 	}
 }

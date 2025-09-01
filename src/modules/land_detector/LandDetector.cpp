@@ -179,6 +179,8 @@ void LandDetector::Run()
 		_land_detected.close_to_ground_or_skipped_check = _get_close_to_ground_or_skipped_check();
 		_land_detected.at_rest = at_rest;
 		_land_detected.timestamp = hrt_absolute_time();
+		_land_detected.publisher_id = M_LAND_DETECTOR;
+		_land_detected.pub_timestamp = hrt_absolute_time();
 		_vehicle_land_detected_pub.publish(_land_detected);
 	}
 

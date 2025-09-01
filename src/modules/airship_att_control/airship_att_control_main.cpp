@@ -92,6 +92,8 @@ void AirshipAttitudeControl::publishTorqueSetpoint(const hrt_abstime &timestamp_
 		v_torque_sp.xyz[2] = _manual_control_setpoint.yaw;
 	}
 
+	v_torque_sp.publisher_id = M_AIRSHIP_ATT_CONTROL;
+	v_torque_sp.pub_timestamp = hrt_absolute_time();
 	_vehicle_torque_setpoint_pub.publish(v_torque_sp);
 }
 
@@ -106,6 +108,8 @@ void AirshipAttitudeControl::publishThrustSetpoint(const hrt_abstime &timestamp_
 		v_thrust_sp.xyz[0] = (_manual_control_setpoint.throttle + 1.f) * .5f;
 	}
 
+	v_thrust_sp.publisher_id = M_AIRSHIP_ATT_CONTROL;
+	v_thrust_sp.pub_timestamp = hrt_absolute_time();
 	_vehicle_thrust_setpoint_pub.publish(v_thrust_sp);
 }
 

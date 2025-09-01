@@ -100,6 +100,8 @@ bool HealthAndArmingChecks::update(bool force_reporting, bool is_arming_request)
 		health_report_s health_report;
 		_reporter.getHealthReport(health_report);
 		health_report.timestamp = hrt_absolute_time();
+		health_report.publisher_id = M_COMMANDER;
+		health_report.pub_timestamp = hrt_absolute_time();
 		_health_report_pub.publish(health_report);
 	}
 
@@ -108,6 +110,8 @@ bool HealthAndArmingChecks::update(bool force_reporting, bool is_arming_request)
 
 	if ((now > _failsafe_flags.timestamp + 500_ms) || results_changed) {
 		_failsafe_flags.timestamp = hrt_absolute_time();
+		_failsafe_flags.publisher_id = M_COMMANDER;
+		_failsafe_flags.pub_timestamp = hrt_absolute_time();
 		_failsafe_flags_pub.publish(_failsafe_flags);
 	}
 

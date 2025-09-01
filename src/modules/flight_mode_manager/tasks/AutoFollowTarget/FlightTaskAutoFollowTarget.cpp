@@ -421,6 +421,8 @@ bool FlightTaskAutoFollowTarget::update()
 
 	follow_target_status.in_emergency_ascent = in_emergency_ascent;
 	follow_target_status.gimbal_pitch = gimbal_pitch;
+	follow_target_status.publisher_id = M_FLIGHT_MODE_MANAGER;
+	follow_target_status.pub_timestamp = hrt_absolute_time();
 	_follow_target_status_pub.publish(follow_target_status);
 
 	_constraints.want_takeoff = _checkTakeoff();
@@ -448,6 +450,8 @@ void FlightTaskAutoFollowTarget::releaseGimbalControl()
 	vehicle_command.target_component = _param_mav_comp_id.get();
 	vehicle_command.confirmation = false;
 	vehicle_command.from_external = false;
+	vehicle_command.publisher_id = M_FLIGHT_MODE_MANAGER;
+	vehicle_command.pub_timestamp = hrt_absolute_time();
 
 	_vehicle_command_pub.publish(vehicle_command);
 }

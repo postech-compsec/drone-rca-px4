@@ -91,6 +91,8 @@ void RC_Loss_Alarm::play_tune()
 	tune_control.tune_override = true;
 	tune_control.volume = tune_control_s::VOLUME_LEVEL_MAX;
 	tune_control.timestamp = hrt_absolute_time();
+	tune_control.publisher_id = M_SEND_EVENT;
+	tune_control.pub_timestamp = hrt_absolute_time();
 	_tune_control_pub.publish(tune_control);
 }
 
@@ -99,6 +101,8 @@ void RC_Loss_Alarm::stop_tune()
 	tune_control_s tune_control{};
 	tune_control.tune_override = true;
 	tune_control.timestamp = hrt_absolute_time();
+	tune_control.publisher_id = M_SEND_EVENT;
+	tune_control.pub_timestamp = hrt_absolute_time();
 	_tune_control_pub.publish(tune_control);
 }
 

@@ -234,6 +234,8 @@ void LoadMon::cpuload()
 	cpuload.load = px4muorb_get_cpu_load() / 100.0f;
 #endif
 	cpuload.timestamp = hrt_absolute_time();
+	cpuload.publisher_id = M_LOAD_MON;
+	cpuload.pub_timestamp = hrt_absolute_time();
 
 	_cpuload_pub.publish(cpuload);
 
@@ -289,6 +291,8 @@ void LoadMon::stack_usage()
 	if (checked_task) {
 		task_stack_info.stack_free = stack_free;
 		task_stack_info.timestamp = hrt_absolute_time();
+		task_stack_info.publisher_id = M_LOAD_MON;
+		task_stack_info.pub_timestamp = hrt_absolute_time();
 
 		_task_stack_info_pub.publish(task_stack_info);
 

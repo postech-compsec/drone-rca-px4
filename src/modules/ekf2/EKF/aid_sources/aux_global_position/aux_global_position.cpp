@@ -166,6 +166,8 @@ void AuxGlobalPosition::update(Ekf &ekf, const estimator::imuSample &imu_delayed
 
 #if defined(MODULE_NAME)
 		aid_src.timestamp = hrt_absolute_time();
+		aid_src.publisher_id = M_EKF2;
+		aid_src.pub_timestamp = hrt_absolute_time();
 		_estimator_aid_src_aux_global_position_pub.publish(aid_src);
 
 		_test_ratio_filtered = math::max(fabsf(aid_src.test_ratio_filtered[0]), fabsf(aid_src.test_ratio_filtered[1]));

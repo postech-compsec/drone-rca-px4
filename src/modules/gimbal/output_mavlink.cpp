@@ -86,6 +86,8 @@ void OutputMavlinkV1::update(const ControlData &control_data, bool new_setpoints
 			vehicle_command.param2 = _stabilize[0] ? 1.0f : 0.0f;
 			vehicle_command.param3 = _stabilize[1] ? 1.0f : 0.0f;
 			vehicle_command.param4 = _stabilize[2] ? 1.0f : 0.0f;
+			vehicle_command.publisher_id = M_GIMBAL;
+			vehicle_command.pub_timestamp = hrt_absolute_time();
 
 			_gimbal_v1_command_pub.publish(vehicle_command);
 		}
@@ -104,6 +106,8 @@ void OutputMavlinkV1::update(const ControlData &control_data, bool new_setpoints
 	vehicle_command.param2 = math::degrees(_angle_outputs[0] + math::radians(_parameters.mnt_off_roll));
 	vehicle_command.param3 = math::degrees(_angle_outputs[2] + math::radians(_parameters.mnt_off_yaw));
 	vehicle_command.param7 = 2.0f; // MAV_MOUNT_MODE_MAVLINK_TARGETING;
+	vehicle_command.publisher_id = M_GIMBAL;
+	vehicle_command.pub_timestamp = hrt_absolute_time();
 
 	_gimbal_v1_command_pub.publish(vehicle_command);
 
@@ -133,6 +137,8 @@ void OutputMavlinkV1::_stream_device_attitude_status()
 	q.copyTo(attitude_status.q);
 
 	attitude_status.failure_flags = 0;
+	attitude_status.publisher_id = M_GIMBAL;
+	attitude_status.pub_timestamp = hrt_absolute_time();
 	_attitude_status_pub.publish(attitude_status);
 }
 
@@ -183,6 +189,8 @@ void OutputMavlinkV2::_request_gimbal_device_information()
 	vehicle_cmd.source_component = _parameters.mav_compid;
 	vehicle_cmd.confirmation = 0;
 	vehicle_cmd.from_external = false;
+	vehicle_cmd.publisher_id = M_GIMBAL;
+	vehicle_cmd.pub_timestamp = hrt_absolute_time();
 
 	uORB::Publication<vehicle_command_s> vehicle_command_pub{ORB_ID(vehicle_command)};
 	vehicle_command_pub.publish(vehicle_cmd);
@@ -234,6 +242,8 @@ void OutputMavlinkV2::_publish_gimbal_device_set_attitude()
 	set_attitude.q[1] = _q_setpoint[1];
 	set_attitude.q[2] = _q_setpoint[2];
 	set_attitude.q[3] = _q_setpoint[3];
+	set_attitude.publisher_id = M_GIMBAL;
+	set_attitude.pub_timestamp = hrt_absolute_time();
 
 	if (_absolute_angle[0]) {
 		set_attitude.flags |= gimbal_device_set_attitude_s::GIMBAL_DEVICE_FLAGS_ROLL_LOCK;

@@ -113,6 +113,8 @@ static void stop_tune()
 	tune_control_s tune_control{};
 	tune_control.tune_override = true;
 	tune_control.timestamp = hrt_absolute_time();
+	tune_control.publisher_id = M_COMMANDER;
+	tune_control.pub_timestamp = hrt_absolute_time();
 	orb_publish(ORB_ID(tune_control), tune_control_pub, &tune_control);
 }
 
@@ -150,6 +152,9 @@ static int power_button_state_notification_cb(board_power_button_state_notificat
 	}
 
 	if (power_button_state_pub != nullptr) {
+		power_button_state_s power_button_state{};
+		power_button_state.publisher_id = M_COMMANDER;
+		power_button_state.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(power_button_state), power_button_state_pub, &button_state);
 
 	} else {
@@ -183,6 +188,8 @@ static bool send_vehicle_command(const uint32_t cmd, const float param1 = NAN, c
 
 	uORB::Publication<vehicle_command_s> vcmd_pub{ORB_ID(vehicle_command)};
 	vcmd.timestamp = hrt_absolute_time();
+	vcmd.publisher_id = M_COMMANDER;
+	vcmd.pub_timestamp = hrt_absolute_time();
 	return vcmd_pub.publish(vcmd);
 }
 
@@ -226,6 +233,8 @@ static bool broadcast_vehicle_command(const uint32_t cmd, const float param1 = N
 
 	uORB::Publication<vehicle_command_s> vcmd_pub{ORB_ID(vehicle_command)};
 	vcmd.timestamp = hrt_absolute_time();
+	vcmd.publisher_id = M_COMMANDER;
+	vcmd.pub_timestamp = hrt_absolute_time();
 	return vcmd_pub.publish(vcmd);
 }
 #endif
@@ -1559,6 +1568,8 @@ void Commander::handleCommandsFromModeExecutors()
 			if (cmd.source_component == vehicle_command_s::COMPONENT_MODE_EXECUTOR_START + mode_executor_in_charge) {
 				cmd.source_system = _vehicle_status.system_id;
 				cmd.timestamp = hrt_absolute_time();
+				cmd.publisher_id = M_COMMANDER;
+				cmd.pub_timestamp = hrt_absolute_time();
 				_vehicle_command_pub.publish(cmd);
 
 			} else {
@@ -1621,6 +1632,8 @@ unsigned Commander::handleCommandActuatorTest(const vehicle_command_s &cmd)
 		actuator_test.timeout_ms = 3000;
 	}
 
+	actuator_test.publisher_id = M_COMMANDER;
+	actuator_test.pub_timestamp = hrt_absolute_time();
 	_actuator_test_pub.publish(actuator_test);
 	return vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 }
@@ -1912,6 +1925,8 @@ void Commander::run()
 
 			// publish actuator_armed first (used by output modules)
 			_actuator_armed.timestamp = hrt_absolute_time();
+			_actuator_armed.publisher_id = M_COMMANDER;
+			_actuator_armed.pub_timestamp = hrt_absolute_time();
 			_actuator_armed_pub.publish(_actuator_armed);
 
 			// update and publish vehicle_control_mode
@@ -1920,6 +1935,8 @@ void Commander::run()
 			// vehicle_status publish (after prearm/preflight updates above)
 			_mode_management.getModeStatus(_vehicle_status.valid_nav_states_mask, _vehicle_status.can_set_nav_states_mask);
 			_vehicle_status.timestamp = hrt_absolute_time();
+			_vehicle_status.publisher_id = M_COMMANDER;
+			_vehicle_status.pub_timestamp = hrt_absolute_time();
 			_vehicle_status_pub.publish(_vehicle_status);
 
 			// failure_detector_status publish
@@ -1935,6 +1952,8 @@ void Commander::run()
 			fd_status.imbalanced_prop_metric = _failure_detector.getImbalancedPropMetric();
 			fd_status.motor_failure_mask = _failure_detector.getMotorFailures();
 			fd_status.timestamp = hrt_absolute_time();
+			fd_status.publisher_id = M_COMMANDER;
+			fd_status.pub_timestamp = hrt_absolute_time();
 			_failure_detector_status_pub.publish(fd_status);
 		}
 
@@ -2591,6 +2610,8 @@ void Commander::updateControlMode()
 		    || _vehicle_control_mode.flag_control_velocity_enabled
 		    || _vehicle_control_mode.flag_control_acceleration_enabled);
 	_vehicle_control_mode.timestamp = hrt_absolute_time();
+	_vehicle_control_mode.publisher_id = M_COMMANDER;
+	_vehicle_control_mode.pub_timestamp = hrt_absolute_time();
 	_vehicle_control_mode_pub.publish(_vehicle_control_mode);
 }
 
@@ -2654,6 +2675,8 @@ void Commander::answer_command(const vehicle_command_s &cmd, uint8_t result)
 	command_ack.target_system = cmd.source_system;
 	command_ack.target_component = cmd.source_component;
 	command_ack.timestamp = hrt_absolute_time();
+	command_ack.publisher_id = M_COMMANDER;
+	command_ack.pub_timestamp = hrt_absolute_time();
 	_vehicle_command_ack_pub.publish(command_ack);
 }
 
@@ -2980,6 +3003,8 @@ void Commander::send_parachute_command()
 
 	uORB::Publication<vehicle_command_s> vcmd_pub{ORB_ID(vehicle_command)};
 	vcmd.timestamp = hrt_absolute_time();
+	vcmd.publisher_id = M_COMMANDER;
+	vcmd.pub_timestamp = hrt_absolute_time();
 	vcmd_pub.publish(vcmd);
 
 	set_tune_override(tune_control_s::TUNE_ID_PARACHUTE_RELEASE);
