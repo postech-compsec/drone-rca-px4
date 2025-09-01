@@ -483,6 +483,8 @@ void UxrceddsClient::handleMessageFormatRequest()
 	if (_message_format_request_sub.update(&message_format_request)) {
 		message_format_response_s message_format_response;
 		fillMessageFormatResponse(message_format_request, message_format_response);
+		message_format_response.publisher_id = M_UXRCE_DDS_CLIENT;
+		message_format_response.pub_timestamp = hrt_absolute_time();
 		_message_format_response_pub.publish(message_format_response);
 	}
 }

@@ -745,6 +745,8 @@ void Navigator::run()
 
 				_vroi.timestamp = hrt_absolute_time();
 
+				_vroi.publisher_id = M_NAVIGATOR;
+				_vroi.pub_timestamp = hrt_absolute_time();
 				_vehicle_roi_pub.publish(_vroi);
 
 				publish_vehicle_command_ack(cmd, vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED);
@@ -1071,6 +1073,8 @@ void Navigator::geofence_breach_check()
 			_geofence_reposition_sent = false;
 		}
 
+		_geofence_result.publisher_id = M_NAVIGATOR;
+		_geofence_result.pub_timestamp = hrt_absolute_time();
 		_geofence_result_pub.publish(_geofence_result);
 	}
 }
@@ -1114,6 +1118,8 @@ int Navigator::print_status()
 void Navigator::publish_position_setpoint_triplet()
 {
 	_pos_sp_triplet.timestamp = hrt_absolute_time();
+	_pos_sp_triplet.publisher_id = M_NAVIGATOR;
+	_pos_sp_triplet.pub_timestamp = hrt_absolute_time();
 	_pos_sp_triplet_pub.publish(_pos_sp_triplet);
 	_pos_sp_triplet_updated = false;
 }
@@ -1341,6 +1347,8 @@ void Navigator::publish_mission_result()
 	_mission_result.timestamp = hrt_absolute_time();
 
 	/* lazily publish the mission result only once available */
+	_mission_result.publisher_id = M_NAVIGATOR;
+	_mission_result.pub_timestamp = hrt_absolute_time();
 	_mission_result_pub.publish(_mission_result);
 
 	/* reset some of the flags */
@@ -1389,6 +1397,8 @@ void Navigator::publish_navigator_status()
 	if (_navigator_status_updated
 	    || (hrt_elapsed_time(&_last_navigator_status_publication) > 500_ms)) {
 		_navigator_status.timestamp = hrt_absolute_time();
+		_navigator_status.publisher_id = M_NAVIGATOR;
+		_navigator_status.pub_timestamp = hrt_absolute_time();
 		_navigator_status_pub.publish(_navigator_status);
 
 		_navigator_status_updated = false;
@@ -1487,6 +1497,8 @@ void Navigator::publish_vehicle_command(vehicle_command_s &vehicle_command)
 		break;
 	}
 
+	vehicle_command.publisher_id = M_NAVIGATOR;
+	vehicle_command.pub_timestamp = hrt_absolute_time();
 	_vehicle_cmd_pub.publish(vehicle_command);
 }
 
@@ -1528,6 +1540,8 @@ void Navigator::publish_vehicle_command_ack(const vehicle_command_s &cmd, uint8_
 	command_ack.result_param1 = 0;
 	command_ack.result_param2 = 0;
 
+	command_ack.publisher_id = M_NAVIGATOR;
+	command_ack.pub_timestamp = hrt_absolute_time();
 	_vehicle_cmd_ack_pub.publish(command_ack);
 }
 
@@ -1602,6 +1616,8 @@ void Navigator::mode_completed(uint8_t nav_state, uint8_t result)
 	mode_completed.timestamp = hrt_absolute_time();
 	mode_completed.result = result;
 	mode_completed.nav_state = nav_state;
+	mode_completed.publisher_id = M_NAVIGATOR;
+	mode_completed.pub_timestamp = hrt_absolute_time();
 	_mode_completed_pub.publish(mode_completed);
 }
 

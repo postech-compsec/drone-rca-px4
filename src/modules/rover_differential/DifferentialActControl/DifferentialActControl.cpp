@@ -79,6 +79,8 @@ void DifferentialActControl::updateActControl()
 		actuator_motors.reversible_flags = _param_r_rev.get();
 		computeInverseKinematics(adjusted_throttle_setpoint, _speed_diff_setpoint).copyTo(actuator_motors.control);
 		actuator_motors.timestamp = _timestamp;
+		actuator_motors.publisher_id = M_ROVER_DIFFERENTIAL;
+		actuator_motors.pub_timestamp = hrt_absolute_time();
 		_actuator_motors_pub.publish(actuator_motors);
 
 	}
@@ -106,5 +108,7 @@ void DifferentialActControl::stopVehicle()
 	actuator_motors.control[0] = 0.f;
 	actuator_motors.control[1] = 0.f;
 	actuator_motors.timestamp = _timestamp;
+	actuator_motors.publisher_id = M_ROVER_DIFFERENTIAL;
+	actuator_motors.pub_timestamp = hrt_absolute_time();
 	_actuator_motors_pub.publish(actuator_motors);
 }

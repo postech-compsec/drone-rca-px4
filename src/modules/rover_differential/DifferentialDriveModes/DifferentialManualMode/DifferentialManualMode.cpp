@@ -60,11 +60,15 @@ void DifferentialManualMode::manual()
 	rover_steering_setpoint.timestamp = hrt_absolute_time();
 	rover_steering_setpoint.normalized_steering_setpoint = _param_rd_yaw_stk_gain.get() * math::superexpo<float>
 			(manual_control_setpoint.roll, _param_ro_yaw_expo.get(), _param_ro_yaw_supexpo.get());
+	rover_steering_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+	rover_steering_setpoint.pub_timestamp = hrt_absolute_time();
 	_rover_steering_setpoint_pub.publish(rover_steering_setpoint);
 	rover_throttle_setpoint_s rover_throttle_setpoint{};
 	rover_throttle_setpoint.timestamp = hrt_absolute_time();
 	rover_throttle_setpoint.throttle_body_x = manual_control_setpoint.throttle;
 	rover_throttle_setpoint.throttle_body_y = 0.f;
+	rover_throttle_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+	rover_throttle_setpoint.pub_timestamp = hrt_absolute_time();
 	_rover_throttle_setpoint_pub.publish(rover_throttle_setpoint);
 }
 
@@ -76,11 +80,15 @@ void DifferentialManualMode::acro()
 	rover_throttle_setpoint.timestamp = hrt_absolute_time();
 	rover_throttle_setpoint.throttle_body_x = manual_control_setpoint.throttle;
 	rover_throttle_setpoint.throttle_body_y = 0.f;
+	rover_throttle_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+	rover_throttle_setpoint.pub_timestamp = hrt_absolute_time();
 	_rover_throttle_setpoint_pub.publish(rover_throttle_setpoint);
 	rover_rate_setpoint_s rover_rate_setpoint{};
 	rover_rate_setpoint.timestamp = hrt_absolute_time();
 	rover_rate_setpoint.yaw_rate_setpoint = _max_yaw_rate * math::superexpo<float>(manual_control_setpoint.roll,
 						_param_ro_yaw_expo.get(), _param_ro_yaw_supexpo.get());
+	rover_rate_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+	rover_rate_setpoint.pub_timestamp = hrt_absolute_time();
 	_rover_rate_setpoint_pub.publish(rover_rate_setpoint);
 }
 
@@ -99,6 +107,8 @@ void DifferentialManualMode::stab()
 	rover_throttle_setpoint.timestamp = hrt_absolute_time();
 	rover_throttle_setpoint.throttle_body_x = manual_control_setpoint.throttle;
 	rover_throttle_setpoint.throttle_body_y = 0.f;
+	rover_throttle_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+	rover_throttle_setpoint.pub_timestamp = hrt_absolute_time();
 	_rover_throttle_setpoint_pub.publish(rover_throttle_setpoint);
 
 	if (fabsf(manual_control_setpoint.roll) > FLT_EPSILON
@@ -110,12 +120,16 @@ void DifferentialManualMode::stab()
 		rover_rate_setpoint.timestamp = hrt_absolute_time();
 		rover_rate_setpoint.yaw_rate_setpoint = _max_yaw_rate * math::superexpo<float>(math::deadzone(
 				manual_control_setpoint.roll, _param_ro_yaw_stick_dz.get()), _param_ro_yaw_expo.get(), _param_ro_yaw_supexpo.get());
+		rover_rate_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_rate_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_rate_setpoint_pub.publish(rover_rate_setpoint);
 
 		// Set uncontrolled setpoint invalid
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = hrt_absolute_time();
 		rover_attitude_setpoint.yaw_setpoint = NAN;
+		rover_attitude_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 
 	} else { // Heading control
@@ -126,6 +140,8 @@ void DifferentialManualMode::stab()
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = hrt_absolute_time();
 		rover_attitude_setpoint.yaw_setpoint = _stab_yaw_setpoint;
+		rover_attitude_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 	}
 }
@@ -161,6 +177,8 @@ void DifferentialManualMode::position()
 		rover_velocity_setpoint.speed = speed_setpoint;
 		rover_velocity_setpoint.bearing = NAN;
 		rover_velocity_setpoint.yaw = NAN;
+		rover_velocity_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_velocity_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_velocity_setpoint_pub.publish(rover_velocity_setpoint);
 
 		// Rate control
@@ -168,12 +186,16 @@ void DifferentialManualMode::position()
 		rover_rate_setpoint.timestamp = hrt_absolute_time();
 		rover_rate_setpoint.yaw_rate_setpoint = _max_yaw_rate * math::superexpo<float>(math::deadzone(
 				manual_control_setpoint.roll, _param_ro_yaw_stick_dz.get()), _param_ro_yaw_expo.get(), _param_ro_yaw_supexpo.get());
+		rover_rate_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_rate_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_rate_setpoint_pub.publish(rover_rate_setpoint);
 
 		// Set uncontrolled setpoints invalid
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = hrt_absolute_time();
 		rover_attitude_setpoint.yaw_setpoint = NAN;
+		rover_attitude_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 
 		rover_position_setpoint_s rover_position_setpoint{};
@@ -185,6 +207,8 @@ void DifferentialManualMode::position()
 		rover_position_setpoint.arrival_speed = NAN;
 		rover_position_setpoint.cruising_speed = NAN;
 		rover_position_setpoint.yaw = NAN;
+		rover_position_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_position_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_position_setpoint_pub.publish(rover_position_setpoint);
 
 	} else { // Course control
@@ -207,6 +231,8 @@ void DifferentialManualMode::position()
 		rover_position_setpoint.arrival_speed = NAN;
 		rover_position_setpoint.cruising_speed = speed_setpoint;
 		rover_position_setpoint.yaw = NAN;
+		rover_position_setpoint.publisher_id = M_ROVER_DIFFERENTIAL;
+		rover_position_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_position_setpoint_pub.publish(rover_position_setpoint);
 	}
 }

@@ -75,6 +75,8 @@ void MecanumVelControl::updateVelControl()
 		rover_attitude_setpoint_s rover_attitude_setpoint{};
 		rover_attitude_setpoint.timestamp = _timestamp;
 		rover_attitude_setpoint.yaw_setpoint = _yaw_setpoint;
+		rover_attitude_setpoint.publisher_id = M_ROVER_MECANUM;
+		rover_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_attitude_setpoint_pub.publish(rover_attitude_setpoint);
 
 	}
@@ -91,6 +93,8 @@ void MecanumVelControl::updateVelControl()
 		rover_throttle_setpoint.throttle_body_y = RoverControl::speedControl(_adjusted_speed_y_setpoint, _pid_speed_y,
 				speed_setpoint(1), _vehicle_speed_body_y, _param_ro_accel_limit.get(), _param_ro_decel_limit.get(),
 				_param_ro_max_thr_speed.get(), dt);
+		rover_throttle_setpoint.publisher_id = M_ROVER_MECANUM;
+		rover_throttle_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_throttle_setpoint_pub.publish(rover_throttle_setpoint);
 
 	}
@@ -104,6 +108,8 @@ void MecanumVelControl::updateVelControl()
 	rover_velocity_status.adjusted_speed_body_y_setpoint = _adjusted_speed_y_setpoint.getState();
 	rover_velocity_status.pid_throttle_body_x_integral = _pid_speed_x.getIntegral();
 	rover_velocity_status.pid_throttle_body_y_integral = _pid_speed_y.getIntegral();
+	rover_velocity_status.publisher_id = M_ROVER_MECANUM;
+	rover_velocity_status.pub_timestamp = hrt_absolute_time();
 	_rover_velocity_status_pub.publish(rover_velocity_status);
 }
 

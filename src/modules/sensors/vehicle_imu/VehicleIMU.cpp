@@ -635,6 +635,8 @@ bool VehicleIMU::Publish()
 
 				// publish
 				_status.timestamp = hrt_absolute_time();
+				_status.publisher_id = M_SENSORS;
+				_status.pub_timestamp = hrt_absolute_time();
 				_vehicle_imu_status_pub.publish(_status);
 
 				_publish_status = false;
@@ -661,6 +663,8 @@ bool VehicleIMU::Publish()
 			imu.accel_calibration_count = _accel_calibration.calibration_count();
 			imu.gyro_calibration_count = _gyro_calibration.calibration_count();
 			imu.timestamp = hrt_absolute_time();
+			imu.publisher_id = M_SENSORS;
+			imu.pub_timestamp = hrt_absolute_time();
 			_vehicle_imu_pub.publish(imu);
 
 			// reset clip counts

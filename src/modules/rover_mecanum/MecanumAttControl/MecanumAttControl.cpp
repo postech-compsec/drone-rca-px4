@@ -84,6 +84,8 @@ void MecanumAttControl::updateAttControl()
 		rover_rate_setpoint_s rover_rate_setpoint{};
 		rover_rate_setpoint.timestamp = _timestamp;
 		rover_rate_setpoint.yaw_rate_setpoint = math::constrain(yaw_rate_setpoint, -_max_yaw_rate, _max_yaw_rate);
+		rover_rate_setpoint.publisher_id = M_ROVER_MECANUM;
+		rover_rate_setpoint.pub_timestamp = hrt_absolute_time();
 		_rover_rate_setpoint_pub.publish(rover_rate_setpoint);
 
 	}
@@ -93,6 +95,8 @@ void MecanumAttControl::updateAttControl()
 	rover_attitude_status.timestamp = _timestamp;
 	rover_attitude_status.measured_yaw = _vehicle_yaw;
 	rover_attitude_status.adjusted_yaw_setpoint = matrix::wrap_pi(_adjusted_yaw_setpoint.getState());
+	rover_attitude_status.publisher_id = M_ROVER_MECANUM;
+	rover_attitude_status.pub_timestamp = hrt_absolute_time();
 	_rover_attitude_status_pub.publish(rover_attitude_status);
 
 }

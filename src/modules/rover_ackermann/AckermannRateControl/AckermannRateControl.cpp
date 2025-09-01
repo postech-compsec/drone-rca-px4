@@ -99,6 +99,8 @@ void AckermannRateControl::updateRateControl()
 			rover_steering_setpoint.timestamp = _timestamp;
 			rover_steering_setpoint.normalized_steering_setpoint = math::interpolate<float>(steering_setpoint,
 					-_param_ra_max_str_ang.get(), _param_ra_max_str_ang.get(), -1.f, 1.f); // Normalize steering setpoint
+			rover_steering_setpoint.publisher_id = M_ROVER_ACKERMANN;
+			rover_steering_setpoint.pub_timestamp = hrt_absolute_time();
 			_rover_steering_setpoint_pub.publish(rover_steering_setpoint);
 
 		} else {
@@ -106,6 +108,8 @@ void AckermannRateControl::updateRateControl()
 			rover_steering_setpoint_s rover_steering_setpoint{};
 			rover_steering_setpoint.timestamp = _timestamp;
 			rover_steering_setpoint.normalized_steering_setpoint = 0.f;
+			rover_steering_setpoint.publisher_id = M_ROVER_ACKERMANN;
+			rover_steering_setpoint.pub_timestamp = hrt_absolute_time();
 			_rover_steering_setpoint_pub.publish(rover_steering_setpoint);
 		}
 	}
@@ -117,6 +121,8 @@ void AckermannRateControl::updateRateControl()
 	rover_rate_status.measured_yaw_rate = _vehicle_yaw_rate;
 	rover_rate_status.adjusted_yaw_rate_setpoint = _adjusted_yaw_rate_setpoint.getState();
 	rover_rate_status.pid_yaw_rate_integral = _pid_yaw_rate.getIntegral();
+	rover_rate_status.publisher_id = M_ROVER_ACKERMANN;
+	rover_rate_status.pub_timestamp = hrt_absolute_time();
 	_rover_rate_status_pub.publish(rover_rate_status);
 
 }

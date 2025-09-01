@@ -337,6 +337,8 @@ void Sensors::diff_pres_poll()
 				airspeed.true_airspeed_m_s = true_airspeed_m_s;
 				airspeed.confidence = _airspeed_validator.confidence(hrt_absolute_time());
 				airspeed.timestamp = hrt_absolute_time();
+				airspeed.publisher_id = M_SENSORS;
+				airspeed.pub_timestamp = hrt_absolute_time();
 				_airspeed_pub.publish(airspeed);
 
 				_airspeed_last_publish = airspeed.timestamp;
@@ -386,6 +388,8 @@ void Sensors::adc_poll()
 						diff_pres.temperature = NAN;
 						diff_pres.timestamp = hrt_absolute_time();
 
+						diff_pres.publisher_id = M_SENSORS;
+						diff_pres.pub_timestamp = hrt_absolute_time();
 						_diff_pres_pub.publish(diff_pres);
 					}
 				}
@@ -598,6 +602,8 @@ void Sensors::Run()
 	if (_sensor_combined.timestamp != _sensor_combined_prev_timestamp) {
 
 		_voted_sensors_update.setRelativeTimestamps(_sensor_combined);
+		_sensor_combined.publisher_id = M_SENSORS;
+		_sensor_combined.pub_timestamp = hrt_absolute_time();
 		_sensor_pub.publish(_sensor_combined);
 		_sensor_combined_prev_timestamp = _sensor_combined.timestamp;
 	}

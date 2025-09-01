@@ -363,6 +363,8 @@ void GZBridge::opticalFlowCallback(const px4::msgs::OpticalFlow &msg)
 	// This means that delta angle will come from vehicle gyro
 	// Distance will come from vehicle distance sensor
 
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_optical_flow_pub.publish(report);
 }
 
@@ -389,6 +391,8 @@ void GZBridge::magnetometerCallback(const gz::msgs::Magnetometer &msg)
 	report.y = -msg.field_tesla().x();
 	report.z = msg.field_tesla().z();
 
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_mag_pub.publish(report);
 }
 
@@ -408,6 +412,8 @@ void GZBridge::airPressureCallback(const gz::msgs::FluidPressure &msg)
 	report.device_id = id.devid;
 	report.pressure = msg.pressure();
 	report.temperature = this->_temperature;
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_baro_pub.publish(report);
 }
 
@@ -427,6 +433,8 @@ void GZBridge::airspeedCallback(const gz::msgs::AirSpeed &msg)
 	report.device_id = id.devid;
 	report.differential_pressure_pa = msg.diff_pressure(); // hPa to Pa;
 	report.temperature = static_cast<float>(msg.temperature()) + atmosphere::kAbsoluteNullCelsius; // K to C
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_differential_pressure_pub.publish(report);
 
 	this->_temperature = report.temperature;
@@ -462,6 +470,8 @@ void GZBridge::imuCallback(const gz::msgs::IMU &msg)
 	accel.z = accel_b.Z();
 	accel.temperature = NAN;
 	accel.samples = 1;
+	accel.publisher_id = M_GZ_BRIDGE;
+	accel.pub_timestamp = hrt_absolute_time();
 	_sensor_accel_pub.publish(accel);
 
 	gz::math::Vector3d gyro_b = q_FLU_to_FRD.RotateVector(gz::math::Vector3d(
@@ -479,6 +489,8 @@ void GZBridge::imuCallback(const gz::msgs::IMU &msg)
 	gyro.z = gyro_b.Z();
 	gyro.temperature = NAN;
 	gyro.samples = 1;
+	gyro.publisher_id = M_GZ_BRIDGE;
+	gyro.pub_timestamp = hrt_absolute_time();
 	_sensor_gyro_pub.publish(gyro);
 }
 
@@ -513,6 +525,8 @@ void GZBridge::poseInfoCallback(const gz::msgs::Pose_V &msg)
 			vehicle_attitude_groundtruth.q[2] = q_nb.Y();
 			vehicle_attitude_groundtruth.q[3] = q_nb.Z();
 			vehicle_attitude_groundtruth.timestamp = timestamp;
+			vehicle_attitude_groundtruth.publisher_id = M_GZ_BRIDGE;
+			vehicle_attitude_groundtruth.pub_timestamp = hrt_absolute_time();
 			_attitude_ground_truth_pub.publish(vehicle_attitude_groundtruth);
 
 			// publish angular velocity groundtruth
@@ -524,6 +538,8 @@ void GZBridge::poseInfoCallback(const gz::msgs::Pose_V &msg)
 			angular_velocity.copyTo(vehicle_angular_velocity_groundtruth.xyz);
 
 			vehicle_angular_velocity_groundtruth.timestamp = timestamp;
+			vehicle_angular_velocity_groundtruth.publisher_id = M_GZ_BRIDGE;
+			vehicle_angular_velocity_groundtruth.pub_timestamp = hrt_absolute_time();
 			_angular_velocity_ground_truth_pub.publish(vehicle_angular_velocity_groundtruth);
 
 			vehicle_local_position_s local_position_groundtruth{};
@@ -567,6 +583,8 @@ void GZBridge::poseInfoCallback(const gz::msgs::Pose_V &msg)
 			}
 
 			local_position_groundtruth.timestamp = timestamp;
+			local_position_groundtruth.publisher_id = M_GZ_BRIDGE;
+			local_position_groundtruth.pub_timestamp = hrt_absolute_time();
 			_lpos_ground_truth_pub.publish(local_position_groundtruth);
 			return;
 		}
@@ -629,6 +647,8 @@ void GZBridge::odometryCallback(const gz::msgs::OdometryWithCovariance &msg)
 	report.velocity_variance[2] = msg.twist_with_covariance().covariance().data(14); // Z  row 2, col 2
 
 	// report.reset_counter = vpe.reset_counter;
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_visual_odometry_pub.publish(report);
 }
 
@@ -722,6 +742,8 @@ void GZBridge::navSatCallback(const gz::msgs::NavSat &msg)
 	gps_truth.lat = latitude;
 	gps_truth.lon = longitude;
 	gps_truth.alt = altitude;
+	gps_truth.publisher_id = M_GZ_BRIDGE;
+	gps_truth.pub_timestamp = hrt_absolute_time();
 	_gpos_ground_truth_pub.publish(gps_truth);
 
 	// Apply noise model (based on ublox F9P)
@@ -782,6 +804,8 @@ void GZBridge::navSatCallback(const gz::msgs::NavSat &msg)
 	sensor_gps.vel_ned_valid = true;
 	sensor_gps.satellites_used = _sim_gps_used.get();
 
+	sensor_gps.publisher_id = M_GZ_BRIDGE;
+	sensor_gps.pub_timestamp = hrt_absolute_time();
 	_sensor_gps_pub.publish(sensor_gps);
 }
 
@@ -833,6 +857,8 @@ void GZBridge::laserScantoLidarSensorCallback(const gz::msgs::LaserScan &msg)
 		report.q[3] = q_sensor.Z();
 	}
 
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_distance_sensor_pub.publish(report);
 }
 
@@ -914,6 +940,8 @@ void GZBridge::laserScanCallback(const gz::msgs::LaserScan &msg)
 		index++;
 	}
 
+	report.publisher_id = M_GZ_BRIDGE;
+	report.pub_timestamp = hrt_absolute_time();
 	_obstacle_distance_pub.publish(report);
 }
 

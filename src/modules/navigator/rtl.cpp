@@ -215,6 +215,8 @@ void RTL::publishRemainingTimeEstimate()
 		}
 	}
 
+	estimated_time.publisher_id = M_NAVIGATOR;
+	estimated_time.pub_timestamp = hrt_absolute_time();
 	_rtl_time_estimate_pub.publish(estimated_time);
 }
 

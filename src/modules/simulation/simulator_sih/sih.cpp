@@ -651,6 +651,8 @@ void Sih::send_airspeed(const hrt_abstime &time_now_us)
 	airspeed.indicated_airspeed_m_s = airspeed.true_airspeed_m_s * sqrtf(_wing_l.get_rho() / RHO);
 	airspeed.confidence = 0.7f;
 	airspeed.timestamp = hrt_absolute_time();
+	airspeed.publisher_id = M_SIMULATOR_SIH;
+	airspeed.pub_timestamp = hrt_absolute_time();
 	_airspeed_pub.publish(airspeed);
 }
 
@@ -685,6 +687,8 @@ void Sih::send_dist_snsr(const hrt_abstime &time_now_us)
 	}
 
 	distance_sensor.timestamp = hrt_absolute_time();
+	distance_sensor.publisher_id = M_SIMULATOR_SIH;
+	distance_sensor.pub_timestamp = hrt_absolute_time();
 	_distance_snsr_pub.publish(distance_sensor);
 }
 
@@ -698,6 +702,8 @@ void Sih::publish_ground_truth(const hrt_abstime &time_now_us)
 		angular_velocity.xyz[1] = _w_B(1); // pitchspeed;
 		angular_velocity.xyz[2] = _w_B(2); // yawspeed;
 		angular_velocity.timestamp = hrt_absolute_time();
+		angular_velocity.publisher_id = M_SIMULATOR_SIH;
+		angular_velocity.pub_timestamp = hrt_absolute_time();
 		_angular_velocity_ground_truth_pub.publish(angular_velocity);
 	}
 
@@ -707,6 +713,8 @@ void Sih::publish_ground_truth(const hrt_abstime &time_now_us)
 		attitude.timestamp_sample = time_now_us;
 		_q.copyTo(attitude.q);
 		attitude.timestamp = hrt_absolute_time();
+		attitude.publisher_id = M_SIMULATOR_SIH;
+		attitude.pub_timestamp = hrt_absolute_time();
 		_attitude_ground_truth_pub.publish(attitude);
 	}
 
@@ -746,6 +754,8 @@ void Sih::publish_ground_truth(const hrt_abstime &time_now_us)
 		local_position.unaided_heading = NAN;
 
 		local_position.timestamp = hrt_absolute_time();
+		local_position.publisher_id = M_SIMULATOR_SIH;
+		local_position.pub_timestamp = hrt_absolute_time();
 		_local_position_ground_truth_pub.publish(local_position);
 	}
 
@@ -759,6 +769,8 @@ void Sih::publish_ground_truth(const hrt_abstime &time_now_us)
 		global_position.alt_ellipsoid = global_position.alt;
 		global_position.terrain_alt = -_lpos(2);
 		global_position.timestamp = hrt_absolute_time();
+		global_position.publisher_id = M_SIMULATOR_SIH;
+		global_position.pub_timestamp = hrt_absolute_time();
 		_global_position_ground_truth_pub.publish(global_position);
 	}
 }

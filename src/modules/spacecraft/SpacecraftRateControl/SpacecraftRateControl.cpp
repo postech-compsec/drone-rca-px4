@@ -118,6 +118,8 @@ void SpacecraftRateControl::updateRateControl()
 					_thrust_setpoint.copyTo(vehicle_rates_setpoint.thrust_body);
 					vehicle_rates_setpoint.timestamp = hrt_absolute_time();
 
+					vehicle_rates_setpoint.publisher_id = M_SPACECRAFT;
+					vehicle_rates_setpoint.pub_timestamp = hrt_absolute_time();
 					_vehicle_rates_setpoint_pub.publish(vehicle_rates_setpoint);
 
 				} else if (!_vehicle_control_mode.flag_control_rates_enabled) {
@@ -144,7 +146,11 @@ void SpacecraftRateControl::updateRateControl()
 					vehicle_torque_setpoint.timestamp = hrt_absolute_time();
 					vehicle_torque_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
 
+					vehicle_thrust_setpoint.publisher_id = M_SPACECRAFT;
+					vehicle_thrust_setpoint.pub_timestamp = hrt_absolute_time();
 					_vehicle_thrust_setpoint_pub.publish(vehicle_thrust_setpoint);
+					vehicle_torque_setpoint.publisher_id = M_SPACECRAFT;
+					vehicle_torque_setpoint.pub_timestamp = hrt_absolute_time();
 					_vehicle_torque_setpoint_pub.publish(vehicle_torque_setpoint);
 
 					updateActuatorControlsStatus(vehicle_torque_setpoint, dt);
@@ -193,6 +199,8 @@ void SpacecraftRateControl::updateRateControl()
 			rate_ctrl_status_s rate_ctrl_status{};
 			_rate_control.getRateControlStatus(rate_ctrl_status);
 			rate_ctrl_status.timestamp = hrt_absolute_time();
+			rate_ctrl_status.publisher_id = M_SPACECRAFT;
+			rate_ctrl_status.pub_timestamp = hrt_absolute_time();
 			_controller_status_pub.publish(rate_ctrl_status);
 
 			// publish thrust and torque setpoints
@@ -226,10 +234,14 @@ void SpacecraftRateControl::updateRateControl()
 
 			vehicle_thrust_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
 			vehicle_thrust_setpoint.timestamp = hrt_absolute_time();
+			vehicle_thrust_setpoint.publisher_id = M_SPACECRAFT;
+			vehicle_thrust_setpoint.pub_timestamp = hrt_absolute_time();
 			_vehicle_thrust_setpoint_pub.publish(vehicle_thrust_setpoint);
 
 			vehicle_torque_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
 			vehicle_torque_setpoint.timestamp = hrt_absolute_time();
+			vehicle_torque_setpoint.publisher_id = M_SPACECRAFT;
+			vehicle_torque_setpoint.pub_timestamp = hrt_absolute_time();
 			_vehicle_torque_setpoint_pub.publish(vehicle_torque_setpoint);
 
 			updateActuatorControlsStatus(vehicle_torque_setpoint, dt);
@@ -255,6 +267,8 @@ void SpacecraftRateControl::updateActuatorControlsStatus(const vehicle_torque_se
 			_control_energy[i] = 0.f;
 		}
 
+		status.publisher_id = M_SPACECRAFT;
+		status.pub_timestamp = hrt_absolute_time();
 		_actuator_controls_status_pub.publish(status);
 		_energy_integration_time = 0.f;
 	}

@@ -177,6 +177,8 @@ void GZGimbal::publishDeviceInfo()
 			command_ack.target_component = cmd.source_component;
 			command_ack.timestamp = hrt_absolute_time();
 
+			command_ack.publisher_id = M_GZ_BRIDGE;
+			command_ack.pub_timestamp = hrt_absolute_time();
 			_vehicle_command_ack_pub.publish(command_ack);
 
 			// Send the requested message
@@ -199,6 +201,8 @@ void GZGimbal::publishDeviceInfo()
 			device_info.gimbal_device_id = _gimbal_device_id;
 			device_info.timestamp = hrt_absolute_time();
 
+			device_info.publisher_id = M_GZ_BRIDGE;
+			device_info.pub_timestamp = hrt_absolute_time();
 			_gimbal_device_information_pub.publish(device_info);
 		}
 	}
@@ -220,6 +224,8 @@ void GZGimbal::publishDeviceAttitude()
 	gimbal_att.failure_flags = 0;
 	gimbal_att.timestamp = hrt_absolute_time();
 
+	gimbal_att.publisher_id = M_GZ_BRIDGE;
+	gimbal_att.pub_timestamp = hrt_absolute_time();
 	_gimbal_device_attitude_status_pub.publish(gimbal_att);
 }
 

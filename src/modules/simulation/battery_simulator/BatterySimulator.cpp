@@ -165,6 +165,8 @@ void BatterySimulator::updateCommands()
 				     vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
 				     vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
 			ack.timestamp = hrt_absolute_time();
+			ack.publisher_id = M_BATTERY_SIMULATOR;
+			ack.pub_timestamp = hrt_absolute_time();
 			_command_ack_pub.publish(ack);
 		}
 	}

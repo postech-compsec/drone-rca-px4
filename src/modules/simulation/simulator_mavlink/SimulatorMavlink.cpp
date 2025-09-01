@@ -164,6 +164,8 @@ void SimulatorMavlink::send_esc_telemetry(mavlink_hil_actuator_controls_t hil_ac
 	esc_status.esc_armed_flags = (1u << esc_status.esc_count) - 1;
 	esc_status.esc_online_flags = (1u << esc_status.esc_count) - 1;
 
+	esc_status.publisher_id = M_SIMULATOR_MAVLINK;
+	esc_status.pub_timestamp = hrt_absolute_time();
 	_esc_status_pub.publish(esc_status);
 }
 
@@ -317,11 +319,15 @@ void SimulatorMavlink::update_sensors(const hrt_abstime &time, const mavlink_hil
 		// publish 1st baro
 		sensor_baro.device_id = 6620172; // 6620172: DRV_BARO_DEVTYPE_BAROSIM, BUS: 1, ADDR: 4, TYPE: SIMULATION
 		sensor_baro.timestamp = hrt_absolute_time();
+		sensor_baro.publisher_id = M_SIMULATOR_MAVLINK;
+		sensor_baro.pub_timestamp = hrt_absolute_time();
 		_sensor_baro_pubs[0].publish(sensor_baro);
 
 		// publish 2nd baro
 		sensor_baro.device_id = 6620428; // 6620428: DRV_BARO_DEVTYPE_BAROSIM, BUS: 2, ADDR: 4, TYPE: SIMULATION
 		sensor_baro.timestamp = hrt_absolute_time();
+		sensor_baro.publisher_id = M_SIMULATOR_MAVLINK;
+		sensor_baro.pub_timestamp = hrt_absolute_time();
 		_sensor_baro_pubs[1].publish(sensor_baro);
 	}
 
@@ -344,6 +350,8 @@ void SimulatorMavlink::update_sensors(const hrt_abstime &time, const mavlink_hil
 		report.differential_pressure_pa = sensors.diff_pressure * 100.f * airspeed_blockage_scale; // hPa to Pa;
 		report.temperature = _sensors_temperature;
 		report.timestamp = hrt_absolute_time();
+		report.publisher_id = M_SIMULATOR_MAVLINK;
+		report.pub_timestamp = hrt_absolute_time();
 		_differential_pressure_pub.publish(report);
 	}
 }
@@ -393,6 +401,8 @@ void SimulatorMavlink::handle_message(const mavlink_message_t *msg)
 		rpm_s rpm_uorb{};
 		rpm_uorb.timestamp = hrt_absolute_time();
 		rpm_uorb.rpm_estimate = rpm_mavlink.frequency;
+		rpm_uorb.publisher_id = M_SIMULATOR_MAVLINK;
+		rpm_uorb.pub_timestamp = hrt_absolute_time();
 		_rpm_pub.publish(rpm_uorb);
 		break;
 	}
@@ -478,6 +488,8 @@ void SimulatorMavlink::handle_message_hil_gps(const mavlink_message_t *msg)
 		// New publishers will be created based on the HIL_GPS ID's being different or not
 		for (size_t i = 0; i < sizeof(_gps_ids) / sizeof(_gps_ids[0]); i++) {
 			if (_sensor_gps_pubs[i] && _gps_ids[i] == hil_gps.id) {
+				gps.publisher_id = M_SIMULATOR_MAVLINK;
+				gps.pub_timestamp = hrt_absolute_time();
 				_sensor_gps_pubs[i]->publish(gps);
 				break;
 			}
@@ -493,6 +505,8 @@ void SimulatorMavlink::handle_message_hil_gps(const mavlink_message_t *msg)
 				device_id.devid_s.devtype = DRV_GPS_DEVTYPE_SIM;
 				gps.device_id = device_id.devid;
 
+				gps.publisher_id = M_SIMULATOR_MAVLINK;
+				gps.pub_timestamp = hrt_absolute_time();
 				_sensor_gps_pubs[i]->publish(gps);
 				break;
 			}
@@ -565,6 +579,8 @@ void SimulatorMavlink::handle_message_hil_state_quaternion(const mavlink_message
 		hil_angular_velocity.xyz[2] = hil_state.yawspeed;
 
 		// always publish ground truth attitude message
+		hil_angular_velocity.publisher_id = M_SIMULATOR_MAVLINK;
+		hil_angular_velocity.pub_timestamp = hrt_absolute_time();
 		_vehicle_angular_velocity_ground_truth_pub.publish(hil_angular_velocity);
 	}
 
@@ -577,6 +593,8 @@ void SimulatorMavlink::handle_message_hil_state_quaternion(const mavlink_message
 		q.copyTo(hil_attitude.q);
 
 		// always publish ground truth attitude message
+		hil_attitude.publisher_id = M_SIMULATOR_MAVLINK;
+		hil_attitude.pub_timestamp = hrt_absolute_time();
 		_attitude_ground_truth_pub.publish(hil_attitude);
 	}
 
@@ -590,6 +608,8 @@ void SimulatorMavlink::handle_message_hil_state_quaternion(const mavlink_message
 		hil_gpos.alt = hil_state.alt / 1E3;//1E3
 
 		// always publish ground truth attitude message
+		hil_gpos.publisher_id = M_SIMULATOR_MAVLINK;
+		hil_gpos.pub_timestamp = hrt_absolute_time();
 		_gpos_ground_truth_pub.publish(hil_gpos);
 	}
 
@@ -635,6 +655,8 @@ void SimulatorMavlink::handle_message_hil_state_quaternion(const mavlink_message
 		hil_lpos.hagl_max_xy = std::numeric_limits<float>::infinity();
 
 		// always publish ground truth attitude message
+		hil_lpos.publisher_id = M_SIMULATOR_MAVLINK;
+		hil_lpos.pub_timestamp = hrt_absolute_time();
 		_lpos_ground_truth_pub.publish(hil_lpos);
 	}
 }
@@ -656,6 +678,8 @@ void SimulatorMavlink::handle_message_landing_target(const mavlink_message_t *ms
 		report.size_x = landing_target_mavlink.size_x;
 		report.size_y = landing_target_mavlink.size_y;
 
+		report.publisher_id = M_SIMULATOR_MAVLINK;
+		report.pub_timestamp = hrt_absolute_time();
 		_irlock_report_pub.publish(report);
 	}
 }
@@ -850,6 +874,8 @@ void SimulatorMavlink::handle_message_odometry(const mavlink_message_t *msg)
 	case MAV_ESTIMATOR_TYPE_VIO:
 		if (!_vio_blocked) {
 			odom.timestamp = hrt_absolute_time();
+			odom.publisher_id = M_SIMULATOR_MAVLINK;
+			odom.pub_timestamp = hrt_absolute_time();
 			_visual_odometry_pub.publish(odom);
 		}
 
@@ -857,6 +883,8 @@ void SimulatorMavlink::handle_message_odometry(const mavlink_message_t *msg)
 
 	case MAV_ESTIMATOR_TYPE_MOCAP:
 		odom.timestamp = hrt_absolute_time();
+		odom.publisher_id = M_SIMULATOR_MAVLINK;
+		odom.pub_timestamp = hrt_absolute_time();
 		_mocap_odometry_pub.publish(odom);
 		break;
 
@@ -912,6 +940,8 @@ void SimulatorMavlink::handle_message_optical_flow(const mavlink_message_t *msg)
 
 	sensor_optical_flow.timestamp = hrt_absolute_time();
 
+	sensor_optical_flow.publisher_id = M_SIMULATOR_MAVLINK;
+	sensor_optical_flow.pub_timestamp = hrt_absolute_time();
 	_sensor_optical_flow_pub.publish(sensor_optical_flow);
 }
 
@@ -949,6 +979,8 @@ void SimulatorMavlink::handle_message_rc_channels(const mavlink_message_t *msg)
 	rc_input.timestamp = hrt_absolute_time();
 
 	// publish message
+	rc_input.publisher_id = M_SIMULATOR_MAVLINK;
+	rc_input.pub_timestamp = hrt_absolute_time();
 	_input_rc_pub.publish(rc_input);
 }
 
@@ -986,6 +1018,8 @@ void SimulatorMavlink::handle_message_vision_position_estimate(const mavlink_mes
 
 	odom.timestamp = hrt_absolute_time();
 
+	odom.publisher_id = M_SIMULATOR_MAVLINK;
+	odom.pub_timestamp = hrt_absolute_time();
 	_visual_odometry_pub.publish(odom);
 }
 
@@ -1512,6 +1546,8 @@ void SimulatorMavlink::check_failure_injections()
 				     vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED :
 				     vehicle_command_ack_s::VEHICLE_CMD_RESULT_UNSUPPORTED;
 			ack.timestamp = hrt_absolute_time();
+			ack.publisher_id = M_SIMULATOR_MAVLINK;
+			ack.pub_timestamp = hrt_absolute_time();
 			_command_ack_pub.publish(ack);
 		}
 	}
@@ -1578,6 +1614,8 @@ int SimulatorMavlink::publish_distance_topic(const mavlink_distance_sensor_t *di
 	// New publishers will be created based on the sensor ID's being different or not
 	for (size_t i = 0; i < sizeof(_dist_sensor_ids) / sizeof(_dist_sensor_ids[0]); i++) {
 		if (_dist_pubs[i] && _dist_sensor_ids[i] == dist.device_id) {
+			dist.publisher_id = M_SIMULATOR_MAVLINK;
+			dist.pub_timestamp = hrt_absolute_time();
 			_dist_pubs[i]->publish(dist);
 			break;
 
@@ -1586,6 +1624,8 @@ int SimulatorMavlink::publish_distance_topic(const mavlink_distance_sensor_t *di
 		if (_dist_pubs[i] == nullptr) {
 			_dist_pubs[i] = new uORB::PublicationMulti<distance_sensor_s> {ORB_ID(distance_sensor)};
 			_dist_sensor_ids[i] = dist.device_id;
+			dist.publisher_id = M_SIMULATOR_MAVLINK;
+			dist.pub_timestamp = hrt_absolute_time();
 			_dist_pubs[i]->publish(dist);
 			break;
 		}

@@ -119,6 +119,8 @@ Land::on_active()
 		// and thus always climb MIS_LND_ABRT_ALT
 		vehicle_command.param7 = _navigator->get_global_position()->alt + _navigator->get_landing_abort_min_alt();
 
+		vehicle_command.publisher_id = M_NAVIGATOR;
+		vehicle_command.pub_timestamp = hrt_absolute_time();
 		_navigator->publish_vehicle_command(vehicle_command);
 	}
 }

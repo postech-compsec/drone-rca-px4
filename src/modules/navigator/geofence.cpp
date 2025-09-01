@@ -109,6 +109,8 @@ void Geofence::run()
 			status.geofence_id = _opaque_id;
 			status.status = geofence_status_s::GF_STATUS_LOADING;
 
+			status.publisher_id = M_NAVIGATOR;
+			status.pub_timestamp = hrt_absolute_time();
 			_geofence_status_pub.publish(status);
 
 		}
@@ -164,6 +166,8 @@ void Geofence::run()
 				status.geofence_id = _opaque_id;
 				status.status = geofence_status_s::GF_STATUS_READY;
 
+				status.publisher_id = M_NAVIGATOR;
+				status.pub_timestamp = hrt_absolute_time();
 				_geofence_status_pub.publish(status);
 			}
 		}
@@ -184,6 +188,8 @@ void Geofence::run()
 			status.geofence_id = _opaque_id;
 			status.status = geofence_status_s::GF_STATUS_READY;
 
+			status.publisher_id = M_NAVIGATOR;
+			status.pub_timestamp = hrt_absolute_time();
 			_geofence_status_pub.publish(status);
 		}
 

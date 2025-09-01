@@ -620,5 +620,7 @@ void RtlDirect::publish_rtl_direct_navigator_mission_item()
 
 	navigator_mission_item.timestamp = hrt_absolute_time();
 
+	navigator_mission_item.publisher_id = M_NAVIGATOR;
+	navigator_mission_item.pub_timestamp = hrt_absolute_time();
 	_navigator_mission_item_pub.publish(navigator_mission_item);
 }

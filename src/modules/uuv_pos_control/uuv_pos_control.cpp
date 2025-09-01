@@ -330,6 +330,8 @@ void UUVPOSControl::Run()
 	if (_vcontrol_mode.flag_control_position_enabled ||
 	    _vcontrol_mode.flag_control_altitude_enabled) {
 		// Print attitude setpoint
+		_attitude_setpoint.publisher_id = M_UUV_POS_CONTROL;
+		_attitude_setpoint.pub_timestamp = hrt_absolute_time();
 		_att_sp_pub.publish(_attitude_setpoint);
 	}
 

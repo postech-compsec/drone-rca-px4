@@ -552,6 +552,8 @@ MissionBlock::issue_command(const mission_item_s &item)
 		}
 	}
 
+	vehicle_command.publisher_id = M_NAVIGATOR;
+	vehicle_command.pub_timestamp = hrt_absolute_time();
 	_navigator->publish_vehicle_command(vehicle_command);
 
 	if (item_has_timeout(item)) {
@@ -788,6 +790,8 @@ MissionBlock::set_land_item(struct mission_item_s *item)
 		vehicle_command.command = NAV_CMD_DO_VTOL_TRANSITION;
 		vehicle_command.param1 = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
 		vehicle_command.param2 = 0.f; // normal unforced transition
+		vehicle_command.publisher_id = M_NAVIGATOR;
+		vehicle_command.pub_timestamp = hrt_absolute_time();
 		_navigator->publish_vehicle_command(vehicle_command);
 	}
 

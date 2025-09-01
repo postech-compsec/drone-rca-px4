@@ -90,6 +90,8 @@ bool PWMSim::updateOutputs(uint16_t outputs[MAX_ACTUATORS], unsigned num_outputs
 		}
 
 		actuator_outputs.timestamp = hrt_absolute_time();
+		actuator_outputs.publisher_id = M_PWM_OUT_SIM;
+		actuator_outputs.pub_timestamp = hrt_absolute_time();
 		_actuator_outputs_sim_pub.publish(actuator_outputs);
 		return true;
 	}

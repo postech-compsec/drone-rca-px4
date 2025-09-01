@@ -305,6 +305,8 @@ void VehicleAirData::Run()
 						out.calibration_count = _calibration[instance].calibration_count();
 						out.timestamp = hrt_absolute_time();
 
+						out.publisher_id = M_SENSORS;
+						out.pub_timestamp = hrt_absolute_time();
 						_vehicle_air_data_pub.publish(out);
 					}
 
@@ -451,6 +453,8 @@ void VehicleAirData::UpdateStatus()
 		}
 
 		sensors_status.timestamp = hrt_absolute_time();
+		sensors_status.publisher_id = M_SENSORS;
+		sensors_status.pub_timestamp = hrt_absolute_time();
 		_sensors_status_baro_pub.publish(sensors_status);
 	}
 }

@@ -75,6 +75,8 @@ void AckermannActControl::updateActControl()
 					     _throttle_setpoint, actuator_motors_sub.control[0], _param_ro_accel_limit.get(),
 					     _param_ro_decel_limit.get(), _param_ro_max_thr_speed.get(), dt);
 		actuator_motors.timestamp = _timestamp;
+		actuator_motors.publisher_id = M_ROVER_ACKERMANN;
+		actuator_motors.pub_timestamp = hrt_absolute_time();
 		_actuator_motors_pub.publish(actuator_motors);
 
 	}
@@ -107,6 +109,8 @@ void AckermannActControl::updateActControl()
 		actuator_servos_s actuator_servos{};
 		actuator_servos.control[0] = _servo_setpoint.getState();
 		actuator_servos.timestamp = _timestamp;
+		actuator_servos.publisher_id = M_ROVER_ACKERMANN;
+		actuator_servos.pub_timestamp = hrt_absolute_time();
 		_actuator_servos_pub.publish(actuator_servos);
 	}
 }
@@ -117,9 +121,13 @@ void AckermannActControl::stopVehicle()
 	actuator_motors.reversible_flags = _param_r_rev.get();
 	actuator_motors.control[0] = 0.f;
 	actuator_motors.timestamp = _timestamp;
+	actuator_motors.publisher_id = M_ROVER_ACKERMANN;
+	actuator_motors.pub_timestamp = hrt_absolute_time();
 	_actuator_motors_pub.publish(actuator_motors);
 	actuator_servos_s actuator_servos{};
 	actuator_servos.control[0] = 0.f;
 	actuator_servos.timestamp = _timestamp;
+	actuator_servos.publisher_id = M_ROVER_ACKERMANN;
+	actuator_servos.pub_timestamp = hrt_absolute_time();
 	_actuator_servos_pub.publish(actuator_servos);
 }
