@@ -190,12 +190,16 @@ void BATT_SMBUS::RunImpl()
 		new_report.interface_error = perf_event_count(_interface->_interface_errors);
 
 		int instance = 0;
+		new_report.publisher_id = M_BATT_SMBUS;
+		new_report.pub_timestamp = hrt_absolute_time();
 		orb_publish_auto(ORB_ID(battery_status), &_batt_topic, &new_report, &instance);
 
 		battery_info_s battery_info{};
 		battery_info.timestamp = new_report.timestamp;
 		battery_info.id = new_report.id;
 		snprintf(battery_info.serial_number, sizeof(battery_info.serial_number), "%" PRIu16, _serial_number);
+		battery_info.publisher_id = M_BATT_SMBUS;
+		battery_info.pub_timestamp = hrt_absolute_time();
 		orb_publish_auto(ORB_ID(battery_info), &_battery_info_topic, &battery_info, &instance);
 
 

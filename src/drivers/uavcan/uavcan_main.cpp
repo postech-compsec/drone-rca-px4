@@ -1014,6 +1014,8 @@ void UavcanNode::publish_can_interface_statuses()
 				_can_status_pub_handles[i] = orb_advertise_multi(ORB_ID(can_interface_status), nullptr, &instance);
 			}
 
+			status.publisher_id = M_UAVCAN;
+			status.pub_timestamp = hrt_absolute_time();
 			(void)orb_publish(ORB_ID(can_interface_status), _can_status_pub_handles[i], &status);
 		}
 	}
@@ -1069,6 +1071,8 @@ void UavcanNode::publish_node_statuses()
 					.sub_mode = node_status.sub_mode,
 				};
 
+				status.publisher_id = M_UAVCAN;
+				status.pub_timestamp = hrt_absolute_time();
 				(void)orb_publish(ORB_ID(dronecan_node_status), _node_status_pub_handles[uorb_index], &status);
 			}
 		});

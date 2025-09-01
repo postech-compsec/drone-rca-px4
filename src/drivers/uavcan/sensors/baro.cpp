@@ -127,6 +127,8 @@ void UavcanBarometerBridge::air_pressure_sub_cb(const
 
 	sensor_baro.error_count = 0;
 	sensor_baro.timestamp = hrt_absolute_time();
+	sensor_baro.publisher_id = M_UAVCAN;
+	sensor_baro.pub_timestamp = hrt_absolute_time();
 	baro->publish(sensor_baro);
 }
 

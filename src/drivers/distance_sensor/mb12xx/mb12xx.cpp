@@ -231,6 +231,8 @@ MB12XX::collect()
 	report.variance         = 0.0f;
 
 	int instance_id;
+	report.publisher_id = M_MB12XX;
+	report.pub_timestamp = hrt_absolute_time();
 	orb_publish_auto(ORB_ID(distance_sensor), &_distance_sensor_topic, &report, &instance_id);
 
 	// Begin the next measurement.

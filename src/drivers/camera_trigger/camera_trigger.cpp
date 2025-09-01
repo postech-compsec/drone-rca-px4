@@ -315,6 +315,8 @@ CameraTrigger::CameraTrigger() :
 	// Advertise critical publishers here, because we cannot advertise in interrupt context
 	camera_trigger_s trigger{};
 
+	trigger.publisher_id = M_CAMERA_TRIGGER;
+	trigger.pub_timestamp = hrt_absolute_time();
 	_trigger_pub = orb_advertise(ORB_ID(camera_trigger), &trigger);
 }
 
@@ -859,6 +861,8 @@ CameraTrigger::engage(void *arg)
 	trigger.feedback = false;
 	trigger.timestamp = hrt_absolute_time();
 
+	trigger.publisher_id = M_CAMERA_TRIGGER;
+	trigger.pub_timestamp = hrt_absolute_time();
 	orb_publish(ORB_ID(camera_trigger), trig->_trigger_pub, &trigger);
 
 	// increment frame count

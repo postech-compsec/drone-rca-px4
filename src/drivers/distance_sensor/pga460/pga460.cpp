@@ -693,6 +693,8 @@ void PGA460::run()
 	}
 
 	struct distance_sensor_s report = {};
+	report.publisher_id = M_PGA460;
+	report.pub_timestamp = hrt_absolute_time();
 	_distance_sensor_topic = orb_advertise(ORB_ID(distance_sensor), &report);
 
 	if (_distance_sensor_topic == nullptr) {
@@ -819,6 +821,8 @@ void PGA460::uORB_publish_results(const float object_distance)
 	if (data_is_valid) {
 		report.signal_quality = 1;
 		_previous_valid_report_distance = report.current_distance;
+		report.publisher_id = M_PGA460;
+		report.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(distance_sensor), _distance_sensor_topic, &report);
 	}
 }

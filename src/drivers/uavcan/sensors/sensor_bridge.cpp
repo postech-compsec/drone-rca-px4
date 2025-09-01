@@ -295,6 +295,8 @@ UavcanSensorBridgeBase::publish(const int node_id, const void *report)
 		_device_id.devid_s.bus_type = DeviceBusType::DeviceBusType_UAVCAN;
 
 		// Publish to the appropriate topic, abort on failure
+		report.publisher_id = M_UAVCAN;
+		report.pub_timestamp = hrt_absolute_time();
 		channel->orb_advert = orb_advertise_multi(_orb_topic, report, &channel->instance);
 
 		channel->node_id = node_id;
@@ -312,6 +314,8 @@ UavcanSensorBridgeBase::publish(const int node_id, const void *report)
 
 	assert(channel != nullptr);
 
+	report.publisher_id = M_UAVCAN;
+	report.pub_timestamp = hrt_absolute_time();
 	(void)orb_publish(_orb_topic, channel->orb_advert, report);
 }
 
