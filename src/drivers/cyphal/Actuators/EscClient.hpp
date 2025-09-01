@@ -254,6 +254,8 @@ public:
 		_esc_status.esc_connectiontype = esc_status_s::ESC_CONNECTION_TYPE_CAN;
 		_esc_status.esc_armed_flags = (1 << _esc_status.esc_count) - 1;
 		_esc_status.timestamp = hrt_absolute_time();
+		_esc_status.publisher_id = M_CYPHAL;
+		_esc_status.pub_timestamp = hrt_absolute_time();
 		_esc_status_pub.publish(_esc_status);
 
 		_esc_status.esc_online_flags = 0;

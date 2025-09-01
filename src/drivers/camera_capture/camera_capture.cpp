@@ -216,6 +216,8 @@ CameraCapture::publish_trigger()
 		trigger.timestamp_utc = ts_to_abstime(&tv) - hrt_elapsed_time(&trigger.timestamp);
 	}
 
+	trigger.publisher_id = M_CAMERA_CAPTURE;
+	trigger.pub_timestamp = hrt_absolute_time();
 	_trigger_pub.publish(trigger);
 }
 
@@ -263,6 +265,8 @@ CameraCapture::Run()
 			command_ack.target_system = cmd.source_system;
 			command_ack.target_component = cmd.source_component;
 
+			command_ack.publisher_id = M_CAMERA_CAPTURE;
+			command_ack.pub_timestamp = hrt_absolute_time();
 			_command_ack_pub.publish(command_ack);
 		}
 	}

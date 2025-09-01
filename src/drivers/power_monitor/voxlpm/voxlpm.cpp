@@ -361,6 +361,8 @@ VOXLPM::measure()
 				_pm_status.current_a = (float) _amperage;
 
 				//_pm_pub_topic.power_w   = (float) _power * _power_lsb;
+				_pm_status.publisher_id = M_VOXLPM;
+				_pm_status.pub_timestamp = hrt_absolute_time();
 				_pm_pub_topic.publish(_pm_status);
 			}
 			break;

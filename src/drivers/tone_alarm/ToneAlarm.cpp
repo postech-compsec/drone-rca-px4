@@ -170,6 +170,8 @@ void ToneAlarm::Run()
 					{
 						uORB::Publication<tune_control_s> tune_control_pub{ORB_ID(tune_control)};
 						tune_control.timestamp = hrt_absolute_time();
+						tune_control.publisher_id = M_TONE_ALARM;
+						tune_control.pub_timestamp = hrt_absolute_time();
 						tune_control_pub.publish(tune_control);
 					}
 

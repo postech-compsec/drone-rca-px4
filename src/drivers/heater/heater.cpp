@@ -266,6 +266,8 @@ void Heater::publish_status()
 #endif
 
 	status.timestamp = hrt_absolute_time();
+	status.publisher_id = M_HEATER;
+	status.pub_timestamp = hrt_absolute_time();
 	_heater_status_pub.publish(status);
 }
 

@@ -183,6 +183,8 @@ int Ft7Technologies::collect()
 			// checksum is verified
 			if (checksum(_readbuf, _hex_checksum)) {
 
+				sensor_airflow.publisher_id = M_FT7_TECHNOLOGIES;
+				sensor_airflow.pub_timestamp = hrt_absolute_time();
 				_sensor_airflow_pub.publish(sensor_airflow);
 				valid = true;
 

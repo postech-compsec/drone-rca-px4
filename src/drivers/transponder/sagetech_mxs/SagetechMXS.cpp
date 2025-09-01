@@ -536,6 +536,8 @@ void SagetechMXS::handle_vehicle(const transponder_report_s &vehicle)
 			transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY;
 
 	if (vehicle.flags & required_flags_avoidance) {
+		vehicle.publisher_id = M_SAGETECH_MXS;
+		vehicle.pub_timestamp = hrt_absolute_time();
 		_transponder_report_pub.publish(vehicle);
 	}
 }

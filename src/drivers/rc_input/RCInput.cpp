@@ -421,6 +421,8 @@ void RCInput::Run()
 				command_ack.target_component = vcmd.source_component;
 				command_ack.timestamp = hrt_absolute_time();
 				uORB::Publication<vehicle_command_ack_s> vehicle_command_ack_pub{ORB_ID(vehicle_command_ack)};
+				command_ack.publisher_id = M_RC_INPUT;
+				command_ack.pub_timestamp = hrt_absolute_time();
 				vehicle_command_ack_pub.publish(command_ack);
 			}
 		}
@@ -839,6 +841,8 @@ void RCInput::Run()
 			_input_rc.link_quality = -1;
 			_input_rc.rssi_dbm = NAN;
 
+			_input_rc.publisher_id = M_RC_INPUT;
+			_input_rc.pub_timestamp = hrt_absolute_time();
 			_input_rc_pub.publish(_input_rc);
 
 		} else if (!rc_updated && !_armed && (hrt_elapsed_time(&_input_rc.timestamp_last_signal) > 1_s)) {
@@ -912,6 +916,8 @@ int RCInput::custom_command(int argc, char *argv[])
 		vehicle_command_s vcmd{};
 		vcmd.command = vehicle_command_s::VEHICLE_CMD_START_RX_PAIR;
 		vcmd.timestamp = hrt_absolute_time();
+		vcmd.publisher_id = M_RC_INPUT;
+		vcmd.pub_timestamp = hrt_absolute_time();
 		vehicle_command_pub.publish(vcmd);
 		return 0;
 	}

@@ -958,6 +958,8 @@ UavcanNode::Run()
 			ack.target_system = cmd.source_system;
 			ack.target_component = cmd.source_component;
 			ack.timestamp = hrt_absolute_time();
+			ack.publisher_id = M_UAVCAN;
+			ack.pub_timestamp = hrt_absolute_time();
 			_command_ack_pub.publish(ack);
 		}
 	}
@@ -1286,6 +1288,8 @@ UavcanNode::cb_getset(const uavcan::ServiceCallResult<uavcan::protocol::param::G
 				response.int_value = param.value.to<uavcan::protocol::param::Value::Tag::boolean_value>();
 			}
 
+			response.publisher_id = M_UAVCAN;
+			response.pub_timestamp = hrt_absolute_time();
 			_param_response_pub.publish(response);
 
 		} else {

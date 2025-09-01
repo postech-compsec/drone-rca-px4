@@ -375,6 +375,8 @@ int UWB_SR150::collectData()
 		_sensor_uwb.offset_y		= _offset_y.get();
 		_sensor_uwb.offset_z		= _offset_z.get();
 
+		_sensor_uwb.publisher_id = M_UWB_SR150;
+		_sensor_uwb.pub_timestamp = hrt_absolute_time();
 		_sensor_uwb_pub.publish(_sensor_uwb);
 
 	} else {

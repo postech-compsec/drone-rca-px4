@@ -114,6 +114,8 @@ void RPMCapture::Run()
 		pwm_input.timestamp = now;
 		pwm_input.period = _period;
 		pwm_input.error_count = _error_count;
+		pwm_input.publisher_id = M_RPM_CAPTURE;
+		pwm_input.pub_timestamp = hrt_absolute_time();
 		_pwm_input_pub.publish(pwm_input);
 
 		ScheduleClear(); // Do not run on previously scheduled timeout
@@ -146,6 +148,8 @@ void RPMCapture::Run()
 	rpm.timestamp = now;
 	rpm.rpm_raw = rpm_raw;
 	rpm.rpm_estimate = _rpm_filter.getState();
+	rpm.publisher_id = M_RPM_CAPTURE;
+	rpm.pub_timestamp = hrt_absolute_time();
 	_rpm_pub.publish(rpm);
 }
 

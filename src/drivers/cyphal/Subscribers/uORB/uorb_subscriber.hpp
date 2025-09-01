@@ -82,6 +82,8 @@ public:
 			/* Data type specific conversion if necceary  */
 			convert(data);
 
+			data->publisher_id = M_CYPHAL;
+			data->pub_timestamp = hrt_absolute_time();
 			_uorb_pub.publish(*data);
 
 		} else {

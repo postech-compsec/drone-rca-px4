@@ -1328,10 +1328,14 @@ bool VoxlEsc::updateOutputs(uint16_t outputs[MAX_ACTUATORS],
 
 		actuator_outputs.timestamp = hrt_absolute_time();
 
+		actuator_outputs.publisher_id = M_VOXL_ESC;
+		actuator_outputs.pub_timestamp = hrt_absolute_time();
 		_outputs_debug_pub.publish(actuator_outputs);
 
 	}
 
+	_esc_status.publisher_id = M_VOXL_ESC;
+	_esc_status.pub_timestamp = hrt_absolute_time();
 	_esc_status_pub.publish(_esc_status);
 
 	uint8_t num_writes = 0;
@@ -1513,6 +1517,8 @@ void VoxlEsc::Run()
 
 					if (_current_cmd.response) {
 						if (read_response(&_current_cmd) == 0) {
+							_esc_status.publisher_id = M_VOXL_ESC;
+							_esc_status.pub_timestamp = hrt_absolute_time();
 							_esc_status_pub.publish(_esc_status);
 						}
 					}

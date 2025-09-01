@@ -274,6 +274,8 @@ Thoneflow::collect()
 
 			report.timestamp = hrt_absolute_time();
 
+			report.publisher_id = M_THONEFLOW;
+			report.pub_timestamp = hrt_absolute_time();
 			_sensor_optical_flow_pub.publish(report);
 		}
 

@@ -1037,6 +1037,8 @@ void IridiumSBD::publish_iridium_status()
 
 	// publish the status if it changed
 	if (need_to_publish) {
+		_status.publisher_id = M_IRIDIUMSBD;
+		_status.pub_timestamp = hrt_absolute_time();
 		_iridiumsbd_status_pub.publish(_status);
 	}
 }

@@ -316,6 +316,8 @@ bool TAP_ESC::updateOutputs(uint16_t outputs[MAX_ACTUATORS], unsigned num_output
 					_esc_feedback.esc_armed_flags  |= 1 << feed_back_data.channelID;
 
 					_esc_feedback.timestamp = hrt_absolute_time();
+					_esc_feedback.publisher_id = M_TAP_ESC;
+					_esc_feedback.pub_timestamp = hrt_absolute_time();
 					_esc_feedback_pub.publish(_esc_feedback);
 				}
 			}

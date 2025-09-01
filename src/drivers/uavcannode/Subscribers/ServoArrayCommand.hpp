@@ -99,6 +99,8 @@ private:
 			}
 		}
 
+		actuator_servos.publisher_id = M_UAVCANNODE;
+		actuator_servos.pub_timestamp = hrt_absolute_time();
 		_actuator_servos_pub.publish(actuator_servos);
 
 	}

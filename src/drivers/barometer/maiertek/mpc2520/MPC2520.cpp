@@ -250,6 +250,8 @@ void MPC2520::RunImpl()
 				sensor_baro.temperature = Tcomp;
 				sensor_baro.error_count = perf_event_count(_bad_transfer_perf) + perf_event_count(_bad_register_perf);
 				sensor_baro.timestamp = hrt_absolute_time();
+				sensor_baro.publisher_id = M_MPC2520;
+				sensor_baro.pub_timestamp = hrt_absolute_time();
 				_sensor_baro_pub.publish(sensor_baro);
 
 				success = true;

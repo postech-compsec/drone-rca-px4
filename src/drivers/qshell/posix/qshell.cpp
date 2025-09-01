@@ -107,6 +107,8 @@ int QShell::_send_cmd(std::vector<std::string> &argList)
 	qshell_req.request_sequence = _current_sequence;
 	qshell_req.timestamp = hrt_absolute_time();
 
+	qshell_req.publisher_id = M_QSHELL;
+	qshell_req.pub_timestamp = hrt_absolute_time();
 	_qshell_req_pub.publish(qshell_req);
 
 	return 0;

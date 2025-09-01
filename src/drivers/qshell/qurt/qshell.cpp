@@ -120,6 +120,8 @@ int QShell::main()
 			}
 
 			retval.timestamp = hrt_absolute_time();
+			retval.publisher_id = M_QSHELL;
+			retval.pub_timestamp = hrt_absolute_time();
 			_qshell_retval_pub.publish(retval);
 
 		} else if (pret == 0) {

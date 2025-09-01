@@ -127,6 +127,8 @@ void RcInput::_measure(void)
 	_data.link_quality = -1;
 	_data.rssi_dbm = NAN;
 
+	_data.publisher_id = M_RPI_RC_IN;
+	_data.pub_timestamp = hrt_absolute_time();
 	_rcinput_pub.publish(_data);
 }
 

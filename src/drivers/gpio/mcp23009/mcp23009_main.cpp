@@ -103,6 +103,8 @@ void MCP23009::RunImpl()
 		uint8_t input;
 		read(&input);
 		_gpio_in.state = input;
+		_gpio_in.publisher_id = M_MCP23009;
+		_gpio_in.pub_timestamp = hrt_absolute_time();
 		_to_gpio_in.publish(_gpio_in);
 	}
 

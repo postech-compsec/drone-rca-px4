@@ -765,6 +765,8 @@ void PX4IO::answer_command(const vehicle_command_s &cmd, uint8_t result)
 	command_ack.target_system = cmd.source_system;
 	command_ack.target_component = cmd.source_component;
 	command_ack.timestamp = hrt_absolute_time();
+	command_ack.publisher_id = M_PX4IO;
+	command_ack.pub_timestamp = hrt_absolute_time();
 	vehicle_command_ack_pub.publish(command_ack);
 }
 
@@ -1013,6 +1015,8 @@ int PX4IO::io_get_status()
 		}
 
 		status.timestamp = hrt_absolute_time();
+		status.publisher_id = M_PX4IO;
+		status.pub_timestamp = hrt_absolute_time();
 		_px4io_status_pub.publish(status);
 
 		_last_status_publish = status.timestamp;
@@ -1150,6 +1154,8 @@ int PX4IO::io_publish_raw_rc()
 		input_rc.link_quality = -1;
 		input_rc.rssi_dbm = NAN;
 
+		input_rc.publisher_id = M_PX4IO;
+		input_rc.pub_timestamp = hrt_absolute_time();
 		_input_rc_pub.publish(input_rc);
 	}
 

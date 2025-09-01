@@ -233,6 +233,8 @@ int Roboclaw::readEncoder()
 	wheel_encoders.wheel_angle[0] = static_cast<float>(position_right) / _param_rbclw_counts_rev.get() * M_TWOPI_F;
 	wheel_encoders.wheel_angle[1] = static_cast<float>(position_left) / _param_rbclw_counts_rev.get() * M_TWOPI_F;
 	wheel_encoders.timestamp = hrt_absolute_time();
+	wheel_encoders.publisher_id = M_ROBOCLAW;
+	wheel_encoders.pub_timestamp = hrt_absolute_time();
 	_wheel_encoders_pub.publish(wheel_encoders);
 
 	return OK;

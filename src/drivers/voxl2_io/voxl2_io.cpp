@@ -480,6 +480,8 @@ int Voxl2IO::parse_sbus_packet(uint8_t *raw_data, uint32_t data_len)
 		}
 
 		input_rc.timestamp_last_signal = _rc_last_valid_time;
+		input_rc.publisher_id = M_VOXL2_IO;
+		input_rc.pub_timestamp = hrt_absolute_time();
 		_rc_pub.publish(input_rc);
 
 		if (_rc_mode == RC_MODE::SCAN) {

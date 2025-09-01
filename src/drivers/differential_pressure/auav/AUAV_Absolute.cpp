@@ -48,6 +48,8 @@ void AUAV_Absolute::publish_pressure(const float pressure_p, const float tempera
 	sensor_baro.pressure = pressure_p;
 	sensor_baro.temperature = temperature_c;
 	sensor_baro.error_count = perf_event_count(_comms_errors);
+	sensor_baro.publisher_id = M_AUAV;
+	sensor_baro.pub_timestamp = hrt_absolute_time();
 	_sensor_baro_pub.publish(sensor_baro);
 }
 

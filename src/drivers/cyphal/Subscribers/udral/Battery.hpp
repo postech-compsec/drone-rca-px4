@@ -119,10 +119,14 @@ public:
 			bat_status.remaining = source_ts.value.energy.joule / source_ts.value.full_energy.joule;
 
 			// TODO uORB publication rate limiting
+			bat_status.publisher_id = M_CYPHAL;
+			bat_status.pub_timestamp = hrt_absolute_time();
 			_battery_status_pub.publish(bat_status);
 
 			_battery_info.timestamp = bat_status.timestamp;
 			_battery_info.id = bat_status.id;
+			_battery_info.publisher_id = M_CYPHAL;
+			_battery_info.pub_timestamp = hrt_absolute_time();
 			_battery_info_pub.publish(_battery_info);
 
 		} else if (receive.metadata.port_id == _status_sub._canard_sub.port_id) {

@@ -257,6 +257,8 @@ PX4FLOW::collect()
 	report.max_ground_distance = PX4FLOW_MAX_DISTANCE;
 
 	report.timestamp = hrt_absolute_time();
+	report.publisher_id = M_PX4FLOW;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_optical_flow_pub.publish(report);
 
 	perf_end(_sample_perf);

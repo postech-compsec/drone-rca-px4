@@ -99,6 +99,8 @@ private:
 
 			gps_inject_data.device_id = device_id.devid;
 
+			gps_inject_data.publisher_id = M_UAVCANNODE;
+			gps_inject_data.pub_timestamp = hrt_absolute_time();
 			_gps_inject_data_pub.publish(gps_inject_data);
 		}
 	}

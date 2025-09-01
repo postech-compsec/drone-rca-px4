@@ -100,6 +100,8 @@ public:
 		// 	outputs.value[i] = 2.f * (esc.value[i] / 8191.f) - 1.f;
 		// }
 
+		// outputs.publisher_id = M_CYPHAL;
+		// outputs.pub_timestamp = hrt_absolute_time();
 		// _output_pub.publish(outputs);
 	};
 

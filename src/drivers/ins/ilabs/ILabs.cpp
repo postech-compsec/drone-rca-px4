@@ -254,6 +254,8 @@ void ILabs::Run() {
 			sensor_selection.accel_device_id = _px4_accel.get_device_id();
 			sensor_selection.gyro_device_id  = _px4_gyro.get_device_id();
 			sensor_selection.timestamp       = _time_initialized.load();
+			sensor_selection.publisher_id = M_ILABS;
+			sensor_selection.pub_timestamp = hrt_absolute_time();
 			_sensor_selection_pub.publish(sensor_selection);
 		} else {
 			PX4_ERR("Sensor not initialized");
@@ -332,6 +334,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 			sensor_baro.pressure    = _average_sensors_data.pressure / static_cast<float>(_average_sensors_data.count);    // Pa
 			sensor_baro.temperature = _average_sensors_data.temperature / static_cast<float>(_average_sensors_data.count);  // degC
 
+			sensor_baro.publisher_id = M_ILABS;
+			sensor_baro.pub_timestamp = hrt_absolute_time();
 			_sensor_baro_pub.publish(sensor_baro);
 			perf_count(_baro_pub_interval_perf);
 
@@ -360,6 +364,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 		attitude.q[2] = quat(2);
 		attitude.q[3] = quat(3);
 
+		attitude.publisher_id = M_ILABS;
+		attitude.pub_timestamp = hrt_absolute_time();
 		_attitude_pub.publish(attitude);
 		perf_count(_attitude_pub_interval_perf);
 	}
@@ -423,6 +429,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 		local_position.hagl_max_z  = INFINITY;
 		local_position.hagl_max_xy = INFINITY;
 
+		local_position.publisher_id = M_ILABS;
+		local_position.pub_timestamp = hrt_absolute_time();
 		_local_position_pub.publish(local_position);
 		perf_count(_local_position_pub_interval_perf);
 	}
@@ -446,6 +454,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 
 		global_position.dead_reckoning = false;
 
+		global_position.publisher_id = M_ILABS;
+		global_position.pub_timestamp = hrt_absolute_time();
 		_global_position_pub.publish(global_position);
 		perf_count(_global_position_pub_interval_perf);
 	}
@@ -496,6 +506,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 
 		// sensor_gps.s_variance_m_s = ...; // TODO: need 0x43 UDD Package?
 
+		sensor_gps.publisher_id = M_ILABS;
+		sensor_gps.pub_timestamp = hrt_absolute_time();
 		_sensor_gps_pub.publish(sensor_gps);
 		perf_count(_gnss_pub_interval_perf);
 	}
@@ -517,6 +529,8 @@ void ILabs::processData(InertialLabs::SensorsData *data) {
 		estimator_status.mag_device_id  = _device_id.devid;
 		estimator_status.baro_device_id  = _device_id.devid;
 
+		estimator_status.publisher_id = M_ILABS;
+		estimator_status.pub_timestamp = hrt_absolute_time();
 		_estimator_status_pub.publish(estimator_status);
 	}
 }

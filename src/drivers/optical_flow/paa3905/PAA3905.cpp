@@ -446,6 +446,8 @@ void PAA3905::RunImpl()
 					if (publish || (hrt_elapsed_time(&_last_publish) >= kBackupScheduleIntervalUs)) {
 
 						sensor_optical_flow.timestamp = hrt_absolute_time();
+						sensor_optical_flow.publisher_id = M_PAA3905;
+						sensor_optical_flow.pub_timestamp = hrt_absolute_time();
 						_sensor_optical_flow_pub.publish(sensor_optical_flow);
 
 						_last_publish = sensor_optical_flow.timestamp_sample;

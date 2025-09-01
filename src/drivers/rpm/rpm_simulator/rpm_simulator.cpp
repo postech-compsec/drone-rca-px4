@@ -69,6 +69,8 @@ int rpm_simulator_main(int argc, char *argv[])
 	rpm.rpm_estimate = frequency;
 
 	// Publish data and let the user know what was published
+	rpm.publisher_id = M_RPM_SIMULATOR;
+	rpm.pub_timestamp = hrt_absolute_time();
 	rpm_pub.publish(rpm);
 	print_message(ORB_ID(rpm), rpm);
 

@@ -100,6 +100,8 @@ private:
 			}
 		}
 
+		actuator_motors.publisher_id = M_UAVCANNODE;
+		actuator_motors.pub_timestamp = hrt_absolute_time();
 		_actuator_motors_pub.publish(actuator_motors);
 	}
 

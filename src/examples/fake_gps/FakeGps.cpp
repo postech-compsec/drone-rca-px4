@@ -86,6 +86,8 @@ void FakeGps::Run()
 	sensor_gps.vel_ned_valid = true;
 	sensor_gps.satellites_used = 14;
 	sensor_gps.timestamp = hrt_absolute_time();
+	sensor_gps.publisher_id = M_FAKE_GPS;
+	sensor_gps.pub_timestamp = hrt_absolute_time();
 	_sensor_gps_pub.publish(sensor_gps);
 }
 

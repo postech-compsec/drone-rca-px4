@@ -132,6 +132,8 @@ void TattuCan::Run()
 		battery_status.voltage_cell_v[10] = static_cast<float>(tattu_message.cell_11_voltage) / 1000.0f;
 		battery_status.voltage_cell_v[11] = static_cast<float>(tattu_message.cell_12_voltage) / 1000.0f;
 
+		battery_status.publisher_id = M_TATTU_CAN;
+		battery_status.pub_timestamp = hrt_absolute_time();
 		_battery_status_pub.publish(battery_status);
 	}
 }

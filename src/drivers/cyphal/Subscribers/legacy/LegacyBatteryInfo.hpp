@@ -115,6 +115,8 @@ public:
 		 */
 
 
+		bat_status.publisher_id = M_CYPHAL;
+		bat_status.pub_timestamp = hrt_absolute_time();
 		_battery_status_pub.publish(bat_status);
 		print_message(ORB_ID(battery_status), bat_status);
 
@@ -123,6 +125,8 @@ public:
 		battery_info.id = bat_status.id;
 		snprintf(battery_info.serial_number, sizeof(battery_info.serial_number), "%" PRIu32,
 			 bat_info.model_instance_id);
+		battery_info.publisher_id = M_CYPHAL;
+		battery_info.pub_timestamp = hrt_absolute_time();
 		_battery_info_pub.publish(battery_info);
 	};
 

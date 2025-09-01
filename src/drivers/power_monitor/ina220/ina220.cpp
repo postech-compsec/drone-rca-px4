@@ -258,6 +258,8 @@ INA220::collect()
 			_pm_status.timestamp = hrt_absolute_time();
 			_pm_status.voltage_v = _voltage;
 			_pm_status.current_a = _current;
+			_pm_status.publisher_id = M_INA220;
+			_pm_status.pub_timestamp = hrt_absolute_time();
 			_pm_pub_topic.publish(_pm_status);
 		}
 		break;

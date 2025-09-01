@@ -145,6 +145,8 @@ void SHT3X::sensor_compouse_msg(bool send)
 			msg.temperature = measured_temperature;
 			msg.humidity = measured_humidity;
 			msg.device_id = _sht_info.serial_number;
+			msg.publisher_id = M_SHT3X;
+			msg.pub_timestamp = hrt_absolute_time();
 			_sensor_hygrometer_pub.publish(msg);
 		}
 	}

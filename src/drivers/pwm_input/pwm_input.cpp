@@ -171,6 +171,8 @@ PWMIN::publish(uint16_t status, uint32_t period, uint32_t pulse_width)
 	_pwm.period = period;
 	_pwm.pulse_width = pulse_width;
 
+	_pwm.publisher_id = M_PWM_INPUT;
+	_pwm.pub_timestamp = hrt_absolute_time();
 	_pwm_input_pub.publish(_pwm);
 
 	// update statistics

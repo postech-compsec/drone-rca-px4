@@ -1097,6 +1097,8 @@ void MicroStrain::sensorCallback(void *user, const mip_packet *packet, mip::Time
 		ref->_sensor_baro.timestamp_sample = t;
 		ref->_sensor_baro.pressure = baro.sample.scaled_pressure * 100.f; // convert [Pa] to [mBar]
 		ref->_sensor_baro.timestamp = hrt_absolute_time();
+		ref->_sensor_baro.publisher_id = M_MICROSTRAIN;
+		ref->_sensor_baro.pub_timestamp = hrt_absolute_time();
 		ref->_sensor_baro_pub.publish(ref->_sensor_baro);
 	}
 }
@@ -1217,6 +1219,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 		// ---------------------------------------
 
 		gp.timestamp = hrt_absolute_time();
+		gp.publisher_id = M_MICROSTRAIN;
+		gp.pub_timestamp = hrt_absolute_time();
 		ref->_vehicle_global_position_pub.publish(gp);
 	}
 
@@ -1238,6 +1242,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 		// ---------------------------------------
 
 		att_data.timestamp = hrt_absolute_time();
+		att_data.publisher_id = M_MICROSTRAIN;
+		att_data.pub_timestamp = hrt_absolute_time();
 		ref->_vehicle_attitude_pub.publish(att_data);
 	}
 
@@ -1332,6 +1338,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 		// ---------------------------------------
 
 		vp.timestamp = hrt_absolute_time();
+		vp.publisher_id = M_MICROSTRAIN;
+		vp.pub_timestamp = hrt_absolute_time();
 		ref->_vehicle_local_position_pub.publish(vp);
 	}
 
@@ -1378,6 +1386,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 		// ---------------------------------------
 
 		vo.timestamp = hrt_absolute_time();
+		vo.publisher_id = M_MICROSTRAIN;
+		vo.pub_timestamp = hrt_absolute_time();
 		ref->_vehicle_odometry_pub.publish(vo);
 	}
 
@@ -1440,6 +1450,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 
 
 		status.timestamp = hrt_absolute_time();
+		status.publisher_id = M_MICROSTRAIN;
+		status.pub_timestamp = hrt_absolute_time();
 		ref->_estimator_status_pub.publish(status);
 
 		sensor_selection_s sensor_selection{};
@@ -1447,6 +1459,8 @@ void MicroStrain::filterCallback(void *user, const mip_packet *packet, mip::Time
 		sensor_selection.gyro_device_id = ref->_dev_id;
 
 		sensor_selection.timestamp = hrt_absolute_time();
+		sensor_selection.publisher_id = M_MICROSTRAIN;
+		sensor_selection.pub_timestamp = hrt_absolute_time();
 		ref->_sensor_selection_pub.publish(sensor_selection);
 	}
 }
@@ -1601,6 +1615,8 @@ void MicroStrain::gnssCallback(void *user, const mip_packet *packet, mip::Timest
 
 		if (instance == 0) {ref->updateGeoidHeight(_geoid_height, gps.timestamp);}
 
+		gps.publisher_id = M_MICROSTRAIN;
+		gps.pub_timestamp = hrt_absolute_time();
 		ref->_sensor_gps_pub[instance].publish(gps);
 	}
 }

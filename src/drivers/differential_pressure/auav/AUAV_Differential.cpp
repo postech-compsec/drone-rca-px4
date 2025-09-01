@@ -57,6 +57,8 @@ void AUAV_Differential::publish_pressure(const float pressure_p, const float tem
 
 	differential_pressure.temperature = temperature_c;
 	differential_pressure.error_count = perf_event_count(_comms_errors);
+	differential_pressure.publisher_id = M_AUAV;
+	differential_pressure.pub_timestamp = hrt_absolute_time();
 	_differential_pressure_pub.publish(differential_pressure);
 }
 

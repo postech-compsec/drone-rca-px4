@@ -347,6 +347,8 @@ PMW3901::RunImpl()
 	_flow_quality_sum = 0;
 
 	report.timestamp = hrt_absolute_time();
+	report.publisher_id = M_PMW3901;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_optical_flow_pub.publish(report);
 
 	perf_end(_sample_perf);

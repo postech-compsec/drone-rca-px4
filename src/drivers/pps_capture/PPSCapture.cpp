@@ -133,6 +133,8 @@ void PPSCapture::Run()
 	// behind.
 	pps_capture.rtc_timestamp = gps_utc_time - (gps_utc_time % USEC_PER_SEC) + USEC_PER_SEC;
 
+	pps_capture.publisher_id = M_PPS_CAPTURE;
+	pps_capture.pub_timestamp = hrt_absolute_time();
 	_pps_capture_pub.publish(pps_capture);
 
 	if (_pps_rate_failure.load()) {

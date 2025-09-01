@@ -170,6 +170,8 @@ void ADC::update_adc_report(hrt_abstime now)
 	adc.v_ref = px4_arch_adc_reference_v();
 	adc.resolution = px4_arch_adc_dn_fullcount();
 
+	adc.publisher_id = M_BOARD_ADC;
+	adc.pub_timestamp = hrt_absolute_time();
 	_to_adc_report.publish(adc);
 }
 
@@ -303,6 +305,8 @@ void ADC::update_system_power(hrt_abstime now)
 #endif
 
 	system_power.timestamp = hrt_absolute_time();
+	system_power.publisher_id = M_BOARD_ADC;
+	system_power.pub_timestamp = hrt_absolute_time();
 	_to_system_power.publish(system_power);
 
 #endif // BOARD_ADC_USB_CONNECTED

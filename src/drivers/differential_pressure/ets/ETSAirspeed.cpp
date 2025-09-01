@@ -125,6 +125,8 @@ int ETSAirspeed::collect()
 	differential_pressure.temperature = NAN;
 	differential_pressure.error_count = perf_event_count(_comms_errors);
 	differential_pressure.timestamp = hrt_absolute_time();
+	differential_pressure.publisher_id = M_ETS_AIRSPEED;
+	differential_pressure.pub_timestamp = hrt_absolute_time();
 	_differential_pressure_pub.publish(differential_pressure);
 
 	perf_end(_sample_perf);

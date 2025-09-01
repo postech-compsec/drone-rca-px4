@@ -678,6 +678,8 @@ void SF45LaserSerial::_publish_obstacle_msg(hrt_abstime now)
 	}
 
 	_obstacle_distance.timestamp = now;
+	_obstacle_distance.publisher_id = M_LIGHTWARE_SF45_SERIAL;
+	_obstacle_distance.pub_timestamp = hrt_absolute_time();
 	_obstacle_distance_pub.publish(_obstacle_distance);
 }
 

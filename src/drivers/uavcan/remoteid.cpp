@@ -352,5 +352,7 @@ UavcanRemoteIDController::arm_status_sub_cb(const uavcan::ReceivedDataStructure<
 	arm_status.status = msg.status;
 	memcpy(arm_status.error, msg.error.c_str(), sizeof(arm_status.error));
 
+	arm_status.publisher_id = M_UAVCAN;
+	arm_status.pub_timestamp = hrt_absolute_time();
 	_open_drone_id_arm_status_pub.publish(arm_status);
 }

@@ -359,6 +359,8 @@ void CrsfRc::Run()
 	_input_rc.rc_ppm_frame_length = 0;
 	_input_rc.input_source = input_rc_s::RC_INPUT_SOURCE_PX4FMU_CRSF;
 	_input_rc.timestamp = hrt_absolute_time();
+	_input_rc.publisher_id = M_CRSF_RC;
+	_input_rc.pub_timestamp = hrt_absolute_time();
 	_input_rc_pub.publish(_input_rc);
 
 	perf_count(_publish_interval_perf);

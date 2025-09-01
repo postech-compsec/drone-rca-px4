@@ -199,6 +199,8 @@ void DsmRc::Run()
 			command_ack.target_component = vcmd.source_component;
 			command_ack.timestamp = hrt_absolute_time();
 			uORB::Publication<vehicle_command_ack_s> vehicle_command_ack_pub{ORB_ID(vehicle_command_ack)};
+			command_ack.publisher_id = M_DSM_RC;
+			command_ack.pub_timestamp = hrt_absolute_time();
 			vehicle_command_ack_pub.publish(command_ack);
 		}
 	}
@@ -274,6 +276,8 @@ void DsmRc::Run()
 				input_rc.rssi_dbm = NAN;
 
 				input_rc.timestamp = hrt_absolute_time();
+				input_rc.publisher_id = M_DSM_RC;
+				input_rc.pub_timestamp = hrt_absolute_time();
 				_input_rc_pub.publish(input_rc);
 				perf_count(_publish_interval_perf);
 
@@ -356,6 +360,8 @@ int DsmRc::custom_command(int argc, char *argv[])
 		vehicle_command_s vcmd{};
 		vcmd.command = vehicle_command_s::VEHICLE_CMD_START_RX_PAIR;
 		vcmd.timestamp = hrt_absolute_time();
+		vcmd.publisher_id = M_DSM_RC;
+		vcmd.pub_timestamp = hrt_absolute_time();
 		vehicle_command_pub.publish(vcmd);
 		return 0;
 	}

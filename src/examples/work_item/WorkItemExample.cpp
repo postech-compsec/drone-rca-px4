@@ -121,6 +121,8 @@ void WorkItemExample::Run()
 	orb_test_s data{};
 	data.val = 314159;
 	data.timestamp = hrt_absolute_time();
+	data.publisher_id = M_WORK_ITEM_EXAMPLE;
+	data.pub_timestamp = hrt_absolute_time();
 	_orb_test_pub.publish(data);
 
 
