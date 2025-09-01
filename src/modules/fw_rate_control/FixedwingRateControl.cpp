@@ -118,6 +118,8 @@ FixedwingRateControl::vehicle_manual_poll()
 				_rates_sp.timestamp = hrt_absolute_time();
 				_rates_sp.pitch = -_manual_control_setpoint.pitch * radians(_param_fw_acro_y_max.get());
 				_rates_sp.thrust_body[0] = (_manual_control_setpoint.throttle + 1.f) * .5f;
+				_rates_sp.publisher_id = M_FW_RATE_CONTROL;
+				_rates_sp.pub_timestamp = hrt_absolute_time();
 
 				_rate_sp_pub.publish(_rates_sp);
 
@@ -404,6 +406,8 @@ void FixedwingRateControl::Run()
 			rate_ctrl_status_s rate_ctrl_status{};
 			_rate_control.getRateControlStatus(rate_ctrl_status);
 			rate_ctrl_status.timestamp = hrt_absolute_time();
+			rate_ctrl_status.publisher_id = M_FW_RATE_CONTROL;
+			rate_ctrl_status.pub_timestamp = hrt_absolute_time();
 
 			_rate_ctrl_status_pub.publish(rate_ctrl_status);
 
@@ -431,10 +435,14 @@ void FixedwingRateControl::Run()
 			{
 				_vehicle_thrust_setpoint.timestamp = hrt_absolute_time();
 				_vehicle_thrust_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
+				_vehicle_thrust_setpoint.publisher_id = M_FW_RATE_CONTROL;
+				_vehicle_thrust_setpoint.pub_timestamp = hrt_absolute_time();
 				_vehicle_thrust_setpoint_pub.publish(_vehicle_thrust_setpoint);
 
 				_vehicle_torque_setpoint.timestamp = hrt_absolute_time();
 				_vehicle_torque_setpoint.timestamp_sample = angular_velocity.timestamp_sample;
+				_vehicle_torque_setpoint.publisher_id = M_FW_RATE_CONTROL;
+				_vehicle_torque_setpoint.pub_timestamp = hrt_absolute_time();
 				_vehicle_torque_setpoint_pub.publish(_vehicle_torque_setpoint);
 			}
 		}
@@ -455,6 +463,8 @@ void FixedwingRateControl::Run()
 			normalized_unsigned_setpoint_s flaps_setpoint;
 			flaps_setpoint.timestamp = hrt_absolute_time();
 			flaps_setpoint.normalized_setpoint = flaps_control;
+			flaps_setpoint.publisher_id = M_FW_RATE_CONTROL;
+			flaps_setpoint.pub_timestamp = hrt_absolute_time();
 			_flaps_setpoint_pub.publish(flaps_setpoint);
 
 			// Spoilers control
@@ -478,6 +488,8 @@ void FixedwingRateControl::Run()
 			normalized_unsigned_setpoint_s spoilers_setpoint;
 			spoilers_setpoint.timestamp = hrt_absolute_time();
 			spoilers_setpoint.normalized_setpoint = spoilers_control;
+			spoilers_setpoint.publisher_id = M_FW_RATE_CONTROL;
+			spoilers_setpoint.pub_timestamp = hrt_absolute_time();
 			_spoilers_setpoint_pub.publish(spoilers_setpoint);
 		}
 	}
@@ -512,6 +524,8 @@ void FixedwingRateControl::updateActuatorControlsStatus(float dt)
 			_control_energy[i] = 0.f;
 		}
 
+		status.publisher_id = M_FW_RATE_CONTROL;
+		status.pub_timestamp = hrt_absolute_time();
 		_actuator_controls_status_pub.publish(status);
 		_energy_integration_time = 0.f;
 	}

@@ -166,5 +166,6 @@ enum ModuleID {
     M_AUAV,
     M_EKF2,
     M_GPS,
-    M_BST
+    M_BST,
+    M_MC_HOVER_THRUST_ESTIMATOR
 };

@@ -255,11 +255,15 @@ void InternalCombustionEngineControl::publishControl(const hrt_abstime now, cons
 	ice_control.starter_engine_control = _starter_engine_control;
 	ice_control.throttle_control = _throttle_control;
 	ice_control.user_request = static_cast<uint8_t>(user_request);
+	ice_control.publisher_id = M_INTERNAL_COMBUSTION_ENGINE_CONTROL;
+	ice_control.pub_timestamp = hrt_absolute_time();
 	_internal_combustion_engine_control_pub.publish(ice_control);
 
 	internal_combustion_engine_status_s ice_status;
 	ice_status.state = static_cast<uint8_t>(_state);
 	ice_status.timestamp = now;
+	ice_status.publisher_id = M_INTERNAL_COMBUSTION_ENGINE_CONTROL;
+	ice_status.pub_timestamp = hrt_absolute_time();
 	_internal_combustion_engine_status_pub.publish(ice_status);
 }
 

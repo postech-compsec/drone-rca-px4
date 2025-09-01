@@ -603,12 +603,16 @@ void MulticopterPositionControl::Run()
 			vehicle_local_position_setpoint_s local_pos_sp{};
 			_control.getLocalPositionSetpoint(local_pos_sp);
 			local_pos_sp.timestamp = hrt_absolute_time();
+			local_pos_sp.publisher_id = M_MC_POS_CONTROL;
+			local_pos_sp.pub_timestamp = hrt_absolute_time();
 			_local_pos_sp_pub.publish(local_pos_sp);
 
 			// Publish attitude setpoint output
 			vehicle_attitude_setpoint_s attitude_setpoint{};
 			_control.getAttitudeSetpoint(attitude_setpoint);
 			attitude_setpoint.timestamp = hrt_absolute_time();
+			attitude_setpoint.publisher_id = M_MC_POS_CONTROL;
+			attitude_setpoint.pub_timestamp = hrt_absolute_time();
 			_vehicle_attitude_setpoint_pub.publish(attitude_setpoint);
 
 		} else {

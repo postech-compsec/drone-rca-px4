@@ -127,13 +127,17 @@ void GotoControl::update(const float dt, const matrix::Vector3f &position, const
 	_need_smoother_reset = false;
 
 	trajectory_setpoint.timestamp = hrt_absolute_time();
+	trajectory_setpoint.publisher_id = M_MC_POS_CONTROL;
+	trajectory_setpoint.pub_timestamp = hrt_absolute_time();
 	_trajectory_setpoint_pub.publish(trajectory_setpoint);
 
 	vehicle_constraints_s vehicle_constraints{
 		.timestamp = trajectory_setpoint.timestamp,
 		.speed_up = NAN,
 		.speed_down = NAN,
-		.want_takeoff = false
+		.want_takeoff = false,
+		.publisher_id = M_MC_POS_CONTROL,
+		.pub_timestamp = hrt_absolute_time()
 	};
 	_vehicle_constraints_pub.publish(vehicle_constraints);
 }

@@ -816,6 +816,8 @@ task_main(int argc, char *argv[])
 				}
 
 				response.timestamp = hrt_absolute_time();
+				response.publisher_id = M_DATAMAN;
+				response.pub_timestamp = hrt_absolute_time();
 				dataman_response_pub.publish(response);
 			}
 		}

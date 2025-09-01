@@ -78,6 +78,8 @@ void Gimbal::acquireGimbalControlIfNeeded()
 		vehicle_command.target_system = _param_mav_sys_id.get();
 		vehicle_command.target_component = _param_mav_sys_id.get();
 		vehicle_command.from_external = false;
+		vehicle_command.publisher_id = M_FLIGHT_MODE_MANAGER;
+		vehicle_command.pub_timestamp = hrt_absolute_time();
 		_vehicle_command_pub.publish(vehicle_command);
 	}
 }
@@ -105,6 +107,8 @@ void Gimbal::releaseGimbalControlIfNeeded()
 		vehicle_command.source_component = _param_mav_comp_id.get();
 		vehicle_command.target_system = _param_mav_sys_id.get();
 		vehicle_command.target_component = _param_mav_comp_id.get();
+		vehicle_command.publisher_id = M_FLIGHT_MODE_MANAGER;
+		vehicle_command.pub_timestamp = hrt_absolute_time();
 		_vehicle_command_pub.publish(vehicle_command);
 	}
 }
@@ -122,5 +126,7 @@ void Gimbal::publishGimbalManagerSetAttitude(const uint16_t gimbal_flags,
 	gimbal_setpoint.angular_velocity_y = gimbal_rates(1);
 	gimbal_setpoint.angular_velocity_z = gimbal_rates(2);
 	gimbal_setpoint.timestamp = hrt_absolute_time();
+	gimbal_setpoint.publisher_id = M_FLIGHT_MODE_MANAGER;
+	gimbal_setpoint.pub_timestamp = hrt_absolute_time();
 	_gimbal_manager_set_attitude_pub.publish(gimbal_setpoint);
 }

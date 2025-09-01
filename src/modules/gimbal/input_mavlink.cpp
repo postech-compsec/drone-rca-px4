@@ -374,6 +374,8 @@ void InputMavlinkCmdMount::_ack_vehicle_command(const vehicle_command_s &cmd)
 	vehicle_command_ack.result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
 	vehicle_command_ack.target_system = cmd.source_system;
 	vehicle_command_ack.target_component = cmd.source_component;
+	vehicle_command_ack.publisher_id = M_GIMBAL;
+	vehicle_command_ack.pub_timestamp = hrt_absolute_time();
 
 	uORB::Publication<vehicle_command_ack_s> cmd_ack_pub{ORB_ID(vehicle_command_ack)};
 	cmd_ack_pub.publish(vehicle_command_ack);
@@ -469,6 +471,8 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_status(const ControlData &cont
 		gimbal_manager_status.primary_control_compid = control_data.compid_primary_control;
 		gimbal_manager_status.secondary_control_sysid = 0; // TODO: support secondary control
 		gimbal_manager_status.secondary_control_compid = 0; // TODO: support secondary control
+		gimbal_manager_status.publisher_id = M_GIMBAL;
+		gimbal_manager_status.pub_timestamp = hrt_absolute_time();
 		_gimbal_manager_status_pub.publish(gimbal_manager_status);
 	}
 }
@@ -491,6 +495,8 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_information(const ControlData 
 		gimbal_manager_info.yaw_min = gimbal_device_info.yaw_min;
 
 		gimbal_manager_info.gimbal_device_id = control_data.device_compid;
+		gimbal_manager_info.publisher_id = M_GIMBAL;
+		gimbal_manager_info.pub_timestamp = hrt_absolute_time();
 
 		_gimbal_manager_info_pub.publish(gimbal_manager_info);
 
@@ -514,6 +520,8 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_information(const ControlData 
 		gimbal_manager_info.yaw_min = -_parameters.mnt_range_yaw;
 
 		gimbal_manager_info.gimbal_device_id = control_data.device_compid;
+		gimbal_manager_info.publisher_id = M_GIMBAL;
+		gimbal_manager_info.pub_timestamp = hrt_absolute_time();
 
 		_gimbal_manager_info_pub.publish(gimbal_manager_info);
 	}
@@ -1007,6 +1015,8 @@ void InputMavlinkGimbalV2::_ack_vehicle_command(const vehicle_command_s &cmd, ui
 	vehicle_command_ack.result = result;
 	vehicle_command_ack.target_system = cmd.source_system;
 	vehicle_command_ack.target_component = cmd.source_component;
+	vehicle_command_ack.publisher_id = M_GIMBAL;
+	vehicle_command_ack.pub_timestamp = hrt_absolute_time();
 
 	uORB::Publication<vehicle_command_ack_s> cmd_ack_pub{ORB_ID(vehicle_command_ack)};
 	cmd_ack_pub.publish(vehicle_command_ack);

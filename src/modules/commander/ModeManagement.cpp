@@ -330,6 +330,8 @@ void ModeManagement::checkNewRegistrations(UpdateRequest &update_request)
 		}
 
 		reply.timestamp = hrt_absolute_time();
+		reply.publisher_id = M_COMMANDER;
+		reply.pub_timestamp = hrt_absolute_time();
 		_register_ext_component_reply_pub.publish(reply);
 	}
 }
@@ -383,6 +385,8 @@ void ModeManagement::update(bool armed, uint8_t user_intended_nav_state, UpdateR
 			reply.request_id = request.request_id;
 			reply.px4_ros2_api_version = register_ext_component_request_s::LATEST_PX4_ROS2_API_VERSION;
 			reply.timestamp = hrt_absolute_time();
+			reply.publisher_id = M_COMMANDER;
+			reply.pub_timestamp = hrt_absolute_time();
 			_register_ext_component_reply_pub.publish(reply);
 		}
 
@@ -551,6 +555,8 @@ void ModeManagement::updateActiveConfigOverrides(uint8_t nav_state, config_overr
 	if (memcmp(&overrides_in_out, &current_overrides, sizeof(current_overrides)) != 0
 	    || hrt_elapsed_time(&current_overrides.timestamp) > 500_ms) {
 		current_overrides.timestamp = hrt_absolute_time();
+		current_overrides.publisher_id = M_COMMANDER;
+		current_overrides.pub_timestamp = hrt_absolute_time();
 		_config_overrides_pub.publish(current_overrides);
 		overrides_in_out = current_overrides;
 	}

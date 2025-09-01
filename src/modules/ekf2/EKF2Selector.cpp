@@ -115,6 +115,8 @@ bool EKF2Selector::SelectInstance(uint8_t ekf_instance)
 		sensor_selection.accel_device_id = _instance[ekf_instance].accel_device_id;
 		sensor_selection.gyro_device_id = _instance[ekf_instance].gyro_device_id;
 		sensor_selection.timestamp = hrt_absolute_time();
+		sensor_selection.publisher_id = M_EKF2;
+		sensor_selection.pub_timestamp = hrt_absolute_time();
 		_sensor_selection_pub.publish(sensor_selection);
 
 		if (_selected_instance != INVALID_INSTANCE) {
@@ -410,6 +412,8 @@ void EKF2Selector::PublishVehicleAttitude()
 			_delta_q_reset.copyTo(attitude.delta_q_reset);
 
 			attitude.timestamp = hrt_absolute_time();
+			attitude.publisher_id = M_EKF2;
+			attitude.pub_timestamp = hrt_absolute_time();
 			_vehicle_attitude_pub.publish(attitude);
 		}
 	}
@@ -536,6 +540,8 @@ void EKF2Selector::PublishVehicleLocalPosition()
 			local_position.delta_heading = _delta_heading_reset;
 
 			local_position.timestamp = hrt_absolute_time();
+			local_position.publisher_id = M_EKF2;
+			local_position.pub_timestamp = hrt_absolute_time();
 			_vehicle_local_position_pub.publish(local_position);
 		}
 	}
@@ -583,6 +589,8 @@ void EKF2Selector::PublishVehicleOdometry()
 			odometry.reset_counter = _odometry_reset_counter;
 
 			odometry.timestamp = hrt_absolute_time();
+			odometry.publisher_id = M_EKF2;
+			odometry.pub_timestamp = hrt_absolute_time();
 			_vehicle_odometry_pub.publish(odometry);
 		}
 	}
@@ -664,6 +672,8 @@ void EKF2Selector::PublishVehicleGlobalPosition()
 			global_position.delta_alt = _delta_alt_reset;
 
 			global_position.timestamp = hrt_absolute_time();
+			global_position.publisher_id = M_EKF2;
+			global_position.pub_timestamp = hrt_absolute_time();
 			_vehicle_global_position_pub.publish(global_position);
 		}
 	}
@@ -692,6 +702,8 @@ void EKF2Selector::PublishWindEstimate()
 		if (publish) {
 			// republish with current timestamp
 			wind.timestamp = hrt_absolute_time();
+			wind.publisher_id = M_EKF2;
+			wind.pub_timestamp = hrt_absolute_time();
 			_wind_pub.publish(wind);
 		}
 	}
@@ -858,6 +870,8 @@ void EKF2Selector::PublishEstimatorSelectorStatus()
 	}
 
 	selector_status.timestamp = hrt_absolute_time();
+	selector_status.publisher_id = M_EKF2;
+	selector_status.pub_timestamp = hrt_absolute_time();
 	_estimator_selector_status_pub.publish(selector_status);
 	_last_status_publish = selector_status.timestamp;
 }

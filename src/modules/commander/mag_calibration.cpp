@@ -418,6 +418,9 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 					worker_data->mag_worker_data_pub = orb_advertise(ORB_ID(mag_worker_data), &status);
 
 				} else {
+					mag_worker_data_s mag_worker_data;
+					mag_worker_data.publisher_id = M_COMMANDER;
+					mag_worker_data.pub_timestamp = hrt_absolute_time();
 					orb_publish(ORB_ID(mag_worker_data), worker_data->mag_worker_data_pub, &status);
 				}
 

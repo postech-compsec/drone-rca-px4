@@ -112,6 +112,8 @@ FixedwingAttitudeControl::vehicle_manual_poll(const float yaw_body)
 
 				_att_sp.timestamp = hrt_absolute_time();
 
+				_att_sp.publisher_id = M_FW_ATT_CONTROL;
+				_att_sp.pub_timestamp = hrt_absolute_time();
 				_attitude_sp_pub.publish(_att_sp);
 			}
 		}
@@ -343,6 +345,8 @@ void FixedwingAttitudeControl::Run()
 					_rates_sp.yaw = body_rates_setpoint(2);
 
 					_rates_sp.timestamp = hrt_absolute_time();
+					_rates_sp.publisher_id = M_FW_ATT_CONTROL;
+					_rates_sp.pub_timestamp = hrt_absolute_time();
 
 					_rate_sp_pub.publish(_rates_sp);
 				}
@@ -401,6 +405,8 @@ void FixedwingAttitudeControl::Run()
 
 		_landing_gear_wheel.normalized_wheel_setpoint = PX4_ISFINITE(wheel_u) ? wheel_u : 0.f;
 		_landing_gear_wheel.timestamp = hrt_absolute_time();
+		_landing_gear_wheel.publisher_id = M_FW_ATT_CONTROL;
+		_landing_gear_wheel.pub_timestamp = hrt_absolute_time();
 		_landing_gear_wheel_pub.publish(_landing_gear_wheel);
 	}
 

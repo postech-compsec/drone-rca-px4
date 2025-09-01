@@ -199,6 +199,8 @@ MulticopterAttitudeControl::generate_attitude_setpoint(const Quatf &q, float dt)
 	attitude_setpoint.thrust_body[2] = -throttle_curve(_manual_control_setpoint.throttle);
 
 	attitude_setpoint.timestamp = hrt_absolute_time();
+	attitude_setpoint.publisher_id = M_MC_ATT_CONTROL;
+	attitude_setpoint.pub_timestamp = hrt_absolute_time();
 	_vehicle_attitude_setpoint_pub.publish(attitude_setpoint);
 }
 
@@ -362,6 +364,8 @@ MulticopterAttitudeControl::Run()
 			rates_setpoint.yaw = rates_sp(2);
 			_thrust_setpoint_body.copyTo(rates_setpoint.thrust_body);
 			rates_setpoint.timestamp = hrt_absolute_time();
+			rates_setpoint.publisher_id = M_MC_ATT_CONTROL;
+			rates_setpoint.pub_timestamp = hrt_absolute_time();
 
 			_vehicle_rates_setpoint_pub.publish(rates_setpoint);
 

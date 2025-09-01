@@ -674,6 +674,8 @@ void GyroFFT::Publish()
 	_sensor_gyro_fft.sensor_sample_rate_hz = _gyro_sample_rate_hz;
 	_sensor_gyro_fft.resolution_hz = _gyro_sample_rate_hz / _imu_gyro_fft_len;
 	_sensor_gyro_fft.timestamp = hrt_absolute_time();
+	_sensor_gyro_fft.publisher_id = M_GYRO_FFT;
+	_sensor_gyro_fft.pub_timestamp = hrt_absolute_time();
 	_sensor_gyro_fft_pub.publish(_sensor_gyro_fft);
 }
 

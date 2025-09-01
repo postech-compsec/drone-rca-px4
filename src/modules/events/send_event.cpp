@@ -127,6 +127,8 @@ void SendEvent::answer_command(const vehicle_command_s &cmd, unsigned result)
 	command_ack.target_component = cmd.source_component;
 
 	uORB::Publication<vehicle_command_ack_s>	command_ack_pub{ORB_ID(vehicle_command_ack)};
+	command_ack.publisher_id = M_SEND_EVENT;
+	command_ack.pub_timestamp = hrt_absolute_time();
 	command_ack_pub.publish(command_ack);
 }
 

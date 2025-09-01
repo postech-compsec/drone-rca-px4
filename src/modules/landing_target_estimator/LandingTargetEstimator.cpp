@@ -163,6 +163,8 @@ void LandingTargetEstimator::update()
 
 			_target_pose.cov_vx_rel = covx_v;
 			_target_pose.cov_vy_rel = covy_v;
+			_target_pose.publisher_id = M_LANDING_TARGET_ESTIMATOR;
+			_target_pose.pub_timestamp = hrt_absolute_time();
 
 			if (_vehicleLocalPosition_valid && _vehicleLocalPosition.xy_valid) {
 				_target_pose.x_abs = x + _vehicleLocalPosition.x;
@@ -189,6 +191,8 @@ void LandingTargetEstimator::update()
 		_target_innovations.innov_cov_x = innov_cov_x;
 		_target_innovations.innov_y = innov_y;
 		_target_innovations.innov_cov_y = innov_cov_y;
+		_target_innovations.publisher_id = M_LANDING_TARGET_ESTIMATOR;
+		_target_innovations.pub_timestamp = hrt_absolute_time();
 
 		_targetInnovationsPub.publish(_target_innovations);
 	}
