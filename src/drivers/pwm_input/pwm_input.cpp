@@ -56,7 +56,7 @@ void
 PWMIN::start()
 {
 	// NOTE: must first publish here, first publication cannot be in interrupt context
-	_pwm_input_pub.update();
+	_pwm_input_pub.update(M_PWM_INPUT, hrt_absolute_time());
 
 	// Initialize the timer isr for measuring pulse widths. Publishing is done inside the isr.
 	timer_init();
