@@ -135,7 +135,7 @@ public:
 
 	// Publishes the embedded struct.
 	bool	update() { return Publication<T>::publish(_data); }
-	bool	update(ORB_ID _publisher_id, uint64_t _pub_timestamp)
+	bool	update(uint8_t _publisher_id, uint64_t _pub_timestamp)
 	{
 		_data.publisher_id = _publisher_id;
 		_data.pub_timestamp = _pub_timestamp;

@@ -1172,6 +1172,8 @@ void EKF2::PublishEventFlags(const hrt_abstime &timestamp)
 		event_flags.reset_hgt_to_ev                     = _ekf.information_event_flags().reset_hgt_to_ev;
 
 		event_flags.timestamp = _replay_mode ? timestamp : hrt_absolute_time();
+		event_flags.publisher_id = M_EKF2;
+		event_flags.pub_timestamp = hrt_absolute_time();
 		_estimator_event_flags_pub.update(event_flags);
 
 		_last_event_flags_publish = event_flags.timestamp;
@@ -1181,7 +1183,7 @@ void EKF2::PublishEventFlags(const hrt_abstime &timestamp)
 	} else if ((_last_event_flags_publish != 0) && (timestamp >= _last_event_flags_publish + 1_s)) {
 		// continue publishing periodically
 		_estimator_event_flags_pub.get().timestamp = _replay_mode ? timestamp : hrt_absolute_time();
-		_estimator_event_flags_pub.update();
+		_estimator_event_flags_pub.update(M_EKF2, hrt_absolute_time());
 		_last_event_flags_publish = _estimator_event_flags_pub.get().timestamp;
 	}
 }

@@ -157,7 +157,7 @@ void FakeImu::Run()
 		}
 
 		esc_status.timestamp = hrt_absolute_time();
-		_esc_status_pub.update();
+		_esc_status_pub.update(M_FAKE_IMU, hrt_absolute_time());
 	}
 
 #endif // FAKE_IMU_FAKE_ESC_STATUS

@@ -367,7 +367,7 @@ void RTL::setRtlTypeAndDestination()
 	_rtl_status_pub.get().rtl_type = static_cast<uint8_t>(_rtl_type);
 	_rtl_status_pub.get().safe_point_index = safe_point_index;
 
-	_rtl_status_pub.update();
+	_rtl_status_pub.update(M_NAVIGATOR, hrt_absolute_time());
 
 }
 

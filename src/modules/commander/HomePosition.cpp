@@ -131,6 +131,8 @@ bool HomePosition::setHomePosition(bool force)
 		home.timestamp = hrt_absolute_time();
 		home.manual_home = false;
 		home.update_count = _home_position_pub.get().update_count + 1U;
+		home.publisher_id = M_COMMANDER;
+		home.pub_timestamp = hrt_absolute_time();
 		updated = _home_position_pub.update(home);
 	}
 
@@ -202,7 +204,7 @@ void HomePosition::setInAirHomePosition()
 			setHomePosValid();
 			home.timestamp = hrt_absolute_time();
 			home.update_count++;
-			_home_position_pub.update();
+			_home_position_pub.update(M_COMMANDER, hrt_absolute_time());
 
 		} else if (!_failsafe_flags.local_position_invalid && _gps_position_for_home_valid) {
 			// Back-compute lon, lat and alt of home position given the local home position
@@ -221,7 +223,7 @@ void HomePosition::setInAirHomePosition()
 			setHomePosValid();
 			home.timestamp = hrt_absolute_time();
 			home.update_count++;
-			_home_position_pub.update();
+			_home_position_pub.update(M_COMMANDER, hrt_absolute_time());
 		}
 
 	} else if (!local_home_valid && global_home_valid) {
@@ -241,7 +243,7 @@ void HomePosition::setInAirHomePosition()
 
 			home.timestamp = hrt_absolute_time();
 			home.update_count++;
-			_home_position_pub.update();
+			_home_position_pub.update(M_COMMANDER, hrt_absolute_time());
 		}
 
 	} else if (!local_home_valid && !global_home_valid) {
@@ -282,7 +284,7 @@ bool HomePosition::setManually(double lat, double lon, float alt, float roll, fl
 
 	home.timestamp = hrt_absolute_time();
 	home.update_count++;
-	_home_position_pub.update();
+	_home_position_pub.update(M_COMMANDER, hrt_absolute_time());
 	setHomePosValid();
 	return true;
 }
@@ -306,6 +308,8 @@ void HomePosition::updateHomePositionYaw(float yaw)
 	home.yaw = yaw;
 	home.timestamp = hrt_absolute_time();
 
+	home.publisher_id = M_COMMANDER;
+	home.pub_timestamp = hrt_absolute_time();
 	_home_position_pub.update(home);
 }
 
@@ -382,6 +386,8 @@ void HomePosition::update(bool set_automatically, bool check_if_changed)
 					home.manual_home = false;
 					home.update_count = _home_position_pub.get().update_count + 1U;
 
+					home.publisher_id = M_COMMANDER;
+					home.pub_timestamp = hrt_absolute_time();
 					_home_position_pub.update(home);
 					_home_altitude_offset_applied = baro_alt_corrected - gps_alt; // offset present when home position was last corrected
 				}

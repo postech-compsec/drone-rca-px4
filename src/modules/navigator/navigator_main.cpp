@@ -112,7 +112,7 @@ Navigator::Navigator() :
 	_distance_sensor_mode_change_request_pub.advertise();
 	_distance_sensor_mode_change_request_pub.get().timestamp = hrt_absolute_time();
 	_distance_sensor_mode_change_request_pub.get().request_on_off = distance_sensor_mode_change_request_s::REQUEST_OFF;
-	_distance_sensor_mode_change_request_pub.update();
+	_distance_sensor_mode_change_request_pub.update(M_NAVIGATOR, hrt_absolute_time());
 
 	reset_triplets();
 }
@@ -1513,7 +1513,7 @@ void Navigator::publish_distance_sensor_mode_request()
 			_distance_sensor_mode_change_request_pub.get().timestamp = hrt_absolute_time();
 			_distance_sensor_mode_change_request_pub.get().request_on_off =
 				distance_sensor_mode_change_request_s::REQUEST_ON;
-			_distance_sensor_mode_change_request_pub.update();
+			_distance_sensor_mode_change_request_pub.update(M_NAVIGATOR, hrt_absolute_time());
 		}
 
 	} else if (_distance_sensor_mode_change_request_pub.get().request_on_off !=
@@ -1522,7 +1522,7 @@ void Navigator::publish_distance_sensor_mode_request()
 		_distance_sensor_mode_change_request_pub.get().timestamp = hrt_absolute_time();
 		_distance_sensor_mode_change_request_pub.get().request_on_off =
 			distance_sensor_mode_change_request_s::REQUEST_OFF;
-		_distance_sensor_mode_change_request_pub.update();
+		_distance_sensor_mode_change_request_pub.update(M_NAVIGATOR, hrt_absolute_time());
 	}
 }
 

@@ -630,7 +630,7 @@ void MulticopterPositionControl::Run()
 			_takeoff_status_pub.get().takeoff_state = takeoff_state;
 			_takeoff_status_pub.get().tilt_limit = _tilt_limit_slew_rate.getState();
 			_takeoff_status_pub.get().timestamp = hrt_absolute_time();
-			_takeoff_status_pub.update();
+			_takeoff_status_pub.update(M_MC_POS_CONTROL, hrt_absolute_time());
 		}
 	}
 

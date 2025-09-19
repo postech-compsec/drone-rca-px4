@@ -292,7 +292,7 @@ void DShot::publish_esc_status(void)
 		esc_status_pub.advertise();
 
 	} else {
-		esc_status_pub.update();
+		esc_status_pub.update(M_DSHOT, hrt_absolute_time());
 	}
 
 	// reset esc online flags
