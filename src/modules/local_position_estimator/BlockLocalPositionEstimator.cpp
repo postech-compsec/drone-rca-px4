@@ -515,11 +515,11 @@ void BlockLocalPositionEstimator::Run()
 
 		_pub_innov.get().timestamp_sample = _timeStamp;
 		_pub_innov.get().timestamp = hrt_absolute_time();
-		_pub_innov.update();
+		_pub_innov.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 
 		_pub_innov_var.get().timestamp_sample = _timeStamp;
 		_pub_innov_var.get().timestamp = hrt_absolute_time();
-		_pub_innov_var.update();
+		_pub_innov_var.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 
 		if ((_estimatorInitialized & EST_XY) && (_map_ref.isInitialized() || _param_lpe_fake_origin.get())) {
 			publishGlobalPos();
@@ -646,7 +646,7 @@ void BlockLocalPositionEstimator::publishLocalPos()
 		_pub_lpos.get().hagl_max_z = INFINITY;
 		_pub_lpos.get().hagl_max_xy = INFINITY;
 		_pub_lpos.get().timestamp = hrt_absolute_time();;
-		_pub_lpos.update();
+		_pub_lpos.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 	}
 }
 
@@ -717,7 +717,7 @@ void BlockLocalPositionEstimator::publishOdom()
 		_pub_odom.get().velocity_variance[2] = m_P(X_vz, X_vz);
 
 		_pub_odom.get().timestamp = hrt_absolute_time();
-		_pub_odom.update();
+		_pub_odom.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 	}
 }
 
@@ -762,7 +762,7 @@ void BlockLocalPositionEstimator::publishEstimatorStatus()
 
 	_pub_est_states.get().n_states = n_x;
 	_pub_est_states.get().timestamp = hrt_absolute_time();
-	_pub_est_states.update();
+	_pub_est_states.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 
 	// estimator_status
 	_pub_est_status.get().timestamp_sample = _timeStamp;
@@ -772,7 +772,7 @@ void BlockLocalPositionEstimator::publishEstimatorStatus()
 	_pub_est_status.get().pos_vert_accuracy = _pub_gpos.get().epv;
 
 	_pub_est_status.get().timestamp = hrt_absolute_time();
-	_pub_est_status.update();
+	_pub_est_status.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 }
 
 void BlockLocalPositionEstimator::publishGlobalPos()
@@ -814,7 +814,7 @@ void BlockLocalPositionEstimator::publishGlobalPos()
 		_pub_gpos.get().terrain_alt_valid = _estimatorInitialized & EST_TZ;
 		_pub_gpos.get().dead_reckoning = !(_estimatorInitialized & EST_XY);
 		_pub_gpos.get().timestamp = hrt_absolute_time();
-		_pub_gpos.update();
+		_pub_gpos.update(M_LOCAL_POSITION_ESTIMATOR, hrt_absolute_time());
 	}
 }
 

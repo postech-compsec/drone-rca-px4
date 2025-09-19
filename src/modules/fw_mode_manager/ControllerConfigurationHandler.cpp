@@ -68,12 +68,16 @@ void CombinedControllerConfigurationHandler::update(const hrt_abstime now)
 
 	if (_longitudinal_updated || now - _time_last_longitudinal_publish > 1_s) {
 		_longitudinal_configuration_current_cycle.timestamp = now;
+		_longitudinal_configuration_current_cycle.publisher_id = M_FW_MODE_MANAGER;
+		_longitudinal_configuration_current_cycle.pub_timestamp = hrt_absolute_time();
 		_longitudinal_publisher.update(_longitudinal_configuration_current_cycle);
 		_time_last_longitudinal_publish = _longitudinal_configuration_current_cycle.timestamp;
 	}
 
 	if (_lateral_updated || now - _time_last_lateral_publish > 1_s) {
 		_lateral_configuration_current_cycle.timestamp = now;
+		_lateral_configuration_current_cycle.publisher_id = M_FW_MODE_MANAGER;
+		_lateral_configuration_current_cycle.pub_timestamp = hrt_absolute_time();
 		_lateral_publisher.update(_lateral_configuration_current_cycle);
 		_time_last_lateral_publish = _lateral_configuration_current_cycle.timestamp;
 	}
