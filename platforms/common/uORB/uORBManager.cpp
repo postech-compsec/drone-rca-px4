@@ -79,6 +79,7 @@ bool uORB::Manager::terminate()
 
 uORB::Manager::Manager()
 {
+	sub_info_pub = nullptr;
 #ifdef ORB_USE_PUBLISHER_RULES
 	const char *file_name = PX4_STORAGEDIR"/orb_publisher.rules";
 	int ret = readPublisherRulesFromFile(file_name, _publisher_rule);
@@ -445,7 +446,7 @@ void uORB::Manager::orb_remove_internal_subscriber(void *node_handle)
 
 uint8_t uORB::Manager::orb_get_queue_size(const void *node_handle) { return static_cast<const DeviceNode *>(node_handle)->get_queue_size(); }
 
-bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated)
+bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated, uint64_t _timestamp, uint8_t orb_id, uint8_t _subscriber_id)
 {
 	if (!is_advertised(node_handle)) {
 		return false;
@@ -453,6 +454,19 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 
 	if (only_if_updated && !static_cast<const uORB::DeviceNode *>(node_handle)->updates_available(generation)) {
 		return false;
+	}
+
+	subscription_info_s sub_info{};
+	sub_info.timestamp = _timestamp;
+	sub_info.subscriber_id = _subscriber_id;
+	sub_info.topic_id = orb_id;
+
+	auto *mgr = uORB::Manager::get_instance();
+	if(mgr->sub_info_pub == nullptr){
+		mgr->sub_info_pub = ::orb_advertise(ORB_ID(subscription_info), &sub_info);
+	}
+	else{
+		::orb_publish(ORB_ID(subscription_info), mgr->sub_info_pub, &sub_info);
 	}
 
 	return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
