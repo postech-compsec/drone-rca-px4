@@ -1091,8 +1091,8 @@ void SimulatorMavlink::send()
 			// Got new data to read, update all topics.
 			parameters_update(false);
 			check_failure_injections();
-			_vehicle_status_sub.update(&_vehicle_status);
-			_battery_status_sub.update(&_battery_status);
+			_vehicle_status_sub.update(&_vehicle_status, M_SIMULATOR_MAVLINK);
+			_battery_status_sub.update(&_battery_status, M_SIMULATOR_MAVLINK);
 
 			// Wait for other modules, such as logger or ekf2
 			px4_lockstep_wait_for_components();

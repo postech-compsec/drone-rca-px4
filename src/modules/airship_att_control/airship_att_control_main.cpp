@@ -137,7 +137,7 @@ AirshipAttitudeControl::Run()
 		_manual_control_setpoint_sub.update(&_manual_control_setpoint);
 
 		/* check for updates in vehicle status topic */
-		_vehicle_status_sub.update(&_vehicle_status);
+		_vehicle_status_sub.update(&_vehicle_status, M_AIRSHIP_ATT_CONTROL);
 
 		parameter_update_poll();
 	}

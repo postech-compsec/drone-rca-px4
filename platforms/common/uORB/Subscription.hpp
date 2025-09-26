@@ -141,10 +141,10 @@ public:
 	 * Update the struct
 	 * @param dst The uORB message struct we are updating.
 	 */
-	bool update(void *dst)
+	bool update(void *dst, uint8_t _subscriber_id = 0)
 	{
 		if (subscribe()) {
-			return Manager::orb_data_copy(_node, dst, _last_generation, true);
+			return Manager::orb_data_copy(_node, dst, _last_generation, true, hrt_absolute_time(), static_cast<uint8_t>(_orb_id), _subscriber_id);
 		}
 
 		return false;

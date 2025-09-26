@@ -461,6 +461,12 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 	sub_info.subscriber_id = _subscriber_id;
 	sub_info.topic_id = orb_id;
 
+	/* For pub only valid things
+	if(_subscriber_id == 0){
+		return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
+	}
+	*/
+
 	auto *mgr = uORB::Manager::get_instance();
 	if(mgr->sub_info_pub == nullptr){
 		mgr->sub_info_pub = ::orb_advertise(ORB_ID(subscription_info), &sub_info);
