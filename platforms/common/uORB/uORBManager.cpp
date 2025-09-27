@@ -376,7 +376,7 @@ int uORB::Manager::orb_publish(const struct orb_metadata *meta, orb_advert_t han
 	return uORB::DeviceNode::publish(meta, handle, data);
 }
 
-int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer)
+int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint64_t _timestamp, uint8_t orb_id, uint8_t _subscriber_id)
 {
 	int ret;
 
@@ -389,6 +389,25 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	if (ret != (int)meta->o_size) {
 		errno = EIO;
 		return PX4_ERROR;
+	}
+
+	subscription_info_s sub_info{};
+	sub_info.timestamp = _timestamp;
+	sub_info.subscriber_id = _subscriber_id;
+	sub_info.topic_id = orb_id;
+
+	/* For pub only valid things
+	if(_subscriber_id == 0){
+		return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
+	}
+	*/
+
+	auto *mgr = uORB::Manager::get_instance();
+	if(mgr->sub_info_pub == nullptr){
+		mgr->sub_info_pub = ::orb_advertise(ORB_ID(subscription_info), &sub_info);
+	}
+	else{
+		::orb_publish(ORB_ID(subscription_info), mgr->sub_info_pub, &sub_info);
 	}
 
 	return PX4_OK;
