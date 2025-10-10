@@ -45,18 +45,18 @@ bool SubscriptionInterval::updated()
 	return false;
 }
 
-bool SubscriptionInterval::update(void *dst)
+bool SubscriptionInterval::update(void *dst, uint8_t _subscriber_id)
 {
 	if (updated()) {
-		return copy(dst);
+		return copy(dst, _subscriber_id);
 	}
 
 	return false;
 }
 
-bool SubscriptionInterval::copy(void *dst)
+bool SubscriptionInterval::copy(void *dst, uint8_t _subscriber_id)
 {
-	if (_subscription.copy(dst)) {
+	if (_subscription.copy(dst, _subscriber_id)) {
 		const hrt_abstime now = hrt_absolute_time();
 
 		// make sure we don't set a timestamp before the timer started counting (now - _interval_us would wrap because it's unsigned)

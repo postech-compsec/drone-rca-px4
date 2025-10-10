@@ -100,14 +100,14 @@ public:
 	 * @param dst The destination pointer where the struct will be copied.
 	 * @return true only if topic was updated and copied successfully.
 	 */
-	bool update(void *dst);
+	bool update(void *dst, uint8_t _subscriber_id = 0);
 
 	/**
 	 * Copy the struct
 	 * @param dst The destination pointer where the struct will be copied.
 	 * @return true only if topic was copied successfully.
 	 */
-	bool copy(void *dst);
+	bool copy(void *dst, uint8_t _subscriber_id = 0);
 
 	bool		valid() const { return _subscription.valid(); }
 

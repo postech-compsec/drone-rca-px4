@@ -228,7 +228,7 @@ public:
 	SubscriptionData &operator=(SubscriptionData &&) = delete;
 
 	// update the embedded struct.
-	bool update() { return Subscription::update((void *)(&_data)); }
+	bool update(uint8_t _subscriber_id = 0) { return Subscription::update((void *)(&_data), _subscriber_id); }
 
 	const T &get() const { return _data; }
 

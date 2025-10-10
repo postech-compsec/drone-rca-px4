@@ -127,10 +127,10 @@ public:
 	 *
 	 * @return true only if topic was updated and copied successfully.
 	 */
-	bool updateBlocking(T &data, uint32_t timeout_us = 0)
+	bool updateBlocking(T &data, uint32_t timeout_us = 0, uint8_t _subscriber_id = 0)
 	{
 		if (updatedBlocking(timeout_us)) {
-			return copy(&data);
+			return copy(&data, _subscriber_id);
 		}
 
 		return false;
