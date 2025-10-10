@@ -171,7 +171,7 @@ void SimulatorMavlink::send_esc_telemetry(mavlink_hil_actuator_controls_t hil_ac
 
 void SimulatorMavlink::send_controls()
 {
-	orb_copy(ORB_ID(actuator_outputs), _actuator_outputs_sub, &_actuator_outputs);
+	orb_copy_w_subid(ORB_ID(actuator_outputs), _actuator_outputs_sub, &_actuator_outputs, M_SIMULATOR_MAVLINK);
 
 	if (_actuator_outputs.timestamp > 0) {
 		mavlink_hil_actuator_controls_t hil_act_control;

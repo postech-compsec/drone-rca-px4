@@ -201,6 +201,11 @@ extern int	orb_unsubscribe(int handle) __EXPORT;
 extern int	orb_copy(const struct orb_metadata *meta, int handle, void *buffer) __EXPORT;
 
 /**
+ * @see uORB::Manager::orb_copy()
+ */
+extern int	orb_copy_w_subid(const struct orb_metadata *meta, int handle, void *buffer, uint8_t _subscriber_id) __EXPORT;
+
+/**
  * @see uORB::Manager::orb_check()
  */
 extern int	orb_check(int handle, bool *updated) __EXPORT;

@@ -153,6 +153,11 @@ int orb_copy(const struct orb_metadata *meta, int handle, void *buffer)
 	return uORB::Manager::get_instance()->orb_copy(meta, handle, buffer);
 }
 
+int orb_copy_w_subid(const struct orb_metadata *meta, int handle, void *buffer, uint8_t _subscriber_id)
+{
+	return uORB::Manager::get_instance()->orb_copy(meta, handle, buffer, _subscriber_id);
+}
+
 int orb_check(int handle, bool *updated)
 {
 	return uORB::Manager::get_instance()->orb_check(handle, updated);
