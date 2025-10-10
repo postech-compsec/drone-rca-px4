@@ -351,7 +351,7 @@ AirspeedModule::Run()
 
 	parameter_update_s update;
 
-	if (_parameter_update_sub.update(&update)) {
+	if (_parameter_update_sub.update(&update, M_AIRSPEED_SELECTOR)) {
 		update_params();
 	}
 
@@ -415,7 +415,7 @@ AirspeedModule::Run()
 					|| (PX4_ISFINITE(_ground_minus_wind_CAS) && _ground_minus_wind_CAS > _param_fw_airspd_stall.get());
 
 					launch_detection_status_s launch_detection_status{};
-					_launch_detection_status_sub.copy(&launch_detection_status);
+					_launch_detection_status_sub.copy(&launch_detection_status, M_AIRSPEED_SELECTOR);
 					const bool launch_detection_flying = launch_detection_status.launch_detection_state ==
 									     launch_detection_status_s::STATE_FLYING
 									     && !_vehicle_land_detected.landed;
@@ -543,7 +543,7 @@ void AirspeedModule::poll_topics()
 	if (_estimator_selector_status_sub.updated()) {
 		estimator_selector_status_s estimator_selector_status;
 
-		if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.copy(&estimator_selector_status, M_AIRSPEED_SELECTOR)) {
 			if (estimator_selector_status.primary_instance != _estimator_status_sub.get_instance()) {
 				_estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance);
 			}
@@ -835,7 +835,7 @@ void AirspeedModule::update_throttle_filter(hrt_abstime now)
 {
 	if (_vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
 		vehicle_thrust_setpoint_s vehicle_thrust_setpoint_0{};
-		_vehicle_thrust_setpoint_0_sub.copy(&vehicle_thrust_setpoint_0);
+		_vehicle_thrust_setpoint_0_sub.copy(&vehicle_thrust_setpoint_0, M_AIRSPEED_SELECTOR);
 
 		float forward_thrust = vehicle_thrust_setpoint_0.xyz[0];
 

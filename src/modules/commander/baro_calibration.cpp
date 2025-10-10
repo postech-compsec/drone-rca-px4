@@ -108,7 +108,7 @@ int do_baro_calibration(orb_advert_t *mavlink_log_pub)
 		for (auto &gps_sub : sensor_gps_subs) {
 			sensor_gps_s sensor_gps;
 
-			if (gps_sub.update(&sensor_gps)) {
+			if (gps_sub.update(&sensor_gps, M_COMMANDER)) {
 				if ((hrt_elapsed_time(&sensor_gps.timestamp) < 1_s)
 				    && (sensor_gps.fix_type >= 2) && (sensor_gps.epv < 100)) {
 

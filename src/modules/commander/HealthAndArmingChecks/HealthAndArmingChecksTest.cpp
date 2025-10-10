@@ -160,7 +160,7 @@ TEST_F(ReporterTest, reporting)
 	event_sub.subscribe();
 	event_s event;
 
-	while (event_sub.update(&event)); // clear all updates
+	while (event_sub.update(&event, M_COMMANDER)); // clear all updates
 
 	for (int j = 0; j < 2; ++j) { // test with and without additional report arguments
 		const bool with_arg = j == 0;
@@ -182,9 +182,9 @@ TEST_F(ReporterTest, reporting)
 			ASSERT_FALSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));
 
 			if (i == 0) {
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 				ASSERT_EQ(event.id, events::ID("commander_arming_check_summary"));
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 
 				if (with_arg) {
 					ASSERT_EQ(event.id, events::ID("arming_test_reporting_fail1"));
@@ -193,7 +193,7 @@ TEST_F(ReporterTest, reporting)
 					ASSERT_EQ(event.id, events::ID("arming_test_reporting_fail2"));
 				}
 
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 				ASSERT_EQ(event.id, events::ID("commander_health_summary"));
 
 			} else {
@@ -223,9 +223,9 @@ TEST_F(ReporterTest, reporting)
 			ASSERT_FALSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));
 
 			if (i == 0) {
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 				ASSERT_EQ(event.id, events::ID("commander_arming_check_summary"));
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 
 				if (with_arg) {
 					ASSERT_EQ(event.id, events::ID("arming_test_reporting_fail3"));
@@ -234,7 +234,7 @@ TEST_F(ReporterTest, reporting)
 					ASSERT_EQ(event.id, events::ID("arming_test_reporting_fail4"));
 				}
 
-				ASSERT_TRUE(event_sub.update(&event));
+				ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 				ASSERT_EQ(event.id, events::ID("commander_health_summary"));
 
 			} else {
@@ -254,7 +254,7 @@ TEST_F(ReporterTest, reporting_multiple)
 	event_sub.subscribe();
 	event_s event;
 
-	while (event_sub.update(&event)); // clear all updates
+	while (event_sub.update(&event, M_COMMANDER)); // clear all updates
 
 	for (int i = 0; i < 3; ++i) {
 		reporter.reset();
@@ -269,15 +269,15 @@ TEST_F(ReporterTest, reporting_multiple)
 		ASSERT_FALSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));
 
 		if (i == 0) {
-			ASSERT_TRUE(event_sub.update(&event));
+			ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 			ASSERT_EQ(event.id, events::ID("commander_arming_check_summary"));
-			ASSERT_TRUE(event_sub.update(&event));
+			ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 			ASSERT_EQ(event.id, events::ID("arming_test_reporting_multiple_fail1"));
-			ASSERT_TRUE(event_sub.update(&event));
+			ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 			ASSERT_EQ(event.id, events::ID("arming_test_reporting_multiple_fail2"));
-			ASSERT_TRUE(event_sub.update(&event));
+			ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 			ASSERT_EQ(event.id, events::ID("arming_test_reporting_multiple_fail3"));
-			ASSERT_TRUE(event_sub.update(&event));
+			ASSERT_TRUE(event_sub.update(&event, M_COMMANDER));
 			ASSERT_EQ(event.id, events::ID("commander_health_summary"));
 
 		} else {

@@ -43,7 +43,7 @@ void WindChecks::checkAndReport(const Context &context, Report &reporter)
 	wind_s wind_estimate;
 	const hrt_abstime now = hrt_absolute_time();
 
-	if (_wind_sub.copy(&wind_estimate)) {
+	if (_wind_sub.copy(&wind_estimate, M_COMMANDER)) {
 		const matrix::Vector2f wind(wind_estimate.windspeed_north, wind_estimate.windspeed_east);
 
 		// publish a warning if it's the first since in air or 60s have passed since the last warning

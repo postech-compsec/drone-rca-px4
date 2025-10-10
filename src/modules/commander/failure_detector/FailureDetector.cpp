@@ -310,7 +310,7 @@ void FailureDetector::updateImbalancedPropStatus()
 	if (_sensor_selection_sub.updated()) {
 		sensor_selection_s selection;
 
-		if (_sensor_selection_sub.copy(&selection)) {
+		if (_sensor_selection_sub.copy(&selection, M_COMMANDER)) {
 			_selected_accel_device_id = selection.accel_device_id;
 		}
 	}
@@ -319,7 +319,7 @@ void FailureDetector::updateImbalancedPropStatus()
 
 	// Find the imu_status instance corresponding to the selected accelerometer
 	vehicle_imu_status_s imu_status{};
-	_vehicle_imu_status_sub.copy(&imu_status);
+	_vehicle_imu_status_sub.copy(&imu_status, M_COMMANDER);
 
 	if (imu_status.accel_device_id != _selected_accel_device_id) {
 
@@ -328,7 +328,7 @@ void FailureDetector::updateImbalancedPropStatus()
 				continue;
 			}
 
-			if (_vehicle_imu_status_sub.copy(&imu_status)
+			if (_vehicle_imu_status_sub.copy(&imu_status, M_COMMANDER)
 			    && (imu_status.accel_device_id == _selected_accel_device_id)) {
 				// instance found
 				break;
@@ -338,7 +338,7 @@ void FailureDetector::updateImbalancedPropStatus()
 
 	if (updated) {
 
-		if (_vehicle_imu_status_sub.copy(&imu_status)) {
+		if (_vehicle_imu_status_sub.copy(&imu_status, M_COMMANDER)) {
 
 			if ((imu_status.accel_device_id != 0)
 			    && (imu_status.accel_device_id == _selected_accel_device_id)) {
@@ -381,7 +381,7 @@ void FailureDetector::updateMotorStatus(const vehicle_status_s &vehicle_status, 
 		const int limited_esc_count = math::min(esc_status.esc_count, esc_status_s::CONNECTED_ESC_MAX);
 
 		actuator_motors_s actuator_motors{};
-		_actuator_motors_sub.copy(&actuator_motors);
+		_actuator_motors_sub.copy(&actuator_motors, M_COMMANDER);
 
 		// Check individual ESC reports
 		for (int esc_status_idx = 0; esc_status_idx < limited_esc_count; esc_status_idx++) {

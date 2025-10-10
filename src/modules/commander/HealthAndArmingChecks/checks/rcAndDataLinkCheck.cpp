@@ -40,7 +40,7 @@ void RcAndDataLinkChecks::checkAndReport(const Context &context, Report &reporte
 	// RC
 	manual_control_setpoint_s manual_control_setpoint;
 
-	if (!_manual_control_setpoint_sub.copy(&manual_control_setpoint)) {
+	if (!_manual_control_setpoint_sub.copy(&manual_control_setpoint, M_COMMANDER)) {
 		manual_control_setpoint = {};
 		reporter.failsafeFlags().manual_control_signal_lost = true;
 	}

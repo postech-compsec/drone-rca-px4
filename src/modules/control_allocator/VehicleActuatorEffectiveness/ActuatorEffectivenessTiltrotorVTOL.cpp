@@ -110,14 +110,14 @@ void ActuatorEffectivenessTiltrotorVTOL::allocateAuxilaryControls(const float dt
 		// apply flaps
 		normalized_unsigned_setpoint_s flaps_setpoint;
 
-		if (_flaps_setpoint_sub.copy(&flaps_setpoint)) {
+		if (_flaps_setpoint_sub.copy(&flaps_setpoint, M_CONTROL_ALLOCATOR)) {
 			_control_surfaces.applyFlaps(flaps_setpoint.normalized_setpoint, _first_control_surface_idx, dt, actuator_sp);
 		}
 
 		// apply spoilers
 		normalized_unsigned_setpoint_s spoilers_setpoint;
 
-		if (_spoilers_setpoint_sub.copy(&spoilers_setpoint)) {
+		if (_spoilers_setpoint_sub.copy(&spoilers_setpoint, M_CONTROL_ALLOCATOR)) {
 			_control_surfaces.applySpoilers(spoilers_setpoint.normalized_setpoint, _first_control_surface_idx, dt, actuator_sp);
 		}
 	}
@@ -131,7 +131,7 @@ void ActuatorEffectivenessTiltrotorVTOL::updateSetpoint(const matrix::Vector<flo
 	if (matrix_index == 0) {
 		tiltrotor_extra_controls_s tiltrotor_extra_controls;
 
-		if (_tiltrotor_extra_controls_sub.copy(&tiltrotor_extra_controls)) {
+		if (_tiltrotor_extra_controls_sub.copy(&tiltrotor_extra_controls, M_CONTROL_ALLOCATOR)) {
 			float control_collective_tilt = tiltrotor_extra_controls.collective_tilt_normalized_setpoint * 2.f - 1.f;
 
 			// set control_collective_tilt to exactly -1 or 1 if close to these end points

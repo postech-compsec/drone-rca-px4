@@ -48,7 +48,7 @@ void LoggerChecks::checkAndReport(const Context &context, Report &reporter)
 	if (_sdlog_mode >= 0) {
 		if (_logger_status_sub.advertised()) {
 			logger_status_s status;
-			_logger_status_sub.copy(&status);
+			_logger_status_sub.copy(&status, M_COMMANDER);
 
 			if (hrt_elapsed_time(&status.timestamp) < 3_s && status.is_logging) {
 				active = true;

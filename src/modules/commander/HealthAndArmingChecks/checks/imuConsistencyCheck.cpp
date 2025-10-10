@@ -37,7 +37,7 @@ void ImuConsistencyChecks::checkAndReport(const Context &context, Report &report
 {
 	sensors_status_imu_s imu;
 
-	if (!_sensors_status_imu_sub.copy(&imu) || context.isArmed()) {
+	if (!_sensors_status_imu_sub.copy(&imu, M_COMMANDER) || context.isArmed()) {
 		return;
 	}
 

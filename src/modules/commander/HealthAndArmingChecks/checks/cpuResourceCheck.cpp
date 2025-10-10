@@ -52,7 +52,7 @@ void CpuResourceChecks::checkAndReport(const Context &context, Report &reporter)
 
 	cpuload_s cpuload;
 
-	if (!_cpuload_sub.copy(&cpuload) || hrt_elapsed_time(&cpuload.timestamp) > 2_s) {
+	if (!_cpuload_sub.copy(&cpuload, M_COMMANDER) || hrt_elapsed_time(&cpuload.timestamp) > 2_s) {
 
 		/* EVENT
 		 * @description

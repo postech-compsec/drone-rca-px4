@@ -82,7 +82,7 @@ EscBattery::Run()
 
 	esc_status_s esc_status;
 
-	if (_esc_status_sub.copy(&esc_status)) {
+	if (_esc_status_sub.copy(&esc_status, M_ESC_BATTERY)) {
 
 		if (esc_status.esc_count == 0 || esc_status.esc_count > esc_status_s::CONNECTED_ESC_MAX) {
 			return;

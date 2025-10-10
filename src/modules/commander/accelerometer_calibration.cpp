@@ -432,7 +432,7 @@ int do_accel_calibration_quick(orb_advert_t *mavlink_log_pub)
 	// sensor thermal corrections (optional)
 	uORB::Subscription sensor_correction_sub{ORB_ID(sensor_correction)};
 	sensor_correction_s sensor_correction{};
-	sensor_correction_sub.copy(&sensor_correction);
+	sensor_correction_sub.copy(&sensor_correction, M_COMMANDER);
 
 	uORB::SubscriptionMultiArray<sensor_accel_s, MAX_ACCEL_SENS> accel_subs{ORB_ID::sensor_accel};
 

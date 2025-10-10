@@ -163,7 +163,7 @@ float FlightTaskManualAccelerationSlow::getInputFromSanitizedAuxParameterIndex(i
 bool FlightTaskManualAccelerationSlow::haveTakenOff()
 {
 	takeoff_status_s takeoff_status{};
-	_takeoff_status_sub.copy(&takeoff_status);
+	_takeoff_status_sub.copy(&takeoff_status, M_FLIGHT_MODE_MANAGER);
 
 	return takeoff_status.takeoff_state == takeoff_status_s::TAKEOFF_STATE_FLIGHT;
 }

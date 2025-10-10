@@ -99,7 +99,7 @@ void BatteryChecks::checkAndReport(const Context &context, Report &reporter)
 		int index = battery_sub.get_instance();
 		battery_status_s battery;
 
-		if (!battery_sub.copy(&battery)) {
+		if (!battery_sub.copy(&battery, M_COMMANDER)) {
 			continue;
 		}
 
@@ -306,7 +306,7 @@ void BatteryChecks::rtlEstimateCheck(const Context &context, Report &reporter, f
 	// add hysteresis: if already in the condition, only get out of it if the remaining flight time is significantly higher again
 	const float hysteresis_factor = reporter.failsafeFlags().battery_low_remaining_time ? 1.1f : 1.0f;
 
-	reporter.failsafeFlags().battery_low_remaining_time = _rtl_time_estimate_sub.copy(&rtl_time_estimate)
+	reporter.failsafeFlags().battery_low_remaining_time = _rtl_time_estimate_sub.copy(&rtl_time_estimate, M_COMMANDER)
 			&& (hrt_absolute_time() - rtl_time_estimate.timestamp) < 3_s
 			&& rtl_time_estimate.valid
 			&& context.isArmed()

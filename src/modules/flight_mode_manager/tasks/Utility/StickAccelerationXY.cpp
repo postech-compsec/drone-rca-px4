@@ -193,7 +193,7 @@ void StickAccelerationXY::applyTiltLimit(Vector2f &acceleration)
 {
 	// fetch the tilt limit which is lower than the maximum during takeoff
 	takeoff_status_s takeoff_status{};
-	_takeoff_status_sub.copy(&takeoff_status);
+	_takeoff_status_sub.copy(&takeoff_status, M_FLIGHT_MODE_MANAGER);
 
 	// Check if acceleration would exceed the tilt limit
 	const float acc = acceleration.length();

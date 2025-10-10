@@ -166,7 +166,7 @@ void AnalogBattery::updateTopics()
 {
 	vehicle_status_s vehicle_status;
 
-	if (_vehicle_status_sub.update(&vehicle_status)) {
+	if (_vehicle_status_sub.update(&vehicle_status, M_BATTERY_STATUS)) {
 		_arming_state = vehicle_status.arming_state;
 	}
 }

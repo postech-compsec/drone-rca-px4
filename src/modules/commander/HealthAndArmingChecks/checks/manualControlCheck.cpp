@@ -43,7 +43,7 @@ void ManualControlChecks::checkAndReport(const Context &context, Report &reporte
 
 	manual_control_switches_s manual_control_switches;
 
-	if (_manual_control_switches_sub.copy(&manual_control_switches)) {
+	if (_manual_control_switches_sub.copy(&manual_control_switches, M_COMMANDER)) {
 
 		// check action switches
 		if (manual_control_switches.return_switch == manual_control_switches_s::SWITCH_POS_ON) {

@@ -70,14 +70,14 @@ CameraFeedback::Run()
 
 	camera_trigger_s trig{};
 
-	while (_trigger_sub.update(&trig)) {
+	while (_trigger_sub.update(&trig, M_CAMERA_FEEDBACK)) {
 
 		// update geotagging subscriptions
 		vehicle_global_position_s gpos{};
-		_gpos_sub.copy(&gpos);
+		_gpos_sub.copy(&gpos, M_CAMERA_FEEDBACK);
 
 		vehicle_attitude_s att{};
-		_att_sub.copy(&att);
+		_att_sub.copy(&att, M_CAMERA_FEEDBACK);
 
 		if (trig.timestamp == 0 ||
 		    gpos.timestamp == 0 ||
@@ -116,7 +116,7 @@ CameraFeedback::Run()
 		// Fill attitude data
 		gimbal_device_attitude_status_s gimbal{};
 
-		if (_gimbal_sub.copy(&gimbal) && (hrt_elapsed_time(&gimbal.timestamp) < 1_s)) {
+		if (_gimbal_sub.copy(&gimbal, M_CAMERA_FEEDBACK) && (hrt_elapsed_time(&gimbal.timestamp) < 1_s)) {
 			if (gimbal.device_flags & gimbal_device_attitude_status_s::DEVICE_FLAGS_YAW_LOCK) {
 				// Gimbal yaw angle is absolute angle relative to North
 				capture.q[0] = gimbal.q[0];

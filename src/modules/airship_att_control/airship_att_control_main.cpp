@@ -72,7 +72,7 @@ AirshipAttitudeControl::parameter_update_poll()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_AIRSHIP_ATT_CONTROL);
 
 		// update parameters from storage
 		updateParams();
@@ -127,7 +127,7 @@ AirshipAttitudeControl::Run()
 	/* run controller on gyro changes */
 	vehicle_angular_velocity_s angular_velocity;
 
-	if (_vehicle_angular_velocity_sub.update(&angular_velocity)) {
+	if (_vehicle_angular_velocity_sub.update(&angular_velocity, M_AIRSHIP_ATT_CONTROL)) {
 
 		/* run the rate controller immediately after a gyro update */
 		publishThrustSetpoint(angular_velocity.timestamp_sample);

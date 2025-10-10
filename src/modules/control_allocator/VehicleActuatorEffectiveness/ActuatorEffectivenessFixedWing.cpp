@@ -73,14 +73,14 @@ void ActuatorEffectivenessFixedWing::allocateAuxilaryControls(const float dt, in
 	// apply flaps
 	normalized_unsigned_setpoint_s flaps_setpoint;
 
-	if (_flaps_setpoint_sub.copy(&flaps_setpoint)) {
+	if (_flaps_setpoint_sub.copy(&flaps_setpoint, M_CONTROL_ALLOCATOR)) {
 		_control_surfaces.applyFlaps(flaps_setpoint.normalized_setpoint, _first_control_surface_idx, dt, actuator_sp);
 	}
 
 	// apply spoilers
 	normalized_unsigned_setpoint_s spoilers_setpoint;
 
-	if (_spoilers_setpoint_sub.copy(&spoilers_setpoint)) {
+	if (_spoilers_setpoint_sub.copy(&spoilers_setpoint, M_CONTROL_ALLOCATOR)) {
 		_control_surfaces.applySpoilers(spoilers_setpoint.normalized_setpoint, _first_control_surface_idx, dt, actuator_sp);
 	}
 }

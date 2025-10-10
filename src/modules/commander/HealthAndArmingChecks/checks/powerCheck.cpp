@@ -77,7 +77,7 @@ void PowerChecks::checkAndReport(const Context &context, Report &reporter)
 
 	system_power_s system_power;
 
-	if (_system_power_sub.copy(&system_power)) {
+	if (_system_power_sub.copy(&system_power, M_COMMANDER)) {
 		// Check avionics rail voltages (if USB isn't connected)
 		if (!system_power.usb_connected) {
 			float avionics_power_rail_voltage = system_power.voltage5v_v;

@@ -290,7 +290,7 @@ void AttitudeEstimatorQ::update_sensors()
 {
 	sensor_combined_s sensors;
 
-	if (_sensors_sub.update(&sensors)) {
+	if (_sensors_sub.update(&sensors, M_ATTITUDE_ESTIMATOR_Q)) {
 		// update validator with recent sensor data
 		if (sensors.timestamp > 0) {
 			_imu_timestamp = sensors.timestamp;
@@ -403,7 +403,7 @@ void AttitudeEstimatorQ::update_parameters(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_ATTITUDE_ESTIMATOR_Q);
 
 		// update parameters from storage
 		updateParams();

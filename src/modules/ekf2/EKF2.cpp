@@ -2112,7 +2112,7 @@ void EKF2::UpdateAirspeedSample(ekf2_timestamps_s &ekf2_timestamps)
 	if (_airspeed_validated_sub.updated()) {
 		airspeed_validated_s airspeed_validated;
 
-		if (_airspeed_validated_sub.update(&airspeed_validated)) {
+		if (_airspeed_validated_sub.update(&airspeed_validated, M_EKF2)) {
 
 			if (PX4_ISFINITE(airspeed_validated.true_airspeed_m_s)
 			    && (airspeed_validated.airspeed_source > airspeed_validated_s::GROUND_MINUS_WIND)

@@ -41,7 +41,7 @@ void OffboardChecks::checkAndReport(const Context &context, Report &reporter)
 
 	offboard_control_mode_s offboard_control_mode;
 
-	if (_offboard_control_mode_sub.copy(&offboard_control_mode)) {
+	if (_offboard_control_mode_sub.copy(&offboard_control_mode, M_COMMANDER)) {
 
 		bool data_is_recent = hrt_absolute_time() < offboard_control_mode.timestamp
 				      + static_cast<hrt_abstime>(_param_com_of_loss_t.get() * 1_s);

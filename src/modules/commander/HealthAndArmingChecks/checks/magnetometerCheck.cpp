@@ -196,7 +196,7 @@ void MagnetometerChecks::consistencyCheck(const Context &context, Report &report
 
 	sensor_preflight_mag_s sensors;
 
-	if (!_sensor_preflight_mag_sub.copy(&sensors)) {
+	if (!_sensor_preflight_mag_sub.copy(&sensors, M_COMMANDER)) {
 		// can happen if not advertised (yet)
 		return;
 	}
