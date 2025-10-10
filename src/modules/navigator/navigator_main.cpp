@@ -202,7 +202,7 @@ void Navigator::run()
 
 		if (fds[2].revents & POLLIN) {
 			mission_s mission;
-			orb_cop_w_subid(ORB_ID(mission), _mission_sub, &mission, M_NAVIGATOR);
+			orb_copy_w_subid(ORB_ID(mission), _mission_sub, &mission, M_NAVIGATOR);
 
 			if (mission.geofence_id != geofence_id) {
 				geofence_id = mission.geofence_id;
