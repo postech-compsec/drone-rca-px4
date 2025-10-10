@@ -306,7 +306,7 @@ bool FlightTaskAutoFollowTarget::update()
 	float raw_orbit_angle_setpoint{NAN};
 
 	// Get the latest target estimator message for target position and velocity
-	_follow_target_estimator_sub.update(&_follow_target_estimator);
+	_follow_target_estimator_sub.update(&_follow_target_estimator, M_FLIGHT_MODE_MANAGER);
 
 	if (_follow_target_estimator.timestamp > 0 && _follow_target_estimator.valid) {
 		updateTargetPositionVelocityFilter(_follow_target_estimator);

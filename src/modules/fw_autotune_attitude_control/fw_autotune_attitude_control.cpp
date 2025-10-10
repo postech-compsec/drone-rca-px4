@@ -91,7 +91,7 @@ void FwAutotuneAttitudeControl::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_FW_AUTOTUNE_ATTITUDE_CONTROL);
 
 		// update parameters from storage
 		updateParams();
@@ -101,7 +101,7 @@ void FwAutotuneAttitudeControl::Run()
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, M_FW_AUTOTUNE_ATTITUDE_CONTROL)) {
 			_armed = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED);
 			_nav_state = vehicle_status.nav_state;
 		}
@@ -119,7 +119,7 @@ void FwAutotuneAttitudeControl::Run()
 	if (_actuator_controls_status_sub.updated()) {
 		actuator_controls_status_s controls_status;
 
-		if (_actuator_controls_status_sub.copy(&controls_status)) {
+		if (_actuator_controls_status_sub.copy(&controls_status, M_FW_AUTOTUNE_ATTITUDE_CONTROL)) {
 			_control_power = Vector3f(controls_status.control_power);
 		}
 	}
@@ -127,8 +127,8 @@ void FwAutotuneAttitudeControl::Run()
 	vehicle_torque_setpoint_s vehicle_torque_setpoint;
 	vehicle_angular_velocity_s angular_velocity;
 
-	if (!_vehicle_torque_setpoint_sub.copy(&vehicle_torque_setpoint)
-	    || !_vehicle_angular_velocity_sub.copy(&angular_velocity)) {
+	if (!_vehicle_torque_setpoint_sub.copy(&vehicle_torque_setpoint, M_FW_AUTOTUNE_ATTITUDE_CONTROL)
+	    || !_vehicle_angular_velocity_sub.copy(&angular_velocity, M_FW_AUTOTUNE_ATTITUDE_CONTROL)) {
 		return;
 	}
 
@@ -249,7 +249,7 @@ void FwAutotuneAttitudeControl::checkFilters()
 bool FwAutotuneAttitudeControl::isAuxEnableSwitchEnabled()
 {
 	manual_control_setpoint_s manual_control_setpoint{};
-	_manual_control_setpoint_sub.copy(&manual_control_setpoint);
+	_manual_control_setpoint_sub.copy(&manual_control_setpoint, M_FW_AUTOTUNE_ATTITUDE_CONTROL);
 
 	float aux_enable_channel = 0;
 

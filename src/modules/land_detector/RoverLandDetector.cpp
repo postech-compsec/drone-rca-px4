@@ -61,9 +61,9 @@ bool RoverLandDetector::_get_landed_state()
 	// If we are in RTL and have reached the last valid waypoint then we are landed.
 	if (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_RTL) {
 		vehicle_global_position_s vehicle_global_position{};
-		_vehicle_global_position_sub.copy(&vehicle_global_position);
+		_vehicle_global_position_sub.copy(&vehicle_global_position, M_LAND_DETECTOR);
 		position_setpoint_triplet_s position_setpoint_triplet{};
-		_position_setpoint_triplet_sub.copy(&position_setpoint_triplet);
+		_position_setpoint_triplet_sub.copy(&position_setpoint_triplet, M_LAND_DETECTOR);
 
 		const float distance_to_curr_wp = get_distance_to_next_waypoint(vehicle_global_position.lat,
 						  vehicle_global_position.lon,

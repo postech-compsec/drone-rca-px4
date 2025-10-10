@@ -132,13 +132,13 @@ void FwLateralLongitudinalControl::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_FW_LAT_LON_CONTROL);
 
 		// update parameters from storage
 		parameters_update();
 	}
 
-	if (_local_pos_sub.update(&_local_pos)) {
+	if (_local_pos_sub.update(&_local_pos, M_FW_LAT_LON_CONTROL)) {
 
 		const float control_interval = math::constrain((_local_pos.timestamp - _last_time_loop_ran) * 1e-6f,
 					       0.001f, 0.1f);
@@ -160,7 +160,7 @@ void FwLateralLongitudinalControl::Run()
 
 		if (_vehicle_landed_sub.updated()) {
 			vehicle_land_detected_s landed{};
-			_vehicle_landed_sub.copy(&landed);
+			_vehicle_landed_sub.copy(&landed, M_FW_LAT_LON_CONTROL);
 			_landed = landed.landed;
 		}
 
@@ -171,7 +171,7 @@ void FwLateralLongitudinalControl::Run()
 
 		if (_flaps_setpoint_sub.updated()) {
 			normalized_unsigned_setpoint_s flaps_setpoint{};
-			_flaps_setpoint_sub.copy(&flaps_setpoint);
+			_flaps_setpoint_sub.copy(&flaps_setpoint, M_FW_LAT_LON_CONTROL);
 			_flaps_setpoint = flaps_setpoint.normalized_setpoint;
 		}
 
@@ -200,7 +200,7 @@ void FwLateralLongitudinalControl::Run()
 			float throttle_sp{NAN};
 
 			if (_fw_longitudinal_ctrl_sub.updated()) {
-				_fw_longitudinal_ctrl_sub.copy(&_long_control_sp);
+				_fw_longitudinal_ctrl_sub.copy(&_long_control_sp, M_FW_LAT_LON_CONTROL);
 			}
 
 			const float airspeed_sp_eas = adapt_airspeed_setpoint(control_interval, _long_control_sp.equivalent_airspeed,
@@ -231,7 +231,7 @@ void FwLateralLongitudinalControl::Run()
 			if (_fw_lateral_ctrl_sub.updated()) {
 				// We store the update of _fw_lateral_ctrl_sub in a member variable instead of only local such that we can run
 				// the controllers also without new setpoints.
-				_fw_lateral_ctrl_sub.copy(&_lat_control_sp);
+				_fw_lateral_ctrl_sub.copy(&_lat_control_sp, M_FW_LAT_LON_CONTROL);
 			}
 
 			float airspeed_direction_sp{NAN};
@@ -340,13 +340,13 @@ void FwLateralLongitudinalControl::updateControllerConfiguration()
 
 	if (_long_control_configuration_sub.updated() || _parameter_update_sub.updated()) {
 		longitudinal_control_configuration_s configuration_in{};
-		_long_control_configuration_sub.copy(&configuration_in);
+		_long_control_configuration_sub.copy(&configuration_in, M_FW_LAT_LON_CONTROL);
 		updateLongitudinalControlConfiguration(configuration_in);
 	}
 
 	if (_lateral_control_configuration_sub.updated() || _parameter_update_sub.updated()) {
 		lateral_control_configuration_s configuration_in{};
-		_lateral_control_configuration_sub.copy(&configuration_in);
+		_lateral_control_configuration_sub.copy(&configuration_in, M_FW_LAT_LON_CONTROL);
 		_lateral_configuration.timestamp = configuration_in.timestamp;
 
 		if (PX4_ISFINITE(configuration_in.lateral_accel_max)) {
@@ -548,7 +548,7 @@ void FwLateralLongitudinalControl::update_control_state() {
 void FwLateralLongitudinalControl::updateWind() {
 	if (_wind_sub.updated()) {
 		wind_s wind{};
-		_wind_sub.update(&wind);
+		_wind_sub.update(&wind, M_FW_LAT_LON_CONTROL);
 
 		// assumes wind is valid if finite
 		_wind_valid = PX4_ISFINITE(wind.windspeed_north)
@@ -583,7 +583,7 @@ void FwLateralLongitudinalControl::updateAltitudeAndHeightRate() {
 void FwLateralLongitudinalControl::updateAttitude() {
 	vehicle_attitude_s att;
 
-	if (_vehicle_attitude_sub.update(&att)) {
+	if (_vehicle_attitude_sub.update(&att, M_FW_LAT_LON_CONTROL)) {
 
 		Dcmf R{Quatf(att.q)};
 
@@ -608,7 +608,7 @@ void FwLateralLongitudinalControl::updateAirspeed() {
 
 	airspeed_validated_s airspeed_validated;
 
-	if (_param_fw_use_airspd.get() && _airspeed_validated_sub.update(&airspeed_validated)) {
+	if (_param_fw_use_airspd.get() && _airspeed_validated_sub.update(&airspeed_validated, M_FW_LAT_LON_CONTROL)) {
 
 		// do not use synthetic airspeed as this would create a thrust loop
 		if (PX4_ISFINITE(airspeed_validated.calibrated_airspeed_m_s)

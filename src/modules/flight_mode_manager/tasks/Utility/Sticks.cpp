@@ -49,7 +49,7 @@ bool Sticks::checkAndUpdateStickInputs()
 	// Sticks are rescaled linearly and exponentially to [-1,1]
 	manual_control_setpoint_s manual_control_setpoint;
 
-	if (_manual_control_setpoint_sub.update(&manual_control_setpoint)) {
+	if (_manual_control_setpoint_sub.update(&manual_control_setpoint, M_FLIGHT_MODE_MANAGER)) {
 		// Linear scale
 		_positions(0) = manual_control_setpoint.pitch;
 		_positions(1) = manual_control_setpoint.roll;
@@ -75,7 +75,7 @@ bool Sticks::checkAndUpdateStickInputs()
 	} else {
 		failsafe_flags_s failsafe_flags;
 
-		if (_failsafe_flags_sub.update(&failsafe_flags)) {
+		if (_failsafe_flags_sub.update(&failsafe_flags, M_FLIGHT_MODE_MANAGER)) {
 			if (failsafe_flags.manual_control_signal_lost) {
 				_input_available = false;
 			}

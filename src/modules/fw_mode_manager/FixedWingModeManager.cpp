@@ -112,7 +112,7 @@ FixedWingModeManager::vehicle_control_mode_poll()
 	if (_control_mode_sub.updated()) {
 		const bool was_armed = _control_mode.flag_armed;
 
-		if (_control_mode_sub.copy(&_control_mode)) {
+		if (_control_mode_sub.copy(&_control_mode, M_FW_MODE_MANAGER)) {
 
 			// reset state when arming
 			if (!was_armed && _control_mode.flag_armed) {
@@ -128,7 +128,7 @@ FixedWingModeManager::vehicle_command_poll()
 {
 	vehicle_command_s vehicle_command;
 
-	while (_vehicle_command_sub.update(&vehicle_command)) {
+	while (_vehicle_command_sub.update(&vehicle_command, M_FW_MODE_MANAGER)) {
 		if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_DO_GO_AROUND) {
 			// only abort landing before point of no return (horizontal and vertical)
 			if (_control_mode.flag_control_auto_enabled &&
@@ -162,7 +162,7 @@ FixedWingModeManager::airspeed_poll()
 {
 	airspeed_validated_s airspeed_validated;
 
-	if (_param_fw_use_airspd.get() && _airspeed_validated_sub.update(&airspeed_validated)) {
+	if (_param_fw_use_airspd.get() && _airspeed_validated_sub.update(&airspeed_validated, M_FW_MODE_MANAGER)) {
 
 		// do not use synthetic airspeed as it's for the use here not reliable enough
 		if (PX4_ISFINITE(airspeed_validated.calibrated_airspeed_m_s)
@@ -182,7 +182,7 @@ FixedWingModeManager::wind_poll(const hrt_abstime now)
 {
 	if (_wind_sub.updated()) {
 		wind_s wind;
-		_wind_sub.update(&wind);
+		_wind_sub.update(&wind, M_FW_MODE_MANAGER);
 
 		// assumes wind is valid if finite
 		_wind_valid = PX4_ISFINITE(wind.windspeed_north)
@@ -207,7 +207,7 @@ FixedWingModeManager::wind_poll(const hrt_abstime now)
 void
 FixedWingModeManager::manual_control_setpoint_poll()
 {
-	_manual_control_setpoint_sub.update(&_manual_control_setpoint);
+	_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_FW_MODE_MANAGER);
 
 	_manual_control_setpoint_for_height_rate = _manual_control_setpoint.pitch;
 	_manual_control_setpoint_for_airspeed = _manual_control_setpoint.throttle;
@@ -232,9 +232,9 @@ FixedWingModeManager::vehicle_attitude_poll()
 {
 	vehicle_attitude_s vehicle_attitude;
 
-	if (_vehicle_attitude_sub.update(&vehicle_attitude)) {
+	if (_vehicle_attitude_sub.update(&vehicle_attitude, M_FW_MODE_MANAGER)) {
 		vehicle_angular_velocity_s angular_velocity{};
-		_vehicle_angular_velocity_sub.copy(&angular_velocity);
+		_vehicle_angular_velocity_sub.copy(&angular_velocity, M_FW_MODE_MANAGER);
 		const Vector3f rates{angular_velocity.xyz};
 
 		Dcmf R{Quatf(vehicle_attitude.q)};
@@ -2058,7 +2058,7 @@ FixedWingModeManager::Run()
 
 	if (_vehicle_status_sub.updated()) {
 
-		if (_vehicle_status_sub.update(&_vehicle_status)) {
+		if (_vehicle_status_sub.update(&_vehicle_status, M_FW_MODE_MANAGER)) {
 			_nav_state = _vehicle_status.nav_state;
 		}
 	}
@@ -2073,7 +2073,7 @@ FixedWingModeManager::Run()
 		// mode is active
 		_ctrl_configuration_handler.resetLastPublishTime();
 
-	} else if (_local_pos_sub.update(&_local_pos)) {
+	} else if (_local_pos_sub.update(&_local_pos, M_FW_MODE_MANAGER)) {
 
 		const hrt_abstime now = _local_pos.timestamp;
 
@@ -2085,7 +2085,7 @@ FixedWingModeManager::Run()
 		if (_parameter_update_sub.updated()) {
 			// clear update
 			parameter_update_s pupdate;
-			_parameter_update_sub.copy(&pupdate);
+			_parameter_update_sub.copy(&pupdate, M_FW_MODE_MANAGER);
 
 			// update parameters from storage
 			parameters_update();
@@ -2093,7 +2093,7 @@ FixedWingModeManager::Run()
 
 		vehicle_global_position_s gpos;
 
-		if (_global_pos_sub.update(&gpos)) {
+		if (_global_pos_sub.update(&gpos, M_FW_MODE_MANAGER)) {
 			_current_latitude = gpos.lat;
 			_current_longitude = gpos.lon;
 		}
@@ -2138,7 +2138,7 @@ FixedWingModeManager::Run()
 		if (_control_mode.flag_control_offboard_enabled) {
 			trajectory_setpoint_s trajectory_setpoint;
 
-			if (_trajectory_setpoint_sub.update(&trajectory_setpoint)) {
+			if (_trajectory_setpoint_sub.update(&trajectory_setpoint, M_FW_MODE_MANAGER)) {
 				bool valid_setpoint = false;
 				_pos_sp_triplet = {}; // clear any existing
 				_pos_sp_triplet.timestamp = trajectory_setpoint.timestamp;
@@ -2192,7 +2192,7 @@ FixedWingModeManager::Run()
 			}
 
 		} else {
-			if (_pos_sp_triplet_sub.update(&_pos_sp_triplet)) {
+			if (_pos_sp_triplet_sub.update(&_pos_sp_triplet, M_FW_MODE_MANAGER)) {
 
 				_position_setpoint_previous_valid = PX4_ISFINITE(_pos_sp_triplet.previous.lat)
 								    && PX4_ISFINITE(_pos_sp_triplet.previous.lon)
@@ -2221,7 +2221,7 @@ FixedWingModeManager::Run()
 		if (_vehicle_land_detected_sub.updated()) {
 			vehicle_land_detected_s vehicle_land_detected;
 
-			if (_vehicle_land_detected_sub.update(&vehicle_land_detected)) {
+			if (_vehicle_land_detected_sub.update(&vehicle_land_detected, M_FW_MODE_MANAGER)) {
 				_landed = vehicle_land_detected.landed;
 			}
 		}

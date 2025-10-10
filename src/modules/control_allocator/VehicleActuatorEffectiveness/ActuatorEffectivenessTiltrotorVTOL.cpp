@@ -258,7 +258,7 @@ bool ActuatorEffectivenessTiltrotorVTOL::throttleSpoolupFinished()
 {
 	vehicle_status_s vehicle_status;
 
-	if (_vehicle_status_sub.update(&vehicle_status)) {
+	if (_vehicle_status_sub.update(&vehicle_status, M_CONTROL_ALLOCATOR)) {
 		_armed = vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED;
 		_armed_time = vehicle_status.armed_time;
 	}

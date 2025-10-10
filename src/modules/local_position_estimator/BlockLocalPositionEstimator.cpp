@@ -172,7 +172,7 @@ void BlockLocalPositionEstimator::Run()
 	if (_vehicle_command_sub.updated()) {
 		vehicle_command_s vehicle_command;
 
-		if (_vehicle_command_sub.update(&vehicle_command)) {
+		if (_vehicle_command_sub.update(&vehicle_command, M_LOCAL_POSITION_ESTIMATOR)) {
 			if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_SET_GPS_GLOBAL_ORIGIN) {
 				const double latitude = vehicle_command.param5;
 				const double longitude = vehicle_command.param6;
@@ -188,7 +188,7 @@ void BlockLocalPositionEstimator::Run()
 
 	sensor_combined_s imu;
 
-	if (!_sensors_sub.update(&imu)) {
+	if (!_sensors_sub.update(&imu, M_LOCAL_POSITION_ESTIMATOR)) {
 		return;
 	}
 
@@ -286,7 +286,7 @@ void BlockLocalPositionEstimator::Run()
 	if (paramsUpdated) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_LOCAL_POSITION_ESTIMATOR);
 
 		SuperBlock::updateParams();
 		ModuleParams::updateParams();

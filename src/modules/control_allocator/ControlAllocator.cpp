@@ -319,7 +319,7 @@ ControlAllocator::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_CONTROL_ALLOCATOR);
 
 		if (_handled_motor_failure_bitmask == 0) {
 			// We don't update the geometry after an actuator failure, as it could lead to unexpected results
@@ -336,7 +336,7 @@ ControlAllocator::Run()
 	{
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.update(&vehicle_status)) {
+		if (_vehicle_status_sub.update(&vehicle_status, M_CONTROL_ALLOCATOR)) {
 
 			_armed = vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED;
 
@@ -368,7 +368,7 @@ ControlAllocator::Run()
 	{
 		vehicle_control_mode_s vehicle_control_mode;
 
-		if (_vehicle_control_mode_sub.update(&vehicle_control_mode)) {
+		if (_vehicle_control_mode_sub.update(&vehicle_control_mode, M_CONTROL_ALLOCATOR)) {
 			_publish_controls = vehicle_control_mode.flag_control_allocation_enabled;
 		}
 	}
@@ -382,7 +382,7 @@ ControlAllocator::Run()
 	vehicle_thrust_setpoint_s vehicle_thrust_setpoint;
 
 	// Run allocator on torque changes
-	if (_vehicle_torque_setpoint_sub.update(&vehicle_torque_setpoint)) {
+	if (_vehicle_torque_setpoint_sub.update(&vehicle_torque_setpoint, M_CONTROL_ALLOCATOR)) {
 		_torque_sp = matrix::Vector3f(vehicle_torque_setpoint.xyz);
 
 		do_update = true;
@@ -390,7 +390,7 @@ ControlAllocator::Run()
 
 	}
 
-	if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint)) {
+	if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint, M_CONTROL_ALLOCATOR)) {
 		_thrust_sp = matrix::Vector3f(vehicle_thrust_setpoint.xyz);
 	}
 
@@ -723,7 +723,7 @@ ControlAllocator::check_for_motor_failures()
 	failure_detector_status_s failure_detector_status;
 
 	if ((FailureMode)_param_ca_failure_mode.get() > FailureMode::IGNORE
-	    && _failure_detector_status_sub.update(&failure_detector_status)) {
+	    && _failure_detector_status_sub.update(&failure_detector_status, M_CONTROL_ALLOCATOR)) {
 		if (failure_detector_status.fd_motor) {
 
 			if (_handled_motor_failure_bitmask != failure_detector_status.motor_failure_mask) {

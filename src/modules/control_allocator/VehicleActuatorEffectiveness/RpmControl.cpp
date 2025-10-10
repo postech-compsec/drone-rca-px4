@@ -61,7 +61,7 @@ float RpmControl::getActuatorCorrection()
 	if (_rpm_sub.updated()) {
 		rpm_s rpm{};
 
-		if (_rpm_sub.copy(&rpm)) {
+		if (_rpm_sub.copy(&rpm, M_CONTROL_ALLOCATOR)) {
 			const float dt = math::min((now - _timestamp_last_measurement) * 1e-6f, 1.f);
 			_timestamp_last_measurement = rpm.timestamp;
 

@@ -45,7 +45,7 @@ void AuxGlobalPosition::update(Ekf &ekf, const estimator::imuSample &imu_delayed
 	if (_aux_global_position_sub.updated()) {
 
 		vehicle_global_position_s aux_global_position{};
-		_aux_global_position_sub.copy(&aux_global_position);
+		_aux_global_position_sub.copy(&aux_global_position, M_EKF2);
 
 		const int64_t time_us = aux_global_position.timestamp_sample - static_cast<int64_t>(_param_ekf2_agp_delay.get() * 1000);
 

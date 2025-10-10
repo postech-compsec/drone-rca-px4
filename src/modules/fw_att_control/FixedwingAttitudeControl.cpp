@@ -92,7 +92,7 @@ FixedwingAttitudeControl::vehicle_manual_poll(const float yaw_body)
 	if (_vcontrol_mode.flag_control_manual_enabled && _in_fw_or_transition_wo_tailsitter_transition) {
 
 		// Always copy the new manual setpoint, even if it wasn't updated, to fill the actuators with valid values
-		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint)) {
+		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint, M_FW_ATT_CONTROL)) {
 
 			if (!_vcontrol_mode.flag_control_climb_rate_enabled && _vcontrol_mode.flag_control_attitude_enabled) {
 
@@ -123,7 +123,7 @@ FixedwingAttitudeControl::vehicle_manual_poll(const float yaw_body)
 void
 FixedwingAttitudeControl::vehicle_attitude_setpoint_poll()
 {
-	if (_att_sp_sub.update(&_att_sp)) {
+	if (_att_sp_sub.update(&_att_sp, M_FW_ATT_CONTROL)) {
 		_rates_sp.thrust_body[0] = _att_sp.thrust_body[0];
 		_rates_sp.thrust_body[1] = _att_sp.thrust_body[1];
 		_rates_sp.thrust_body[2] = _att_sp.thrust_body[2];
@@ -136,7 +136,7 @@ FixedwingAttitudeControl::vehicle_land_detected_poll()
 	if (_vehicle_land_detected_sub.updated()) {
 		vehicle_land_detected_s vehicle_land_detected {};
 
-		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected)) {
+		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected, M_FW_ATT_CONTROL)) {
 			_landed = vehicle_land_detected.landed;
 		}
 	}
@@ -188,7 +188,7 @@ void FixedwingAttitudeControl::Run()
 		if (params_updated) {
 			// clear update
 			parameter_update_s pupdate;
-			_parameter_update_sub.copy(&pupdate);
+			_parameter_update_sub.copy(&pupdate, M_FW_ATT_CONTROL);
 
 			// update parameters from storage
 			updateParams();
@@ -202,7 +202,7 @@ void FixedwingAttitudeControl::Run()
 
 		vehicle_attitude_s att{};
 
-		if (_att_sub.copy(&att)) {
+		if (_att_sub.copy(&att, M_FW_ATT_CONTROL)) {
 			dt = math::constrain((att.timestamp_sample - _last_run) * 1e-6f, DT_MIN, DT_MAX);
 			_last_run = att.timestamp_sample;
 
@@ -261,13 +261,13 @@ void FixedwingAttitudeControl::Run()
 		vehicle_attitude_setpoint_poll();
 
 		// vehicle status update must be before the vehicle_control_mode poll, otherwise rate sp are not published during whole transition
-		_vehicle_status_sub.update(&_vehicle_status);
+		_vehicle_status_sub.update(&_vehicle_status, M_FW_ATT_CONTROL);
 		const bool is_in_transition_except_tailsitter = _vehicle_status.in_transition_mode
 				&& !_vehicle_status.is_vtol_tailsitter;
 		const bool is_fixed_wing = _vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING;
 		_in_fw_or_transition_wo_tailsitter_transition =  is_fixed_wing || is_in_transition_except_tailsitter;
 
-		_vehicle_control_mode_sub.update(&_vcontrol_mode);
+		_vehicle_control_mode_sub.update(&_vcontrol_mode, M_FW_ATT_CONTROL);
 
 		vehicle_land_detected_poll();
 
@@ -316,7 +316,7 @@ void FixedwingAttitudeControl::Run()
 					autotune_attitude_control_status_s pid_autotune;
 					matrix::Vector3f bodyrate_autotune_ff;
 
-					if (_autotune_attitude_control_status_sub.copy(&pid_autotune)) {
+					if (_autotune_attitude_control_status_sub.copy(&pid_autotune, M_FW_ATT_CONTROL)) {
 						if ((pid_autotune.state == autotune_attitude_control_status_s::STATE_ROLL
 						     || pid_autotune.state == autotune_attitude_control_status_s::STATE_PITCH
 						     || pid_autotune.state == autotune_attitude_control_status_s::STATE_YAW
@@ -355,7 +355,7 @@ void FixedwingAttitudeControl::Run()
 
 		// steering wheel control
 		fixed_wing_runway_control_s runway_control{};
-		_fixed_wing_runway_control_sub.copy(&runway_control);
+		_fixed_wing_runway_control_sub.copy(&runway_control, M_FW_ATT_CONTROL);
 		const bool runway_control_recent = hrt_elapsed_time(&runway_control.timestamp) < 1_s;
 		const bool wheel_controller_enabled = _param_fw_w_en.get() && _vcontrol_mode.flag_control_auto_enabled
 						      && runway_control_recent && runway_control.wheel_steering_enabled;
@@ -367,7 +367,7 @@ void FixedwingAttitudeControl::Run()
 			if (_local_pos_sub.updated()) {
 				vehicle_local_position_s vehicle_local_position;
 
-				if (_local_pos_sub.copy(&vehicle_local_position)) {
+				if (_local_pos_sub.copy(&vehicle_local_position, M_FW_ATT_CONTROL)) {
 					_groundspeed = sqrtf(vehicle_local_position.vx * vehicle_local_position.vx + vehicle_local_position.vy *
 							     vehicle_local_position.vy);
 				}
@@ -389,7 +389,7 @@ void FixedwingAttitudeControl::Run()
 			_wheel_ctrl.control_attitude(_steering_wheel_yaw_setpoint, euler_angles.psi());
 
 			vehicle_angular_velocity_s angular_velocity{};
-			_vehicle_rates_sub.copy(&angular_velocity);
+			_vehicle_rates_sub.copy(&angular_velocity, M_FW_ATT_CONTROL);
 
 			const float wheel_controller_output = wheel_controller_enabled ? _wheel_ctrl.control_bodyrate(dt,
 							      angular_velocity.xyz[2], _groundspeed,

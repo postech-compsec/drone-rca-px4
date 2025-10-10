@@ -54,7 +54,7 @@ void RC_Loss_Alarm::process()
 {
 	vehicle_status_s status{};
 
-	if (!_vehicle_status_sub.update(&status)) {
+	if (!_vehicle_status_sub.update(&status, M_SEND_EVENT)) {
 		return;
 	}
 

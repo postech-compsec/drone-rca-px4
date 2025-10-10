@@ -98,7 +98,7 @@ FixedwingRateControl::vehicle_manual_poll()
 	if (_vcontrol_mode.flag_control_manual_enabled && _in_fw_or_transition_wo_tailsitter_transition) {
 
 		// Always copy the new manual setpoint, even if it wasn't updated, to fill the actuators with valid values
-		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint)) {
+		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint, M_FW_RATE_CONTROL)) {
 
 			if (_vcontrol_mode.flag_control_rates_enabled &&
 			    !_vcontrol_mode.flag_control_attitude_enabled) {
@@ -146,7 +146,7 @@ FixedwingRateControl::vehicle_land_detected_poll()
 	if (_vehicle_land_detected_sub.updated()) {
 		vehicle_land_detected_s vehicle_land_detected {};
 
-		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected)) {
+		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected, M_FW_RATE_CONTROL)) {
 			_landed = vehicle_land_detected.landed;
 		}
 	}
@@ -216,7 +216,7 @@ void FixedwingRateControl::Run()
 		if (params_updated) {
 			// clear update
 			parameter_update_s pupdate;
-			_parameter_update_sub.copy(&pupdate);
+			_parameter_update_sub.copy(&pupdate, M_FW_RATE_CONTROL);
 
 			// update parameters from storage
 			updateParams();
@@ -230,7 +230,7 @@ void FixedwingRateControl::Run()
 
 		vehicle_angular_velocity_s vehicle_angular_velocity{};
 
-		if (_vehicle_angular_velocity_sub.copy(&vehicle_angular_velocity)) {
+		if (_vehicle_angular_velocity_sub.copy(&vehicle_angular_velocity, M_FW_RATE_CONTROL)) {
 			dt = math::constrain((vehicle_angular_velocity.timestamp_sample - _last_run) * 1e-6f, DT_MIN, DT_MAX);
 			_last_run = vehicle_angular_velocity.timestamp_sample;
 		}
@@ -242,7 +242,7 @@ void FixedwingRateControl::Run()
 		}
 
 		vehicle_angular_velocity_s angular_velocity{};
-		_vehicle_angular_velocity_sub.copy(&angular_velocity);
+		_vehicle_angular_velocity_sub.copy(&angular_velocity, M_FW_RATE_CONTROL);
 
 		Vector3f rates(angular_velocity.xyz);
 		Vector3f angular_accel{angular_velocity.xyz_derivative};
@@ -255,13 +255,13 @@ void FixedwingRateControl::Run()
 		}
 
 		// vehicle status update must be before the vehicle_control_mode poll, otherwise rate sp are not published during whole transition
-		_vehicle_status_sub.update(&_vehicle_status);
+		_vehicle_status_sub.update(&_vehicle_status, M_FW_RATE_CONTROL);
 		const bool is_in_transition_except_tailsitter = _vehicle_status.in_transition_mode
 				&& !_vehicle_status.is_vtol_tailsitter;
 		const bool is_fixed_wing = _vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING;
 		_in_fw_or_transition_wo_tailsitter_transition =  is_fixed_wing || is_in_transition_except_tailsitter;
 
-		_vehicle_control_mode_sub.update(&_vcontrol_mode);
+		_vehicle_control_mode_sub.update(&_vcontrol_mode, M_FW_RATE_CONTROL);
 
 		vehicle_land_detected_poll();
 
@@ -351,7 +351,7 @@ void FixedwingRateControl::Run()
 			}
 
 			if (_vcontrol_mode.flag_control_rates_enabled) {
-				_rates_sp_sub.update(&_rates_sp);
+				_rates_sp_sub.update(&_rates_sp, M_FW_RATE_CONTROL);
 
 				Vector3f body_rates_setpoint = Vector3f(_rates_sp.roll, _rates_sp.pitch, _rates_sp.yaw);
 
@@ -393,7 +393,7 @@ void FixedwingRateControl::Run()
 					if (_battery_status_sub.updated()) {
 						battery_status_s battery_status{};
 
-						if (_battery_status_sub.copy(&battery_status) && battery_status.connected && battery_status.scale > 0.f) {
+						if (_battery_status_sub.copy(&battery_status, M_FW_RATE_CONTROL) && battery_status.connected && battery_status.scale > 0.f) {
 							_battery_scale = battery_status.scale;
 						}
 					}

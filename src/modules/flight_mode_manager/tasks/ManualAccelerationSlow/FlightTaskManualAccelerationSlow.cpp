@@ -56,7 +56,7 @@ bool FlightTaskManualAccelerationSlow::update()
 	float yaw_rate = math::radians(_param_mpc_man_y_max.get());
 
 	// MAVLink commanded limits
-	if (_velocity_limits_sub.update(&_velocity_limits)) {
+	if (_velocity_limits_sub.update(&_velocity_limits, M_FLIGHT_MODE_MANAGER)) {
 		_velocity_limits_received_before = true;
 	}
 

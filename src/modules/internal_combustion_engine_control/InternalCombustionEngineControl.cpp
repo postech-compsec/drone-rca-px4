@@ -87,7 +87,7 @@ void InternalCombustionEngineControl::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_INTERNAL_COMBUSTION_ENGINE_CONTROL);
 
 		// update parameters from storage
 		updateParams();
@@ -96,10 +96,10 @@ void InternalCombustionEngineControl::Run()
 
 
 	manual_control_setpoint_s manual_control_setpoint;
-	_manual_control_setpoint_sub.copy(&manual_control_setpoint);
+	_manual_control_setpoint_sub.copy(&manual_control_setpoint, M_INTERNAL_COMBUSTION_ENGINE_CONTROL);
 
 	vehicle_status_s vehicle_status;
-	_vehicle_status_sub.copy(&vehicle_status);
+	_vehicle_status_sub.copy(&vehicle_status, M_INTERNAL_COMBUSTION_ENGINE_CONTROL);
 
 	actuator_motors_s actuator_motors;
 	_actuator_motors.copy(&actuator_motors);
@@ -271,7 +271,7 @@ bool InternalCombustionEngineControl::isEngineRunning(const hrt_abstime now)
 {
 	rpm_s rpm;
 
-	if (_rpm_sub.copy(&rpm)) {
+	if (_rpm_sub.copy(&rpm, M_INTERNAL_COMBUSTION_ENGINE_CONTROL)) {
 		const hrt_abstime rpm_timestamp = rpm.timestamp;
 
 		return (_param_ice_min_run_rpm.get() > FLT_EPSILON && (now < rpm_timestamp + 2_s)

@@ -100,7 +100,7 @@ void TargetEstimator::parameters_update(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s update;
-		_parameter_update_sub.copy(&update);
+		_parameter_update_sub.copy(&update, M_FLIGHT_MODE_MANAGER);
 
 		// update parameters from storage
 		updateParams();
@@ -125,14 +125,14 @@ void TargetEstimator::update()
 
 
 	// Get GPS reference location for NED frame, needed for projection
-	_vehicle_local_position_sub.update(&_vehicle_local_position);
+	_vehicle_local_position_sub.update(&_vehicle_local_position, M_FLIGHT_MODE_MANAGER);
 
 	// Perform sensor fusion update if there's a new GPS message from the follow-target
 	prediction_update(deltatime);
 
 	follow_target_s follow_target;
 
-	if (_follow_target_sub.update(&follow_target)) {
+	if (_follow_target_sub.update(&follow_target, M_FLIGHT_MODE_MANAGER)) {
 
 		// Don't perform measurement update if two follow_target messages with identical timestamps are used
 		// This can happen when using the MAVSDK and more than one outgoing follow_target message is queued.

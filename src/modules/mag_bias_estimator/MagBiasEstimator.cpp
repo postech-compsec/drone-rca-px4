@@ -84,7 +84,7 @@ void MagBiasEstimator::Run()
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, M_MAG_BIAS_ESTIMATOR)) {
 			if (_arming_state != vehicle_status.arming_state) {
 				_arming_state = vehicle_status.arming_state;
 
@@ -123,7 +123,7 @@ void MagBiasEstimator::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_MAG_BIAS_ESTIMATOR);
 
 		// update parameters from storage
 		updateParams();
@@ -150,7 +150,7 @@ void MagBiasEstimator::Run()
 	// Assume a constant angular velocity during two mag samples
 	vehicle_angular_velocity_s vehicle_angular_velocity;
 
-	if (_vehicle_angular_velocity_sub.update(&vehicle_angular_velocity)) {
+	if (_vehicle_angular_velocity_sub.update(&vehicle_angular_velocity, M_MAG_BIAS_ESTIMATOR)) {
 
 		const Vector3f angular_velocity{vehicle_angular_velocity.xyz};
 
