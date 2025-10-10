@@ -226,7 +226,7 @@ void arm_auth_update(hrt_abstime now, bool param_update)
 	orb_check(command_ack_sub, &updated);
 
 	if (updated) {
-		orb_copy(ORB_ID(vehicle_command_ack), command_ack_sub, &command_ack);
+		orb_copy_w_subid(ORB_ID(vehicle_command_ack), command_ack_sub, &command_ack, M_COMMANDER);
 	}
 
 	if (updated

@@ -735,7 +735,7 @@ task_main(int argc, char *argv[])
 			if (updated) {
 
 				dataman_request_s request;
-				orb_copy(ORB_ID(dataman_request), dataman_request_sub, &request);
+				orb_copy_w_subid(ORB_ID(dataman_request), dataman_request_sub, &request, M_DATAMAN);
 
 				dataman_response_s response{};
 				response.client_id = request.client_id;

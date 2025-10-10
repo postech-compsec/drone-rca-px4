@@ -97,7 +97,7 @@ InputRC::UpdateResult InputRC::update(unsigned int timeout_ms, ControlData &cont
 InputRC::UpdateResult InputRC::_read_control_data_from_subscription(ControlData &control_data, bool already_active)
 {
 	manual_control_setpoint_s manual_control_setpoint{};
-	orb_copy(ORB_ID(manual_control_setpoint), _manual_control_setpoint_sub, &manual_control_setpoint);
+	orb_copy_w_subid(ORB_ID(manual_control_setpoint), _manual_control_setpoint_sub, &manual_control_setpoint, M_GIMBAL);
 	control_data.type = ControlData::Type::Angle;
 	control_data.timestamp_last_update = manual_control_setpoint.timestamp;
 

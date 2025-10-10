@@ -912,7 +912,7 @@ void Logger::run()
 			} else if (pret != 0) {
 				if (fds[0].revents & POLLIN) {
 					// need to to an orb_copy so that the next poll will not return immediately
-					orb_copy(_polling_topic_meta, polling_topic_sub, _msg_buffer);
+					orb_copy_w_subid(_polling_topic_meta, polling_topic_sub, _msg_buffer, M_LOGGER);
 				}
 			}
 

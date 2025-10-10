@@ -97,7 +97,7 @@ InputMavlinkROI::update(unsigned int timeout_ms, ControlData &control_data, bool
 
 	if (polls[0].revents & POLLIN) {
 		vehicle_roi_s vehicle_roi;
-		orb_copy(ORB_ID(vehicle_roi), _vehicle_roi_sub, &vehicle_roi);
+		orb_copy_w_subid(ORB_ID(vehicle_roi), _vehicle_roi_sub, &vehicle_roi, M_GIMBAL);
 
 		if (vehicle_roi.mode == vehicle_roi_s::ROI_NONE) {
 
@@ -146,8 +146,8 @@ InputMavlinkROI::update(unsigned int timeout_ms, ControlData &control_data, bool
 
 		} else { // must do an orb_copy() in *every* case
 			position_setpoint_triplet_s position_setpoint_triplet;
-			orb_copy(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub,
-				 &position_setpoint_triplet);
+			orb_copy_w_subid(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub,
+				 &position_setpoint_triplet, M_GIMBAL);
 		}
 	}
 
@@ -157,7 +157,7 @@ InputMavlinkROI::update(unsigned int timeout_ms, ControlData &control_data, bool
 void InputMavlinkROI::_read_control_data_from_position_setpoint_sub(ControlData &control_data)
 {
 	position_setpoint_triplet_s position_setpoint_triplet;
-	orb_copy(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub, &position_setpoint_triplet);
+	orb_copy_w_subid(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub, &position_setpoint_triplet, M_GIMBAL);
 	control_data.timestamp_last_update = position_setpoint_triplet.timestamp;
 	control_data.type_data.lonlat.lon = position_setpoint_triplet.current.lon;
 	control_data.type_data.lonlat.lat = position_setpoint_triplet.current.lat;
@@ -226,7 +226,7 @@ InputMavlinkCmdMount::update(unsigned int timeout_ms, ControlData &control_data,
 		if (polls[0].revents & POLLIN) {
 
 			vehicle_command_s vehicle_command;
-			orb_copy(ORB_ID(vehicle_command), _vehicle_command_sub, &vehicle_command);
+			orb_copy_w_subid(ORB_ID(vehicle_command), _vehicle_command_sub, &vehicle_command, M_GIMBAL);
 
 			update_result = _process_command(control_data, vehicle_command);
 
@@ -567,14 +567,14 @@ InputMavlinkGimbalV2::update(unsigned int timeout_ms, ControlData &control_data,
 
 		if (polls[0].revents & POLLIN) {
 			gimbal_manager_set_attitude_s set_attitude;
-			orb_copy(ORB_ID(gimbal_manager_set_attitude), _gimbal_manager_set_attitude_sub, &set_attitude);
+			orb_copy_w_subid(ORB_ID(gimbal_manager_set_attitude), _gimbal_manager_set_attitude_sub, &set_attitude, M_GIMBAL);
 
 			update_result = _process_set_attitude(control_data, set_attitude);
 		}
 
 		if (polls[1].revents & POLLIN) {
 			vehicle_roi_s vehicle_roi;
-			orb_copy(ORB_ID(vehicle_roi), _vehicle_roi_sub, &vehicle_roi);
+			orb_copy_w_subid(ORB_ID(vehicle_roi), _vehicle_roi_sub, &vehicle_roi, M_GIMBAL);
 
 			UpdateResult new_result = _process_vehicle_roi(control_data, vehicle_roi);
 
@@ -586,8 +586,8 @@ InputMavlinkGimbalV2::update(unsigned int timeout_ms, ControlData &control_data,
 		// check whether the position setpoint got updated
 		if (polls[2].revents & POLLIN) {
 			position_setpoint_triplet_s position_setpoint_triplet;
-			orb_copy(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub,
-				 &position_setpoint_triplet);
+			orb_copy_w_subid(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub,
+				 &position_setpoint_triplet, M_GIMBAL);
 
 			UpdateResult new_result = _process_position_setpoint_triplet(control_data, position_setpoint_triplet);
 
@@ -598,7 +598,7 @@ InputMavlinkGimbalV2::update(unsigned int timeout_ms, ControlData &control_data,
 
 		if (polls[3].revents & POLLIN) {
 			vehicle_command_s vehicle_command;
-			orb_copy(ORB_ID(vehicle_command), _vehicle_command_sub, &vehicle_command);
+			orb_copy_w_subid(ORB_ID(vehicle_command), _vehicle_command_sub, &vehicle_command, M_GIMBAL);
 
 			UpdateResult new_result = _process_command(control_data, vehicle_command);
 
@@ -609,8 +609,8 @@ InputMavlinkGimbalV2::update(unsigned int timeout_ms, ControlData &control_data,
 
 		if (polls[4].revents & POLLIN) {
 			gimbal_manager_set_manual_control_s set_manual_control;
-			orb_copy(ORB_ID(gimbal_manager_set_manual_control), _gimbal_manager_set_manual_control_sub,
-				 &set_manual_control);
+			orb_copy_w_subid(ORB_ID(gimbal_manager_set_manual_control), _gimbal_manager_set_manual_control_sub,
+				 &set_manual_control, M_GIMBAL);
 
 			update_result = _process_set_manual_control(control_data, set_manual_control);
 		}
@@ -1025,7 +1025,7 @@ void InputMavlinkGimbalV2::_ack_vehicle_command(const vehicle_command_s &cmd, ui
 void InputMavlinkGimbalV2::_read_control_data_from_position_setpoint_sub(ControlData &control_data)
 {
 	position_setpoint_triplet_s position_setpoint_triplet;
-	orb_copy(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub, &position_setpoint_triplet);
+	orb_copy_w_subid(ORB_ID(position_setpoint_triplet), _position_setpoint_triplet_sub, &position_setpoint_triplet, M_GIMBAL);
 	control_data.timestamp_last_update = position_setpoint_triplet.timestamp;
 	control_data.type_data.lonlat.lon = position_setpoint_triplet.current.lon;
 	control_data.type_data.lonlat.lat = position_setpoint_triplet.current.lat;

@@ -442,7 +442,7 @@ static int frsky_telemetry_thread_main(int argc, char *argv[])
 
 			if (sensor_updated) {
 				struct vehicle_air_data_s airdata;
-				orb_copy(ORB_ID(vehicle_air_data), airdata_sub, &airdata);
+				orb_copy_w_subid(ORB_ID(vehicle_air_data), airdata_sub, &airdata, M_FRSKY_TELEMETRY);
 
 				if (isnan(filtered_alt)) {
 					filtered_alt = airdata.baro_alt_meter;

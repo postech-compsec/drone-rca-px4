@@ -104,7 +104,7 @@ int px4_simple_app_main(int argc, char *argv[])
 				/* obtained data for the first file descriptor */
 				struct vehicle_acceleration_s accel;
 				/* copy sensors raw data into local buffer */
-				orb_copy(ORB_ID(vehicle_acceleration), sensor_sub_fd, &accel);
+				orb_cop_w_subid(ORB_ID(vehicle_acceleration), sensor_sub_fd, &accel, M_PX4_SIMPLE_APP);
 				PX4_INFO("Accelerometer:\t%8.4f\t%8.4f\t%8.4f",
 					 (double)accel.xyz[0],
 					 (double)accel.xyz[1],

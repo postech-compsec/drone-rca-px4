@@ -197,12 +197,12 @@ void Navigator::run()
 
 		perf_begin(_loop_perf);
 
-		orb_copy(ORB_ID(vehicle_local_position), _local_pos_sub, &_local_pos);
-		orb_copy(ORB_ID(vehicle_status), _vehicle_status_sub, &_vstatus);
+		orb_copy_w_subid(ORB_ID(vehicle_local_position), _local_pos_sub, &_local_pos, M_NAVIGATOR);
+		orb_copy_w_subid(ORB_ID(vehicle_status), _vehicle_status_sub, &_vstatus, M_NAVIGATOR);
 
 		if (fds[2].revents & POLLIN) {
 			mission_s mission;
-			orb_copy(ORB_ID(mission), _mission_sub, &mission);
+			orb_cop_w_subid(ORB_ID(mission), _mission_sub, &mission, M_NAVIGATOR);
 
 			if (mission.geofence_id != geofence_id) {
 				geofence_id = mission.geofence_id;

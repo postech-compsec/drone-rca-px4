@@ -218,10 +218,10 @@ int matlab_csv_serial_thread_main(int argc, char *argv[])
 
 			/* accel0 update available? */
 			if (fds[0].revents & POLLIN) {
-				orb_copy(ORB_ID(sensor_accel), accel0_sub, &accel0);
-				orb_copy(ORB_ID(sensor_accel), accel1_sub, &accel1);
-				orb_copy(ORB_ID(sensor_gyro), gyro0_sub, &gyro0);
-				orb_copy(ORB_ID(sensor_gyro), gyro1_sub, &gyro1);
+				orb_copy_w_subid(ORB_ID(sensor_accel), accel0_sub, &accel0, M_MATLAB_CSV_SERIAL);
+				orb_copy_w_subid(ORB_ID(sensor_accel), accel1_sub, &accel1, M_MATLAB_CSV_SERIAL);
+				orb_copy_w_subid(ORB_ID(sensor_gyro), gyro0_sub, &gyro0, M_MATLAB_CSV_SERIAL);
+				orb_copy_w_subid(ORB_ID(sensor_gyro), gyro1_sub, &gyro1, M_MATLAB_CSV_SERIAL);
 
 				// write out on accel 0, but collect for all other sensors as they have updates
 				dprintf(serial_fd, "%"PRId64",%d,%d,%d,%d,%d,%d\n", accel0.timestamp, (int)accel0.x, (int)accel0.y,

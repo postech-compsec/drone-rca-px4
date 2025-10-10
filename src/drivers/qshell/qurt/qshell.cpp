@@ -83,7 +83,7 @@ int QShell::main()
 
 		if (pret > 0 && fds[0].revents & POLLIN) {
 
-			orb_copy(ORB_ID(qshell_req), sub_qshell_req, &m_qshell_req);
+			orb_copy_w_subid(ORB_ID(qshell_req), sub_qshell_req, &m_qshell_req, M_QSHELL);
 
 			PX4_INFO("qshell gotten: %s", m_qshell_req.cmd);
 

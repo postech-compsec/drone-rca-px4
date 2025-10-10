@@ -70,7 +70,7 @@ void LogWriterMavlink::start_log()
 
 	// make sure we don't get any stale ack's by doing an orb_copy
 	ulog_stream_ack_s ack;
-	orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+	orb_copy_w_subid(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack, M_LOGGER);
 
 	_ulog_stream_data.msg_sequence = 0;
 	_ulog_stream_data.length = 0;
@@ -158,7 +158,7 @@ int LogWriterMavlink::publish_message()
 
 			if (fds[0].revents & POLLIN) {
 				ulog_stream_ack_s ack;
-				orb_copy(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack);
+				orb_copy_w_subid(ORB_ID(ulog_stream_ack), _ulog_stream_ack_sub, &ack, M_LOGGER);
 
 				if (ack.msg_sequence == _ulog_stream_data.msg_sequence) {
 					got_ack = true;
