@@ -40,6 +40,7 @@
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/button_event.h>
+#include <uORB/topics/subscription_info.h>
 
 class Safety
 {

@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/home_position.h>
+#include <uORB/topics/subscription_info.h>
 
 class HomePositionChecks : public HealthAndArmingCheckBase
 {

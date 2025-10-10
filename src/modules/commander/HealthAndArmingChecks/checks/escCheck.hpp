@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/esc_status.h>
+#include <uORB/topics/subscription_info.h>
 
 class EscChecks : public HealthAndArmingCheckBase
 {

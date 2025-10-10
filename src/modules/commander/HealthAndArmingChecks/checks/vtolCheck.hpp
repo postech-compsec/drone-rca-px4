@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vtol_vehicle_status.h>
+#include <uORB/topics/subscription_info.h>
 
 class VtolChecks : public HealthAndArmingCheckBase
 {

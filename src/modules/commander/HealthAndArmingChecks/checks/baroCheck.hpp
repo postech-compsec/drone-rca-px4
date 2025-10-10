@@ -40,6 +40,7 @@
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/estimator_status.h>
 #include <lib/sensor_calibration/Barometer.hpp>
+#include <uORB/topics/subscription_info.h>
 
 class BaroChecks : public HealthAndArmingCheckBase
 {

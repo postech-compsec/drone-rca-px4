@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/offboard_control_mode.h>
+#include <uORB/topics/subscription_info.h>
 
 class OffboardChecks : public HealthAndArmingCheckBase
 {

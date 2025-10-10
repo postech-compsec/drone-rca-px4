@@ -39,6 +39,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/Publication.hpp>
 #include <px4_platform_common/module_params.h>
+#include <uORB/topics/subscription_info.h>
 
 class ExternalChecks : public HealthAndArmingCheckBase
 {

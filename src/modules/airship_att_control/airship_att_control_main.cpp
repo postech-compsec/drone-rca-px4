@@ -134,7 +134,7 @@ AirshipAttitudeControl::Run()
 		publishTorqueSetpoint(angular_velocity.timestamp_sample);
 
 		/* check for updates in manual control topic */
-		_manual_control_setpoint_sub.update(&_manual_control_setpoint);
+		_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_AIRSHIP_ATT_CONTROL);
 
 		/* check for updates in vehicle status topic */
 		_vehicle_status_sub.update(&_vehicle_status, M_AIRSHIP_ATT_CONTROL);

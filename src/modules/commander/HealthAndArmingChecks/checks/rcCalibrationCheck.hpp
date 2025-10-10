@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/input_rc.h>
+#include <uORB/topics/subscription_info.h>
 
 class RcCalibrationChecks : public HealthAndArmingCheckBase
 {

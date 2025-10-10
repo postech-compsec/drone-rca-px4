@@ -63,6 +63,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/esc_status.h>
 #include <uORB/topics/pwm_input.h>
+#include <uORB/topics/subscription_info.h>
 
 union failure_detector_status_u {
 	struct {

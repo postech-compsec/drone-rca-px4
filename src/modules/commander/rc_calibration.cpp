@@ -46,6 +46,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/manual_control_setpoint.h>
+#include <uORB/topics/subscription_info.h>
 #include <systemlib/mavlink_log.h>
 #include <parameters/param.h>
 #include <systemlib/err.h>

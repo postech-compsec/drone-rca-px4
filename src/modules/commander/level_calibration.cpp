@@ -51,6 +51,7 @@
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionBlocking.hpp>
+#include <uORB/topics/subscription_info.h>
 
 using namespace time_literals;
 using namespace matrix;

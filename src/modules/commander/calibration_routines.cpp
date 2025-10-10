@@ -56,6 +56,7 @@
 #include <uORB/topics/vehicle_acceleration.h>
 #include <uORB/topics/vehicle_command.h>
 #include <uORB/topics/vehicle_command_ack.h>
+#include <uORB/topics/subscription_info.h>
 
 #include "calibration_routines.h"
 #include "calibration_messages.h"

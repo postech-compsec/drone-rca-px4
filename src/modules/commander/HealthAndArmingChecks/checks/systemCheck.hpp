@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/actuator_armed.h>
+#include <uORB/topics/subscription_info.h>
 
 class SystemChecks : public HealthAndArmingCheckBase
 {

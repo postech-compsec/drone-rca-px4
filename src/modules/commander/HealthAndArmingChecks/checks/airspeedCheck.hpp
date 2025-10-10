@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/airspeed_validated.h>
+#include <uORB/topics/subscription_info.h>
 
 class AirspeedChecks : public HealthAndArmingCheckBase
 {

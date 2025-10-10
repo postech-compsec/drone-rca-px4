@@ -40,6 +40,7 @@
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_accel.h>
 #include <lib/sensor_calibration/Accelerometer.hpp>
+#include <uORB/topics/subscription_info.h>
 
 class AccelerometerChecks : public HealthAndArmingCheckBase
 {

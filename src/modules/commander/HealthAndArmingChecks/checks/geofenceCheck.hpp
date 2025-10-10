@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/geofence_result.h>
+#include <uORB/topics/subscription_info.h>
 
 class GeofenceChecks : public HealthAndArmingCheckBase
 {

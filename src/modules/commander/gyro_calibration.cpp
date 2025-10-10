@@ -58,6 +58,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionBlocking.hpp>
 #include <uORB/topics/sensor_gyro.h>
+#include <uORB/topics/subscription_info.h>
 
 static constexpr char sensor_name[] {"gyro"};
 static constexpr unsigned MAX_GYROS = 4;

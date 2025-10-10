@@ -69,6 +69,7 @@
 #include <uORB/topics/vehicle_thrust_setpoint.h>
 #include <uORB/topics/airspeed_wind.h>
 #include <uORB/topics/flight_phase_estimation.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace time_literals;
 
@@ -399,7 +400,7 @@ AirspeedModule::Run()
 			// poll raw airspeed topic of the i-th sensor
 			airspeed_s airspeed_raw;
 
-			if (_airspeed_subs[i].update(&airspeed_raw)) {
+			if (_airspeed_subs[i].update(&airspeed_raw, M_AIRSPEED_SELECTOR)) {
 
 				input_data.airspeed_indicated_raw = airspeed_raw.indicated_airspeed_m_s;
 				input_data.airspeed_true_raw = airspeed_raw.true_airspeed_m_s;
@@ -549,19 +550,19 @@ void AirspeedModule::poll_topics()
 		}
 	}
 
-	_estimator_status_sub.update(&_estimator_status);
-	_vehicle_acceleration_sub.update(&_accel);
-	_vehicle_air_data_sub.update(&_vehicle_air_data);
-	_vehicle_land_detected_sub.update(&_vehicle_land_detected);
-	_vehicle_status_sub.update(&_vehicle_status);
-	_vehicle_local_position_sub.update(&_vehicle_local_position);
-	_position_setpoint_sub.update(&_position_setpoint);
+	_estimator_status_sub.update(&_estimator_status,  M_AIRSPEED_SELECTOR);
+	_vehicle_acceleration_sub.update(&_accel, M_AIRSPEED_SELECTOR);
+	_vehicle_air_data_sub.update(&_vehicle_air_data, M_AIRSPEED_SELECTOR);
+	_vehicle_land_detected_sub.update(&_vehicle_land_detected, M_AIRSPEED_SELECTOR);
+	_vehicle_status_sub.update(&_vehicle_status, M_AIRSPEED_SELECTOR);
+	_vehicle_local_position_sub.update(&_vehicle_local_position, M_AIRSPEED_SELECTOR);
+	_position_setpoint_sub.update(&_position_setpoint, M_AIRSPEED_SELECTOR);
 
-	_tecs_status_sub.update(&_tecs_status);
+	_tecs_status_sub.update(&_tecs_status, M_AIRSPEED_SELECTOR);
 
 	if (_vehicle_attitude_sub.updated()) {
 		vehicle_attitude_s vehicle_attitude;
-		_vehicle_attitude_sub.update(&vehicle_attitude);
+		_vehicle_attitude_sub.update(&vehicle_attitude, M_AIRSPEED_SELECTOR);
 
 		if (_vehicle_status.is_vtol_tailsitter && _vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
 

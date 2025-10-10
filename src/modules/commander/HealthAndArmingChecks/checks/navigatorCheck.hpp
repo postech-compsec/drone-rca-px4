@@ -36,6 +36,7 @@
 #include "../Common.hpp"
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/navigator_status.h>
+#include <uORB/topics/subscription_info.h>
 
 
 class NavigatorChecks : public HealthAndArmingCheckBase

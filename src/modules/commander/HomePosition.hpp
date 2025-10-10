@@ -44,6 +44,7 @@
 #include <uORB/topics/vehicle_air_data.h>
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <px4_platform_common/module_params.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace time_literals;
 
