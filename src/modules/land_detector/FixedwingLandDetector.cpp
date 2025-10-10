@@ -61,7 +61,7 @@ bool FixedwingLandDetector::_get_landed_state()
 	bool landDetected = false;
 
 	launch_detection_status_s launch_detection_status{};
-	_launch_detection_status_sub.copy(&launch_detection_status);
+	_launch_detection_status_sub.copy(&launch_detection_status, M_LAND_DETECTOR);
 
 	// force the landed state to stay landed if we're currently in the catapult/hand-launch launch process. Detect that we are in this state
 	// by checking if the last publication of launch_detection_status is less than 0.5s old, and we're still in the wait for launch state.
@@ -91,7 +91,7 @@ bool FixedwingLandDetector::_get_landed_state()
 		}
 
 		airspeed_validated_s airspeed_validated{};
-		_airspeed_validated_sub.copy(&airspeed_validated);
+		_airspeed_validated_sub.copy(&airspeed_validated, M_LAND_DETECTOR);
 
 		const bool airspeed_from_sensor = airspeed_validated.airspeed_source == airspeed_validated_s::SENSOR_1
 						  || airspeed_validated.airspeed_source == airspeed_validated_s::SENSOR_2

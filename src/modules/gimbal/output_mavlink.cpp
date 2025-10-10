@@ -200,7 +200,7 @@ void OutputMavlinkV2::_check_for_gimbal_device_information()
 {
 	gimbal_device_information_s gimbal_device_information;
 
-	if (_gimbal_device_information_sub.update(&gimbal_device_information)) {
+	if (_gimbal_device_information_sub.update(&gimbal_device_information, M_GIMBAL)) {
 		_gimbal_device_found = true;
 		_gimbal_device_id = gimbal_device_information.gimbal_device_id;
 	}

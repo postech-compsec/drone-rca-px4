@@ -169,7 +169,7 @@ bool GyroFFT::SensorSelectionUpdate(bool force)
 {
 	if (_sensor_selection_sub.updated() || (_selected_sensor_device_id == 0) || force) {
 		sensor_selection_s sensor_selection{};
-		_sensor_selection_sub.copy(&sensor_selection);
+		_sensor_selection_sub.copy(&sensor_selection, M_GYRO_FFT);
 
 		if ((sensor_selection.gyro_device_id != 0) && (_selected_sensor_device_id != sensor_selection.gyro_device_id)) {
 			// prefer sensor_gyro_fifo if available
@@ -224,14 +224,14 @@ void GyroFFT::VehicleIMUStatusUpdate(bool force)
 	if (_vehicle_imu_status_sub.updated() || force) {
 		vehicle_imu_status_s vehicle_imu_status;
 
-		if (_vehicle_imu_status_sub.copy(&vehicle_imu_status)) {
+		if (_vehicle_imu_status_sub.copy(&vehicle_imu_status, M_GYRO_FFT)) {
 			// find corresponding vehicle_imu_status instance if the device_id doesn't match
 			if (vehicle_imu_status.gyro_device_id != _selected_sensor_device_id) {
 
 				for (uint8_t imu_status = 0; imu_status < MAX_SENSOR_COUNT; imu_status++) {
 					uORB::Subscription imu_status_sub{ORB_ID(vehicle_imu_status), imu_status};
 
-					if (imu_status_sub.copy(&vehicle_imu_status)) {
+					if (imu_status_sub.copy(&vehicle_imu_status, M_GYRO_FFT)) {
 						if (vehicle_imu_status.gyro_device_id == _selected_sensor_device_id) {
 							_vehicle_imu_status_sub.ChangeInstance(imu_status);
 							break;
@@ -318,7 +318,7 @@ void GyroFFT::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_GYRO_FFT);
 
 		updateParams();
 	}
@@ -333,7 +333,7 @@ void GyroFFT::Run()
 		// run on sensor gyro fifo updates
 		sensor_gyro_fifo_s sensor_gyro_fifo;
 
-		while (_sensor_gyro_fifo_sub.update(&sensor_gyro_fifo)) {
+		while (_sensor_gyro_fifo_sub.update(&sensor_gyro_fifo, M_GYRO_FFT)) {
 			if (_sensor_gyro_fifo_sub.get_last_generation() != _gyro_last_generation + 1) {
 				// force reset if we've missed a sample
 				_fft_buffer_index[0] = 0;
@@ -362,7 +362,7 @@ void GyroFFT::Run()
 		// run on sensor gyro fifo updates
 		sensor_gyro_s sensor_gyro;
 
-		while (_sensor_gyro_sub.update(&sensor_gyro)) {
+		while (_sensor_gyro_sub.update(&sensor_gyro, M_GYRO_FFT)) {
 			if (_sensor_gyro_sub.get_last_generation() != _gyro_last_generation + 1) {
 				// force reset if we've missed a sample
 				_fft_buffer_index[0] = 0;

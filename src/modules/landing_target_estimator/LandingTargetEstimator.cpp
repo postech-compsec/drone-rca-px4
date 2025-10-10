@@ -202,7 +202,7 @@ void LandingTargetEstimator::_check_params(const bool force)
 {
 	if (_parameter_update_sub.updated() || force) {
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_LANDING_TARGET_ESTIMATOR);
 
 		_update_params();
 	}
@@ -212,7 +212,7 @@ void LandingTargetEstimator::_update_topics()
 {
 	_vehicleLocalPosition_valid = _vehicleLocalPositionSub.update(&_vehicleLocalPosition);
 	_vehicleAttitude_valid = _attitudeSub.update(&_vehicleAttitude);
-	_vehicle_acceleration_valid = _vehicle_acceleration_sub.update(&_vehicle_acceleration);
+	_vehicle_acceleration_valid = _vehicle_acceleration_sub.update(&_vehicle_acceleration, M_LANDING_TARGET_ESTIMATOR);
 
 
 	if (_irlockReportSub.update(&_irlockReport)) { //

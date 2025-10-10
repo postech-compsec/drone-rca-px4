@@ -461,7 +461,7 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_status(const ControlData &cont
 	gimbal_device_attitude_status_s gimbal_device_attitude_status{};
 
 	if (_gimbal_device_attitude_status_sub.updated()) {
-		_gimbal_device_attitude_status_sub.copy(&gimbal_device_attitude_status);
+		_gimbal_device_attitude_status_sub.copy(&gimbal_device_attitude_status, M_GIMBAL);
 
 		gimbal_manager_status_s gimbal_manager_status{};
 		gimbal_manager_status.timestamp = hrt_absolute_time();
@@ -481,7 +481,7 @@ void InputMavlinkGimbalV2::_stream_gimbal_manager_information(const ControlData 
 {
 	gimbal_device_information_s gimbal_device_info;
 
-	if (_gimbal_device_information_sub.update(&gimbal_device_info) && _parameters.mnt_mode_out == MNT_MODE_OUT_MAVLINK_V2) {
+	if (_gimbal_device_information_sub.update(&gimbal_device_info, M_GIMBAL) && _parameters.mnt_mode_out == MNT_MODE_OUT_MAVLINK_V2) {
 		gimbal_manager_information_s gimbal_manager_info;
 		gimbal_manager_info.timestamp = hrt_absolute_time();
 

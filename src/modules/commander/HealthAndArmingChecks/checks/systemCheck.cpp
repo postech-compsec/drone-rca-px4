@@ -41,7 +41,7 @@ void SystemChecks::checkAndReport(const Context &context, Report &reporter)
 {
 	actuator_armed_s actuator_armed;
 
-	if (_actuator_armed_sub.copy(&actuator_armed)) {
+	if (_actuator_armed_sub.copy(&actuator_armed, M_COMMANDER)) {
 		if (actuator_armed.termination || actuator_armed.kill) {
 			/* EVENT
 			 */

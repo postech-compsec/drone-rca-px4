@@ -37,7 +37,7 @@ void NavigatorChecks::checkAndReport(const Context &context, Report &reporter)
 {
 	navigator_status_s status;
 
-	if (!_navigator_status_sub.copy(&status)) {
+	if (!_navigator_status_sub.copy(&status, M_COMMANDER)) {
 		status = {};
 	}
 

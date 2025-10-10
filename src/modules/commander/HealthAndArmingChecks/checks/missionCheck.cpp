@@ -39,7 +39,7 @@ void MissionChecks::checkAndReport(const Context &context, Report &reporter)
 	reporter.failsafeFlags().auto_mission_missing = true;
 	mission_result_s mission_result;
 
-	if (_mission_result_sub.copy(&mission_result) && mission_result.valid) {
+	if (_mission_result_sub.copy(&mission_result, M_COMMANDER) && mission_result.valid) {
 		reporter.failsafeFlags().mission_failure = mission_result.failure;
 
 		if (reporter.failsafeFlags().mission_failure) {

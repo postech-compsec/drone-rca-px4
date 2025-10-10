@@ -56,7 +56,7 @@ bool FlightTaskManualAccelerationSlow::update()
 	float yaw_rate = math::radians(_param_mpc_man_y_max.get());
 
 	// MAVLink commanded limits
-	if (_velocity_limits_sub.update(&_velocity_limits)) {
+	if (_velocity_limits_sub.update(&_velocity_limits, M_FLIGHT_MODE_MANAGER)) {
 		_velocity_limits_received_before = true;
 	}
 
@@ -163,7 +163,7 @@ float FlightTaskManualAccelerationSlow::getInputFromSanitizedAuxParameterIndex(i
 bool FlightTaskManualAccelerationSlow::haveTakenOff()
 {
 	takeoff_status_s takeoff_status{};
-	_takeoff_status_sub.copy(&takeoff_status);
+	_takeoff_status_sub.copy(&takeoff_status, M_FLIGHT_MODE_MANAGER);
 
 	return takeoff_status.takeoff_state == takeoff_status_s::TAKEOFF_STATE_FLIGHT;
 }

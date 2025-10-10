@@ -90,14 +90,14 @@ void FlightModeManager::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_FLIGHT_MODE_MANAGER);
 		updateParams();
 	}
 
 	// generate setpoints on local position changes
 	vehicle_local_position_s vehicle_local_position;
 
-	if (_vehicle_local_position_sub.update(&vehicle_local_position)) {
+	if (_vehicle_local_position_sub.update(&vehicle_local_position, M_FLIGHT_MODE_MANAGER)) {
 		const hrt_abstime time_stamp_now = vehicle_local_position.timestamp_sample;
 		// Guard against too small (< 0.2ms) and too large (> 100ms) dt's.
 		const float dt = math::constrain(((time_stamp_now - _time_stamp_last_loop) / 1e6f), 0.0002f, 0.1f);
@@ -297,7 +297,7 @@ void FlightModeManager::handleCommand()
 	// get command
 	vehicle_command_s command;
 
-	while (_vehicle_command_sub.update(&command)) {
+	while (_vehicle_command_sub.update(&command, M_FLIGHT_MODE_MANAGER)) {
 
 		switch (command.command) {
 		case vehicle_command_s::VEHICLE_CMD_DO_ORBIT:
@@ -335,7 +335,7 @@ void FlightModeManager::generateTrajectorySetpoint(const float dt,
 	if (_takeoff_status_sub.updated()) {
 		takeoff_status_s takeoff_status;
 
-		if (_takeoff_status_sub.copy(&takeoff_status)) {
+		if (_takeoff_status_sub.copy(&takeoff_status, M_FLIGHT_MODE_MANAGER)) {
 			_takeoff_state = takeoff_status.takeoff_state;
 		}
 	}

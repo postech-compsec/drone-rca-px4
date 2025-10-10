@@ -203,7 +203,7 @@ static int gimbal_thread_main(int argc, char *argv[])
 
 		if (updated) {
 			parameter_update_s pupdate;
-			parameter_update_sub.copy(&pupdate);
+			parameter_update_sub.copy(&pupdate, M_GIMBAL);
 			update_params(param_handles, params);
 		}
 

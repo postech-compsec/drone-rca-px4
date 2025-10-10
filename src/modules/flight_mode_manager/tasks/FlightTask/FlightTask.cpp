@@ -178,7 +178,7 @@ void FlightTask::_evaluateVehicleLocalPositionSetpoint()
 	vehicle_local_position_setpoint_s vehicle_local_position_setpoint;
 
 	// Only use data that is received within a certain timestamp
-	if (_vehicle_local_position_setpoint_sub.copy(&vehicle_local_position_setpoint)
+	if (_vehicle_local_position_setpoint_sub.copy(&vehicle_local_position_setpoint, M_FLIGHT_MODE_MANAGER)
 	    && (_time_stamp_current - vehicle_local_position_setpoint.timestamp) < _timeout) {
 		// Inform about the input and output of the velocity controller
 		// This is used to properly initialize the velocity setpoint when onpening the position loop (position unlock)

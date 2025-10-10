@@ -262,7 +262,7 @@ bool EKF2Selector::UpdateErrorScores()
 
 		estimator_status_s status;
 
-		if (_instance[i].estimator_status_sub.update(&status)) {
+		if (_instance[i].estimator_status_sub.update(&status, M_EKF2)) {
 
 			_instance[i].timestamp_last = status.timestamp;
 
@@ -368,7 +368,7 @@ void EKF2Selector::PublishVehicleAttitude()
 	// selected estimator_attitude -> vehicle_attitude
 	vehicle_attitude_s attitude;
 
-	if (_instance[_selected_instance].estimator_attitude_sub.update(&attitude)) {
+	if (_instance[_selected_instance].estimator_attitude_sub.update(&attitude, M_EKF2)) {
 		bool instance_change = false;
 
 		if (_instance[_selected_instance].estimator_attitude_sub.get_instance() != _attitude_instance_prev) {
@@ -424,7 +424,7 @@ void EKF2Selector::PublishVehicleLocalPosition()
 	// selected estimator_local_position -> vehicle_local_position
 	vehicle_local_position_s local_position;
 
-	if (_instance[_selected_instance].estimator_local_position_sub.update(&local_position)) {
+	if (_instance[_selected_instance].estimator_local_position_sub.update(&local_position , M_EKF2)) {
 		bool instance_change = false;
 
 		if (_instance[_selected_instance].estimator_local_position_sub.get_instance() != _local_position_instance_prev) {
@@ -552,7 +552,7 @@ void EKF2Selector::PublishVehicleOdometry()
 	// selected estimator_odometry -> vehicle_odometry
 	vehicle_odometry_s odometry;
 
-	if (_instance[_selected_instance].estimator_odometry_sub.update(&odometry)) {
+	if (_instance[_selected_instance].estimator_odometry_sub.update(&odometry, M_EKF2)) {
 
 		bool instance_change = false;
 
@@ -601,7 +601,7 @@ void EKF2Selector::PublishVehicleGlobalPosition()
 	// selected estimator_global_position -> vehicle_global_position
 	vehicle_global_position_s global_position;
 
-	if (_instance[_selected_instance].estimator_global_position_sub.update(&global_position)) {
+	if (_instance[_selected_instance].estimator_global_position_sub.update(&global_position, M_EKF2)) {
 		bool instance_change = false;
 
 		if (_instance[_selected_instance].estimator_global_position_sub.get_instance() != _global_position_instance_prev) {
@@ -684,7 +684,7 @@ void EKF2Selector::PublishWindEstimate()
 	// selected estimator_wind -> wind
 	wind_s wind;
 
-	if (_instance[_selected_instance].estimator_wind_sub.update(&wind)) {
+	if (_instance[_selected_instance].estimator_wind_sub.update(&wind, M_EKF2)) {
 		bool publish = true;
 
 		// ensure monotonically increasing timestamp_sample through reset, don't publish
@@ -715,7 +715,7 @@ void EKF2Selector::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_EKF2);
 
 		// update parameters from storage
 		updateParams();

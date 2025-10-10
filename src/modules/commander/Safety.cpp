@@ -60,7 +60,7 @@ bool Safety::safetyButtonHandler()
 
 		button_event_s button_event;
 
-		while (_safety_button_sub.update(&button_event)) {
+		while (_safety_button_sub.update(&button_event, M_COMMANDER)) {
 			_safety_off |= button_event.triggered; // triggered safety button activates safety off
 		}
 	}

@@ -48,7 +48,7 @@ void EstimatorChecks::checkAndReport(const Context &context, Report &reporter)
 {
 	sensor_gps_s vehicle_gps_position;
 
-	if (_vehicle_gps_position_sub.copy(&vehicle_gps_position)) {
+	if (_vehicle_gps_position_sub.copy(&vehicle_gps_position, M_COMMANDER)) {
 		checkGps(context, reporter, vehicle_gps_position);
 
 	} else {
@@ -57,7 +57,7 @@ void EstimatorChecks::checkAndReport(const Context &context, Report &reporter)
 
 	vehicle_local_position_s lpos;
 
-	if (!_vehicle_local_position_sub.copy(&lpos)) {
+	if (!_vehicle_local_position_sub.copy(&lpos, M_COMMANDER)) {
 		lpos = {};
 	}
 
@@ -71,7 +71,7 @@ void EstimatorChecks::checkAndReport(const Context &context, Report &reporter)
 	if (_param_sens_imu_mode.get() == 0) { // multi-ekf
 		estimator_selector_status_s estimator_selector_status;
 
-		if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.copy(&estimator_selector_status, M_COMMANDER)) {
 			bool instance_changed = _estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance)
 						&& _estimator_sensor_bias_sub.ChangeInstance(estimator_selector_status.primary_instance)
 						&& _estimator_status_flags_sub.ChangeInstance(estimator_selector_status.primary_instance);
@@ -88,7 +88,7 @@ void EstimatorChecks::checkAndReport(const Context &context, Report &reporter)
 	if (!missing_data) {
 		estimator_status_s estimator_status;
 
-		if (_estimator_status_sub.copy(&estimator_status)) {
+		if (_estimator_status_sub.copy(&estimator_status, M_COMMANDER)) {
 			pre_flt_fail_innov_heading = estimator_status.pre_flt_fail_innov_heading;
 			pre_flt_fail_innov_vel_horiz = estimator_status.pre_flt_fail_innov_vel_horiz;
 			pre_flt_fail_innov_pos_horiz = estimator_status.pre_flt_fail_innov_pos_horiz;
@@ -483,7 +483,7 @@ void EstimatorChecks::checkSensorBias(const Context &context, Report &reporter, 
 	// _estimator_sensor_bias_sub instance got changed above already
 	estimator_sensor_bias_s bias;
 
-	if (_estimator_sensor_bias_sub.copy(&bias) && hrt_elapsed_time(&bias.timestamp) < 30_s) {
+	if (_estimator_sensor_bias_sub.copy(&bias, M_COMMANDER) && hrt_elapsed_time(&bias.timestamp) < 30_s) {
 
 		// check accelerometer bias estimates
 		if (bias.accel_bias_valid) {
@@ -560,7 +560,7 @@ void EstimatorChecks::checkEstimatorStatusFlags(const Context &context, Report &
 {
 	estimator_status_flags_s estimator_status_flags;
 
-	if (_estimator_status_flags_sub.copy(&estimator_status_flags)) {
+	if (_estimator_status_flags_sub.copy(&estimator_status_flags, M_COMMANDER)) {
 		// Check for a magnetometer fault and notify the user
 		if (estimator_status_flags.cs_mag_fault) {
 			/* EVENT
@@ -654,7 +654,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
 	// The following flags correspond to mode requirements, and are reported in the corresponding mode checks
 	vehicle_global_position_s gpos;
 
-	if (!_vehicle_global_position_sub.copy(&gpos)) {
+	if (!_vehicle_global_position_sub.copy(&gpos, M_COMMANDER)) {
 		gpos = {};
 	}
 
@@ -695,7 +695,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
 
 	estimator_status_flags_s estimator_status_flags;
 
-	if (_estimator_status_flags_sub.copy(&estimator_status_flags)) {
+	if (_estimator_status_flags_sub.copy(&estimator_status_flags, M_COMMANDER)) {
 
 		// only do the following if the estimator status flags are recent (less than 5 seconds old)
 		if (now - estimator_status_flags.timestamp < 5_s) {
@@ -755,7 +755,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
 	// attitude
 	vehicle_attitude_s attitude;
 
-	if (_vehicle_attitude_sub.copy(&attitude)) {
+	if (_vehicle_attitude_sub.copy(&attitude, M_COMMANDER)) {
 		const matrix::Quatf q{attitude.q};
 		const float eps = 1e-5f;
 		const bool no_element_larger_than_one = (fabsf(q(0)) <= 1.f + eps)
@@ -773,7 +773,7 @@ void EstimatorChecks::setModeRequirementFlags(const Context &context, bool pre_f
 
 	// angular velocity
 	vehicle_angular_velocity_s angular_velocity{};
-	_vehicle_angular_velocity_sub.copy(&angular_velocity);
+	_vehicle_angular_velocity_sub.copy(&angular_velocity, M_COMMANDER);
 	const bool condition_angular_velocity_time_valid = angular_velocity.timestamp != 0
 			&& (now < angular_velocity.timestamp + 1_s);
 	const bool condition_angular_velocity_finite = matrix::Vector3f(angular_velocity.xyz).isAllFinite();

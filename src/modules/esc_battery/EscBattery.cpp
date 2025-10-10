@@ -75,14 +75,14 @@ EscBattery::Run()
 	if (_parameter_update_sub.updated()) {
 		// Clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_ESC_BATTERY);
 
 		parameters_updated();
 	}
 
 	esc_status_s esc_status;
 
-	if (_esc_status_sub.copy(&esc_status)) {
+	if (_esc_status_sub.copy(&esc_status, M_ESC_BATTERY)) {
 
 		if (esc_status.esc_count == 0 || esc_status.esc_count > esc_status_s::CONNECTED_ESC_MAX) {
 			return;

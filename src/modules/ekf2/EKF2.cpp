@@ -445,7 +445,7 @@ void EKF2::Run()
 	if (_parameter_update_sub.updated() || !_callback_registered) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_EKF2);
 
 		// update parameters from storage
 		updateParams();
@@ -500,7 +500,7 @@ void EKF2::Run()
 	if (_vehicle_command_sub.updated()) {
 		vehicle_command_s vehicle_command;
 
-		if (_vehicle_command_sub.update(&vehicle_command)) {
+		if (_vehicle_command_sub.update(&vehicle_command, M_EKF2)) {
 
 			vehicle_command_ack_s command_ack{};
 			command_ack.command = vehicle_command.command;
@@ -599,7 +599,7 @@ void EKF2::Run()
 	if (_multi_mode) {
 		const unsigned last_generation = _vehicle_imu_sub.get_last_generation();
 		vehicle_imu_s imu;
-		imu_updated = _vehicle_imu_sub.update(&imu);
+		imu_updated = _vehicle_imu_sub.update(&imu, M_EKF2);
 
 		if (imu_updated && (_vehicle_imu_sub.get_last_generation() != last_generation + 1)) {
 			perf_count(_msg_missed_imu_perf);
@@ -660,7 +660,7 @@ void EKF2::Run()
 	{
 		const unsigned last_generation = _sensor_combined_sub.get_last_generation();
 		sensor_combined_s sensor_combined;
-		imu_updated = _sensor_combined_sub.update(&sensor_combined);
+		imu_updated = _sensor_combined_sub.update(&sensor_combined, M_EKF2);
 
 		if (imu_updated && (_sensor_combined_sub.get_last_generation() != last_generation + 1)) {
 			perf_count(_msg_missed_imu_perf);
@@ -707,7 +707,7 @@ void EKF2::Run()
 		if (_sensor_selection_sub.updated() || (_device_id_accel == 0 || _device_id_gyro == 0)) {
 			sensor_selection_s sensor_selection;
 
-			if (_sensor_selection_sub.copy(&sensor_selection)) {
+			if (_sensor_selection_sub.copy(&sensor_selection, M_EKF2)) {
 				if (_device_id_accel != sensor_selection.accel_device_id) {
 
 					_device_id_accel = sensor_selection.accel_device_id;
@@ -2112,7 +2112,7 @@ void EKF2::UpdateAirspeedSample(ekf2_timestamps_s &ekf2_timestamps)
 	if (_airspeed_validated_sub.updated()) {
 		airspeed_validated_s airspeed_validated;
 
-		if (_airspeed_validated_sub.update(&airspeed_validated)) {
+		if (_airspeed_validated_sub.update(&airspeed_validated, M_EKF2)) {
 
 			if (PX4_ISFINITE(airspeed_validated.true_airspeed_m_s)
 			    && (airspeed_validated.airspeed_source > airspeed_validated_s::GROUND_MINUS_WIND)
@@ -2145,7 +2145,7 @@ void EKF2::UpdateAirspeedSample(ekf2_timestamps_s &ekf2_timestamps)
 		// use ORB_ID(airspeed) if ORB_ID(airspeed_validated) is unavailable
 		airspeed_s airspeed;
 
-		if (_airspeed_sub.update(&airspeed)) {
+		if (_airspeed_sub.update(&airspeed, M_EKF2)) {
 			// The airspeed measurement received via ORB_ID(airspeed) topic has not been corrected
 			// for scale factor errors and requires the ASPD_SCALE correction to be applied.
 			const float true_airspeed_m_s = airspeed.true_airspeed_m_s * _airspeed_scale_factor;
@@ -2176,7 +2176,7 @@ void EKF2::UpdateAuxVelSample(ekf2_timestamps_s &ekf2_timestamps)
 	//  - use the landing target pose estimate as another source of velocity data
 	landing_target_pose_s landing_target_pose;
 
-	if (_landing_target_pose_sub.update(&landing_target_pose)) {
+	if (_landing_target_pose_sub.update(&landing_target_pose, M_EKF2)) {
 		// we can only use the landing target if it has a fixed position and  a valid velocity estimate
 		if (landing_target_pose.is_static && landing_target_pose.rel_vel_valid) {
 			// velocity of vehicle relative to target has opposite sign to target relative to vehicle
@@ -2197,7 +2197,7 @@ void EKF2::UpdateBaroSample(ekf2_timestamps_s &ekf2_timestamps)
 	// EKF baro sample
 	vehicle_air_data_s airdata;
 
-	if (_airdata_sub.update(&airdata)) {
+	if (_airdata_sub.update(&airdata, M_EKF2)) {
 
 		bool reset = false;
 
@@ -2238,7 +2238,7 @@ bool EKF2::UpdateExtVisionSample(ekf2_timestamps_s &ekf2_timestamps)
 
 	vehicle_odometry_s ev_odom;
 
-	if (_ev_odom_sub.update(&ev_odom)) {
+	if (_ev_odom_sub.update(&ev_odom, M_EKF2)) {
 
 		extVisionSample ev_data{};
 		ev_data.pos.setNaN();
@@ -2386,7 +2386,7 @@ bool EKF2::UpdateFlowSample(ekf2_timestamps_s &ekf2_timestamps)
 	bool new_optical_flow = false;
 	vehicle_optical_flow_s optical_flow;
 
-	if (_vehicle_optical_flow_sub.update(&optical_flow)) {
+	if (_vehicle_optical_flow_sub.update(&optical_flow, M_EKF2)) {
 
 		const float dt = 1e-6f * (float)optical_flow.integration_timespan_us;
 		Vector2f flow_rate;
@@ -2456,7 +2456,7 @@ void EKF2::UpdateGpsSample(ekf2_timestamps_s &ekf2_timestamps)
 	// EKF GPS message
 	sensor_gps_s vehicle_gps_position;
 
-	if (_vehicle_gps_position_sub.update(&vehicle_gps_position)) {
+	if (_vehicle_gps_position_sub.update(&vehicle_gps_position, M_EKF2)) {
 
 		Vector3f vel_ned;
 
@@ -2534,7 +2534,7 @@ void EKF2::UpdateMagSample(ekf2_timestamps_s &ekf2_timestamps)
 {
 	vehicle_magnetometer_s magnetometer;
 
-	if (_magnetometer_sub.update(&magnetometer)) {
+	if (_magnetometer_sub.update(&magnetometer, M_EKF2)) {
 
 		bool reset = false;
 
@@ -2639,7 +2639,7 @@ void EKF2::UpdateSystemFlagsSample(ekf2_timestamps_s &ekf2_timestamps)
 		// vehicle_status
 		vehicle_status_s vehicle_status;
 
-		if (_status_sub.copy(&vehicle_status)
+		if (_status_sub.copy(&vehicle_status, M_EKF2)
 		    && (ekf2_timestamps.timestamp < vehicle_status.timestamp + 3_s)) {
 
 			// initially set in_air from arming_state (will be overridden if land detector is available)
@@ -2662,7 +2662,7 @@ void EKF2::UpdateSystemFlagsSample(ekf2_timestamps_s &ekf2_timestamps)
 		// vehicle_land_detected
 		vehicle_land_detected_s vehicle_land_detected;
 
-		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected)
+		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected, M_EKF2)
 		    && (ekf2_timestamps.timestamp < vehicle_land_detected.timestamp + 3_s)) {
 
 			flags.at_rest = vehicle_land_detected.at_rest;
@@ -2672,7 +2672,7 @@ void EKF2::UpdateSystemFlagsSample(ekf2_timestamps_s &ekf2_timestamps)
 
 		launch_detection_status_s launch_detection_status;
 
-		if (_launch_detection_status_sub.copy(&launch_detection_status)
+		if (_launch_detection_status_sub.copy(&launch_detection_status, M_EKF2)
 		    && (ekf2_timestamps.timestamp < launch_detection_status.timestamp + 3_s)) {
 
 			flags.constant_pos = (launch_detection_status.launch_detection_state ==

@@ -326,7 +326,7 @@ bool calibrate_cancel_check(orb_advert_t *mavlink_log_pub, const hrt_abstime &ca
 	uORB::Subscription vehicle_command_sub{ORB_ID(vehicle_command)};
 	vehicle_command_s cmd;
 
-	while (vehicle_command_sub.update(&cmd)) {
+	while (vehicle_command_sub.update(&cmd, M_COMMANDER)) {
 		if (cmd.command == vehicle_command_s::VEHICLE_CMD_PREFLIGHT_CALIBRATION) {
 			// only handle commands sent after calibration started from external sources
 			if ((cmd.timestamp > calibration_started) && cmd.from_external) {

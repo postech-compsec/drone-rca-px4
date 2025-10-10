@@ -220,7 +220,7 @@ void ModeManagement::checkNewRegistrations(UpdateRequest &update_request)
 	register_ext_component_request_s request;
 	int max_updates = 5;
 
-	while (!update_request.change_user_intended_nav_state && _register_ext_component_request_sub.update(&request)
+	while (!update_request.change_user_intended_nav_state && _register_ext_component_request_sub.update(&request, M_COMMANDER)
 	       && --max_updates >= 0) {
 		request.name[sizeof(request.name) - 1] = '\0';
 		PX4_DEBUG("got registration request: %s %llu, arming: %i mode: %i executor: %i", request.name, request.request_id,
@@ -341,7 +341,7 @@ void ModeManagement::checkUnregistrations(uint8_t user_intended_nav_state, Updat
 	unregister_ext_component_s request;
 	int max_updates = 5;
 
-	while (!update_request.change_user_intended_nav_state && _unregister_ext_component_sub.update(&request)
+	while (!update_request.change_user_intended_nav_state && _unregister_ext_component_sub.update(&request, M_COMMANDER)
 	       && --max_updates >= 0) {
 		request.name[sizeof(request.name) - 1] = '\0';
 		PX4_DEBUG("got unregistration request: %s arming: %i mode: %i executor: %i", request.name,
@@ -376,7 +376,7 @@ void ModeManagement::update(bool armed, uint8_t user_intended_nav_state, UpdateR
 		// Reject registration requests
 		register_ext_component_request_s request;
 
-		if (_register_ext_component_request_sub.update(&request)) {
+		if (_register_ext_component_request_sub.update(&request, M_COMMANDER)) {
 			PX4_ERR("Not accepting registration requests while armed");
 			register_ext_component_reply_s reply{};
 			reply.success = false;
@@ -568,7 +568,7 @@ bool ModeManagement::checkConfigControlSetpointUpdates()
 	vehicle_control_mode_s config_control_setpoint;
 	int max_updates = 5;
 
-	while (_config_control_setpoints_sub.update(&config_control_setpoint) && --max_updates >= 0) {
+	while (_config_control_setpoints_sub.update(&config_control_setpoint, M_COMMANDER) && --max_updates >= 0) {
 		if (_modes.valid(config_control_setpoint.source_id)) {
 			_modes.mode(config_control_setpoint.source_id).config_control_setpoint = config_control_setpoint;
 			had_update = true;
@@ -589,7 +589,7 @@ void ModeManagement::checkConfigOverrides()
 	config_overrides_s override_request;
 	int max_updates = config_overrides_s::ORB_QUEUE_LENGTH;
 
-	while (_config_overrides_request_sub.update(&override_request) && --max_updates >= 0) {
+	while (_config_overrides_request_sub.update(&override_request, M_COMMANDER) && --max_updates >= 0) {
 		switch (override_request.source_type) {
 		case config_overrides_s::SOURCE_TYPE_MODE_EXECUTOR:
 			if (_mode_executors.valid(override_request.source_id)) {

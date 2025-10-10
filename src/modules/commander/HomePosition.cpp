@@ -321,7 +321,7 @@ void HomePosition::update(bool set_automatically, bool check_if_changed)
 
 	if (_vehicle_air_data_sub.updated()) {
 		vehicle_air_data_s baro_data;
-		_vehicle_air_data_sub.copy(&baro_data);
+		_vehicle_air_data_sub.copy(&baro_data, M_COMMANDER);
 		const float baro_alt = baro_data.baro_alt_meter;
 
 		if (_last_baro_timestamp != 0) {
@@ -337,7 +337,7 @@ void HomePosition::update(bool set_automatically, bool check_if_changed)
 
 	if (_vehicle_gps_position_sub.updated()) {
 		sensor_gps_s vehicle_gps_position;
-		_vehicle_gps_position_sub.copy(&vehicle_gps_position);
+		_vehicle_gps_position_sub.copy(&vehicle_gps_position, M_COMMANDER);
 
 		_gps_lat = vehicle_gps_position.latitude_deg;
 		_gps_lon = vehicle_gps_position.longitude_deg;

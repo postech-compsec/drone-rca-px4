@@ -39,7 +39,7 @@ void VtolChecks::checkAndReport(const Context &context, Report &reporter)
 {
 	vtol_vehicle_status_s vtol_vehicle_status;
 
-	if (_vtol_vehicle_status_sub.copy(&vtol_vehicle_status)) {
+	if (_vtol_vehicle_status_sub.copy(&vtol_vehicle_status, M_COMMANDER)) {
 		reporter.failsafeFlags().vtol_fixed_wing_system_failure = vtol_vehicle_status.fixed_wing_system_failure;
 
 		if (reporter.failsafeFlags().vtol_fixed_wing_system_failure) {

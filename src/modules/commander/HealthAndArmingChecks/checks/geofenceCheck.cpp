@@ -37,7 +37,7 @@ void GeofenceChecks::checkAndReport(const Context &context, Report &reporter)
 {
 	geofence_result_s geofence_result;
 
-	if (!_geofence_result_sub.copy(&geofence_result)) {
+	if (!_geofence_result_sub.copy(&geofence_result, M_COMMANDER)) {
 		geofence_result = {};
 	}
 

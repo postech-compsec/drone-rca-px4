@@ -80,7 +80,7 @@ void ManualControl::processInput(hrt_abstime now)
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, M_MANUAL_CONTROL)) {
 			_armed = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED);
 			_system_id = vehicle_status.system_id;
 			_rotary_wing = (vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_ROTARY_WING);
@@ -92,7 +92,7 @@ void ManualControl::processInput(hrt_abstime now)
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_MANUAL_CONTROL);
 
 		updateParams();
 	}
@@ -170,7 +170,7 @@ void ManualControl::processInput(hrt_abstime now)
 void ManualControl::processSwitches(hrt_abstime &now)
 {
 	manual_control_switches_s switches;
-	const bool switches_updated = _manual_control_switches_sub.update(&switches);
+	const bool switches_updated = _manual_control_switches_sub.update(&switches, M_MANUAL_CONTROL);
 
 	// Only use switches if the currently valid source is RC as well
 	if (_selector.setpoint().valid

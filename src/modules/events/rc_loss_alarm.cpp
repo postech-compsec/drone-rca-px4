@@ -54,13 +54,13 @@ void RC_Loss_Alarm::process()
 {
 	vehicle_status_s status{};
 
-	if (!_vehicle_status_sub.update(&status)) {
+	if (!_vehicle_status_sub.update(&status, M_SEND_EVENT)) {
 		return;
 	}
 
 	failsafe_flags_s failsafe_flags{};
 
-	_failsafe_flags_sub.copy(&failsafe_flags);
+	_failsafe_flags_sub.copy(&failsafe_flags, M_SEND_EVENT);
 
 	if (!_was_armed &&
 	    status.arming_state == vehicle_status_s::ARMING_STATE_ARMED) {

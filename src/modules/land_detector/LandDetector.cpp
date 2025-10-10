@@ -82,7 +82,7 @@ void LandDetector::Run()
 
 	if (_parameter_update_sub.updated() || (_land_detected.timestamp == 0)) {
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_LAND_DETECTOR);
 
 		updateParams();
 		_update_params();
@@ -93,19 +93,19 @@ void LandDetector::Run()
 
 	actuator_armed_s actuator_armed;
 
-	if (_actuator_armed_sub.update(&actuator_armed)) {
+	if (_actuator_armed_sub.update(&actuator_armed, M_LAND_DETECTOR)) {
 		_armed = actuator_armed.armed;
 	}
 
 	vehicle_acceleration_s vehicle_acceleration;
 
-	if (_vehicle_acceleration_sub.update(&vehicle_acceleration)) {
+	if (_vehicle_acceleration_sub.update(&vehicle_acceleration, M_LAND_DETECTOR)) {
 		_acceleration = matrix::Vector3f{vehicle_acceleration.xyz};
 	}
 
 	vehicle_angular_velocity_s vehicle_angular_velocity{};
 
-	if (_vehicle_angular_velocity_sub.update(&vehicle_angular_velocity)) {
+	if (_vehicle_angular_velocity_sub.update(&vehicle_angular_velocity, M_LAND_DETECTOR)) {
 		_angular_velocity = matrix::Vector3f{vehicle_angular_velocity.xyz};
 
 		static constexpr float GYRO_NORM_MAX = math::radians(3.f); // 3 degrees/second
@@ -115,8 +115,8 @@ void LandDetector::Run()
 		}
 	}
 
-	_vehicle_local_position_sub.update(&_vehicle_local_position);
-	_vehicle_status_sub.update(&_vehicle_status);
+	_vehicle_local_position_sub.update(&_vehicle_local_position, M_LAND_DETECTOR);
+	_vehicle_status_sub.update(&_vehicle_status, M_LAND_DETECTOR);
 
 	_update_topics();
 
@@ -215,7 +215,7 @@ void LandDetector::UpdateVehicleAtRest()
 {
 	if (_sensor_selection_sub.updated()) {
 		sensor_selection_s sensor_selection{};
-		_sensor_selection_sub.copy(&sensor_selection);
+		_sensor_selection_sub.copy(&sensor_selection, M_LAND_DETECTOR);
 
 		if (sensor_selection.gyro_device_id != _device_id_gyro) {
 
@@ -226,7 +226,7 @@ void LandDetector::UpdateVehicleAtRest()
 				uORB::Subscription imu_status_sub{ORB_ID(vehicle_imu_status), imu_instance};
 
 				vehicle_imu_status_s imu_status{};
-				imu_status_sub.copy(&imu_status);
+				imu_status_sub.copy(&imu_status, M_LAND_DETECTOR);
 
 				if ((imu_status.gyro_device_id != 0) && (imu_status.gyro_device_id == sensor_selection.gyro_device_id)) {
 					_vehicle_imu_status_sub.ChangeInstance(imu_instance);
@@ -244,7 +244,7 @@ void LandDetector::UpdateVehicleAtRest()
 
 	vehicle_imu_status_s imu_status;
 
-	if (_vehicle_imu_status_sub.update(&imu_status)) {
+	if (_vehicle_imu_status_sub.update(&imu_status, M_LAND_DETECTOR)) {
 		static constexpr float GYRO_VIBE_METRIC_MAX = 0.02f; // gyro_vibration_metric * dt * 4.0e4f > is_moving_scaler)
 		static constexpr float ACCEL_VIBE_METRIC_MAX = 1.2f; // accel_vibration_metric * dt * 2.1e2f > is_moving_scaler
 

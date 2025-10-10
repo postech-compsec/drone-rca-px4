@@ -424,7 +424,7 @@ void Logger::update_params()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_LOGGER);
 
 		// update parameters from storage
 		ModuleParams::updateParams();
@@ -740,7 +740,7 @@ void Logger::run()
 				if (parameter_update_sub.updated()) {
 					// clear update
 					parameter_update_s pupdate;
-					parameter_update_sub.copy(&pupdate);
+					parameter_update_sub.copy(&pupdate, M_LOGGER);
 
 					write_changed_parameters(LogType::Full);
 				}
@@ -802,7 +802,7 @@ void Logger::run()
 			// check for new logging message(s)
 			log_message_s log_message;
 
-			if (_log_message_sub.update(&log_message)) {
+			if (_log_message_sub.update(&log_message, M_LOGGER)) {
 				const char *message = (const char *)log_message.text;
 				int message_len = strlen(message);
 
@@ -1094,7 +1094,7 @@ bool Logger::get_disable_boot_logging()
 		battery_status_s battery_status;
 		uORB::Subscription battery_status_sub{ORB_ID(battery_status)};
 
-		if (battery_status_sub.copy(&battery_status)) {
+		if (battery_status_sub.copy(&battery_status, M_LOGGER)) {
 			if (!battery_status.connected) {
 				return true;
 			}
@@ -1116,7 +1116,7 @@ bool Logger::start_stop_logging()
 		// aux1-based logging
 		manual_control_setpoint_s manual_control_setpoint;
 
-		if (_manual_control_setpoint_sub.update(&manual_control_setpoint)) {
+		if (_manual_control_setpoint_sub.update(&manual_control_setpoint, M_LOGGER)) {
 
 			desired_state = (manual_control_setpoint.aux1 > 0.3f);
 			updated = true;
@@ -1126,7 +1126,7 @@ bool Logger::start_stop_logging()
 		// arming-based logging
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.update(&vehicle_status)) {
+		if (_vehicle_status_sub.update(&vehicle_status, M_LOGGER)) {
 
 			desired_state = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED) ||
 					(_prev_file_log_start_state && _log_mode == LogMode::arm_until_shutdown);
@@ -1172,7 +1172,7 @@ void Logger::handle_vehicle_command_update()
 {
 	vehicle_command_s command;
 
-	if (_vehicle_command_sub.update(&command)) {
+	if (_vehicle_command_sub.update(&command, M_LOGGER)) {
 
 		if (command.command == vehicle_command_s::VEHICLE_CMD_LOGGING_START) {
 

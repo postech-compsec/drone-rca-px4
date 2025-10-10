@@ -236,7 +236,7 @@ static float get_sphere_radius()
 	for (auto &gps_sub : gps_subs) {
 		sensor_gps_s gps;
 
-		if (gps_sub.copy(&gps)) {
+		if (gps_sub.copy(&gps, M_COMMANDER)) {
 			if (hrt_elapsed_time(&gps.timestamp) < 100_s && (gps.fix_type >= 2) && (gps.eph < 1000)) {
 				// magnetic field data returned by the geo library using the current GPS position
 				return get_mag_strength_gauss(gps.latitude_deg, gps.longitude_deg);
@@ -985,7 +985,7 @@ int do_mag_calibration_quick(orb_advert_t *mavlink_log_pub, float heading_radian
 		uORB::Subscription vehicle_gps_position_sub{ORB_ID(vehicle_gps_position)};
 		sensor_gps_s gps;
 
-		if (vehicle_gps_position_sub.copy(&gps)) {
+		if (vehicle_gps_position_sub.copy(&gps, M_COMMANDER)) {
 			if ((gps.timestamp != 0) && (gps.eph < 1000)) {
 				latitude_deg = (float)gps.latitude_deg;
 				longitude_deg = (float)gps.longitude_deg;
@@ -1009,7 +1009,7 @@ int do_mag_calibration_quick(orb_advert_t *mavlink_log_pub, float heading_radian
 
 		uORB::Subscription vehicle_attitude_sub{ORB_ID(vehicle_attitude)};
 		vehicle_attitude_s attitude{};
-		vehicle_attitude_sub.copy(&attitude);
+		vehicle_attitude_sub.copy(&attitude, M_COMMANDER);
 
 		if (hrt_elapsed_time(&attitude.timestamp) > 1_s) {
 			calibration_log_critical(mavlink_log_pub, "attitude required for mag quick cal");
@@ -1037,7 +1037,7 @@ int do_mag_calibration_quick(orb_advert_t *mavlink_log_pub, float heading_radian
 		for (uint8_t cur_mag = 0; cur_mag < MAX_MAGS; cur_mag++) {
 			uORB::Subscription mag_sub{ORB_ID(sensor_mag), cur_mag};
 			sensor_mag_s mag{};
-			mag_sub.copy(&mag);
+			mag_sub.copy(&mag, M_COMMANDER);
 
 			if (mag_sub.advertised() && (mag.timestamp != 0) && (mag.device_id != 0)) {
 

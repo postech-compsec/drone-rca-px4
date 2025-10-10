@@ -51,7 +51,7 @@ bool Gimbal::checkForTelemetry(const hrt_abstime now)
 	if (_gimbal_device_attitude_status_sub.updated()) {
 		gimbal_device_attitude_status_s gimbal_device_attitude_status{};
 
-		if (_gimbal_device_attitude_status_sub.copy(&gimbal_device_attitude_status)) {
+		if (_gimbal_device_attitude_status_sub.copy(&gimbal_device_attitude_status, M_FLIGHT_MODE_MANAGER)) {
 			_telemtry_timestamp = gimbal_device_attitude_status.timestamp;
 			_telemetry_flags = gimbal_device_attitude_status.device_flags;
 			_telemetry_yaw = Eulerf(Quatf(gimbal_device_attitude_status.q)).psi();

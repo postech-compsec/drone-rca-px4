@@ -364,7 +364,7 @@ int Commander::custom_command(int argc, char *argv[])
 	if (!strcmp(argv[0], "transition")) {
 		uORB::Subscription vehicle_status_sub{ORB_ID(vehicle_status)};
 		vehicle_status_s vehicle_status{};
-		vehicle_status_sub.copy(&vehicle_status);
+		vehicle_status_sub.copy(&vehicle_status, M_COMMANDER);
 		send_vehicle_command(vehicle_command_s::VEHICLE_CMD_DO_VTOL_TRANSITION,
 				     (float)(vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_ROTARY_WING ?
 					     vtol_vehicle_status_s::VEHICLE_VTOL_STATE_FW :
@@ -1554,7 +1554,7 @@ void Commander::handleCommandsFromModeExecutors()
 		const unsigned last_generation = _vehicle_command_mode_executor_sub.get_last_generation();
 		vehicle_command_s cmd;
 
-		if (_vehicle_command_mode_executor_sub.copy(&cmd)) {
+		if (_vehicle_command_mode_executor_sub.copy(&cmd, M_COMMANDER)) {
 			if (_vehicle_command_mode_executor_sub.get_last_generation() != last_generation + 1) {
 				PX4_ERR("vehicle_command from executor lost, generation %u -> %u", last_generation,
 					_vehicle_command_mode_executor_sub.get_last_generation());
@@ -1779,7 +1779,7 @@ void Commander::run()
 		button_state.pub_timestamp = hrt_absolute_time();
 		power_button_state_pub = orb_advertise(ORB_ID(power_button_state), &button_state);
 
-		_power_button_state_sub.copy(&button_state);
+		_power_button_state_sub.copy(&button_state, M_COMMANDER);
 
 		tune_control_s tune_control{};
 		tune_control.timestamp = hrt_absolute_time();
@@ -1810,7 +1810,7 @@ void Commander::run()
 		if (params_updated) {
 			// clear update
 			parameter_update_s update;
-			_parameter_update_sub.copy(&update);
+			_parameter_update_sub.copy(&update, M_COMMANDER);
 
 			updateParameters();
 
@@ -1884,7 +1884,7 @@ void Commander::run()
 			const unsigned last_generation = _vehicle_command_sub.get_last_generation();
 			vehicle_command_s cmd;
 
-			if (_vehicle_command_sub.copy(&cmd)) {
+			if (_vehicle_command_sub.copy(&cmd, M_COMMANDER)) {
 				if (_vehicle_command_sub.get_last_generation() != last_generation + 1) {
 					PX4_ERR("vehicle_command lost, generation %u -> %u", last_generation, _vehicle_command_sub.get_last_generation());
 				}
@@ -1899,7 +1899,7 @@ void Commander::run()
 			const unsigned last_generation = _action_request_sub.get_last_generation();
 			action_request_s action_request;
 
-			if (_action_request_sub.copy(&action_request)) {
+			if (_action_request_sub.copy(&action_request, M_COMMANDER)) {
 				if (_action_request_sub.get_last_generation() != last_generation + 1) {
 					PX4_ERR("action_request lost, generation %u -> %u", last_generation, _action_request_sub.get_last_generation());
 				}
@@ -2089,7 +2089,7 @@ void Commander::handlePowerButtonState()
 	if (_power_button_state_sub.updated()) {
 		power_button_state_s button_state;
 
-		if (_power_button_state_sub.copy(&button_state)) {
+		if (_power_button_state_sub.copy(&button_state, M_COMMANDER)) {
 			if (button_state.event == power_button_state_s::PWR_BUTTON_STATE_REQUEST_SHUTDOWN) {
 				if (!isArmed() && (px4_shutdown_request() == 0)) {
 					while (1) { px4_usleep(1); }
@@ -2105,7 +2105,7 @@ void Commander::systemPowerUpdate()
 {
 	system_power_s system_power;
 
-	if (_system_power_sub.update(&system_power)) {
+	if (_system_power_sub.update(&system_power, M_COMMANDER)) {
 
 		if (hrt_elapsed_time(&system_power.timestamp) < 1_s) {
 			if (system_power.servo_valid &&
@@ -2125,7 +2125,7 @@ void Commander::landDetectorUpdate()
 {
 	if (_vehicle_land_detected_sub.updated()) {
 		const bool was_landed = _vehicle_land_detected.landed;
-		_vehicle_land_detected_sub.copy(&_vehicle_land_detected);
+		_vehicle_land_detected_sub.copy(&_vehicle_land_detected, M_COMMANDER);
 
 		// Only take actions if armed
 		if (isArmed()) {
@@ -2181,7 +2181,7 @@ void Commander::safetyButtonUpdate()
 void Commander::vtolStatusUpdate()
 {
 	// Make sure that this is only adjusted if vehicle really is of type vtol
-	if (_vtol_vehicle_status_sub.update(&_vtol_vehicle_status) && is_vtol(_vehicle_status)) {
+	if (_vtol_vehicle_status_sub.update(&_vtol_vehicle_status, M_COMMANDER) && is_vtol(_vehicle_status)) {
 
 		// Check if there has been any change while updating the flags (transition = rotary wing status)
 		const uint8_t new_vehicle_type =
@@ -2465,7 +2465,7 @@ void Commander::control_status_leds(bool changed, const uint8_t battery_warning)
 	if (_cpuload_sub.updated()) {
 		cpuload_s cpuload;
 
-		if (_cpuload_sub.copy(&cpuload)) {
+		if (_cpuload_sub.copy(&cpuload, M_COMMANDER)) {
 			const float cpuload_percent = cpuload.load * 100.f;
 
 			bool overload = false;
@@ -2730,7 +2730,7 @@ void Commander::dataLinkCheck()
 	// high latency data link
 	iridiumsbd_status_s iridium_status;
 
-	if (_iridiumsbd_status_sub.update(&iridium_status)) {
+	if (_iridiumsbd_status_sub.update(&iridium_status, M_COMMANDER)) {
 		_high_latency_datalink_timestamp = iridium_status.last_at_ok_timestamp;
 
 		if (_vehicle_status.high_latency_data_link_lost &&
@@ -2930,7 +2930,7 @@ void Commander::battery_status_check()
 void Commander::manualControlCheck()
 {
 	manual_control_setpoint_s manual_control_setpoint;
-	const bool manual_control_updated = _manual_control_setpoint_sub.update(&manual_control_setpoint);
+	const bool manual_control_updated = _manual_control_setpoint_sub.update(&manual_control_setpoint, M_COMMANDER);
 
 	if (manual_control_updated && manual_control_setpoint.valid) {
 

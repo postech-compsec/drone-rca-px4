@@ -161,10 +161,10 @@ void OutputBase::_handle_position_update(const ControlData &control_data, bool f
 	vehicle_global_position_s vehicle_global_position{};
 
 	if (force_update) {
-		_vehicle_global_position_sub.copy(&vehicle_global_position);
+		_vehicle_global_position_sub.copy(&vehicle_global_position, M_GIMBAL);
 
 	} else {
-		if (!_vehicle_global_position_sub.update(&vehicle_global_position)) {
+		if (!_vehicle_global_position_sub.update(&vehicle_global_position, M_GIMBAL)) {
 			return;
 		}
 	}
@@ -210,7 +210,7 @@ void OutputBase::_calculate_angle_output(const hrt_abstime &t)
 	if (_vehicle_land_detected_sub.updated()) {
 		vehicle_land_detected_s vehicle_land_detected;
 
-		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected)) {
+		if (_vehicle_land_detected_sub.copy(&vehicle_land_detected, M_GIMBAL)) {
 			_landed = vehicle_land_detected.landed || vehicle_land_detected.maybe_landed;
 		}
 	}
@@ -231,7 +231,7 @@ void OutputBase::_calculate_angle_output(const hrt_abstime &t)
 	if (compensate[0] || compensate[1] || compensate[2]) {
 		vehicle_attitude_s vehicle_attitude;
 
-		if (_vehicle_attitude_sub.copy(&vehicle_attitude)) {
+		if (_vehicle_attitude_sub.copy(&vehicle_attitude, M_GIMBAL)) {
 			euler_vehicle = matrix::Quatf(vehicle_attitude.q);
 		}
 	}
