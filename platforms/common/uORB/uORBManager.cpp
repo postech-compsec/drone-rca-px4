@@ -378,7 +378,7 @@ int uORB::Manager::orb_publish(const struct orb_metadata *meta, orb_advert_t han
 	return uORB::DeviceNode::publish(meta, handle, data);
 }
 
-int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint8_t orb_id, uint8_t _subscriber_id)
+int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint8_t _subscriber_id)
 {
 	int ret;
 
@@ -396,7 +396,8 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	subscription_info_s sub_info{};
 	sub_info.timestamp = hrt_absolute_time();
 	sub_info.subscriber_id = _subscriber_id;
-	sub_info.topic_id = orb_id;
+	ORB_ID _orb_id = (meta == nullptr) ? ORB_ID::INVALID : static_cast<ORB_ID>(meta->o_id);
+	sub_info.topic_id = static_cast<uint8_t>(_orb_id);
 
 	// For pub only valid things
 	/*
