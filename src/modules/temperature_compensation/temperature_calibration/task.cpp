@@ -212,7 +212,7 @@ void TemperatureCalibration::task_main()
 			sensor_gyro_s gyro_data;
 
 			for (unsigned i = 0; i < num_gyro; ++i) {
-				orb_copy(ORB_ID(sensor_gyro), gyro_sub[i], &gyro_data);
+				orb_copy_w_subid(ORB_ID(sensor_gyro), gyro_sub[i], &gyro_data, M_TEMPERATURE_COMPENSATION);
 			}
 		}
 

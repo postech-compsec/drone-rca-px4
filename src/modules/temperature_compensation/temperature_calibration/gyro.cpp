@@ -67,7 +67,7 @@ int TemperatureCalibrationGyro::update_sensor_instance(PerSensorData &data, int 
 	}
 
 	sensor_gyro_s gyro_data{};
-	orb_copy(ORB_ID(sensor_gyro), sensor_sub, &gyro_data);
+	orb_copy_w_subid(ORB_ID(sensor_gyro), sensor_sub, &gyro_data, M_TEMPERATURE_COMPENSATION);
 
 	if (finished) {
 		// if we're done, return, but we need to return after orb_copy because of poll()

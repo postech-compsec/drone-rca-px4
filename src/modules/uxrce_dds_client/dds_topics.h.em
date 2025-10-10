@@ -130,7 +130,7 @@ void SendTopicsSubs::update(uxrSession *session, uxrStreamId reliable_out_stream
 	for (unsigned idx = 0; idx < sizeof(send_subscriptions)/sizeof(send_subscriptions[0]); ++idx) {
 		if (fds[idx].revents & POLLIN) {
 			// Topic updated, copy data and send
-			orb_copy(send_subscriptions[idx].orb_meta, fds[idx].fd, &topic_data);
+			orb_copy_w_subid(send_subscriptions[idx].orb_meta, fds[idx].fd, &topic_data, M_UXRCE_DDS_CLIENT);
 
 			if (send_subscriptions[idx].data_writer.id != UXR_INVALID_ID) {
 

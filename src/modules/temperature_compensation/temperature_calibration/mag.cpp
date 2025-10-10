@@ -80,7 +80,7 @@ int TemperatureCalibrationMag::update_sensor_instance(PerSensorData &data, int s
 	}
 
 	sensor_mag_s mag_data;
-	orb_copy(ORB_ID(sensor_mag), sensor_sub, &mag_data);
+	orb_copy_w_subid(ORB_ID(sensor_mag), sensor_sub, &mag_data, M_TEMPERATURE_COMPENSATION);
 
 	if (finished) {
 		// if we're done, return, but we need to return after orb_copy because of poll()

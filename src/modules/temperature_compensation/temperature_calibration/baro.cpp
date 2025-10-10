@@ -80,7 +80,7 @@ int TemperatureCalibrationBaro::update_sensor_instance(PerSensorData &data, int 
 	}
 
 	sensor_baro_s baro_data;
-	orb_copy(ORB_ID(sensor_baro), sensor_sub, &baro_data);
+	orb_copy_w_subid(ORB_ID(sensor_baro), sensor_sub, &baro_data, M_TEMPERATURE_COMPENSATION);
 
 	if (finished) {
 		// if we're done, return, but we need to return after orb_copy because of poll()
