@@ -41,6 +41,7 @@
 #include <uORB/topics/sensor_mag.h>
 #include <uORB/topics/estimator_status.h>
 #include <lib/sensor_calibration/Magnetometer.hpp>
+#include <uORB/topics/subscription_info.h>
 
 class MagnetometerChecks : public HealthAndArmingCheckBase
 {

@@ -53,6 +53,7 @@
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/actuator_test.h>
 #include <parameters/param.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace time_literals;
 

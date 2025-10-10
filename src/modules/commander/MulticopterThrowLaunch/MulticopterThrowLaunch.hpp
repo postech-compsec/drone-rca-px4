@@ -46,6 +46,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_local_position.h>
+#include <uORB/topics/subscription_info.h>
 
 class MulticopterThrowLaunch : public ModuleParams
 {

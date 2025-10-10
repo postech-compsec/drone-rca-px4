@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_optical_flow.h>
+#include <uORB/topics/subscription_info.h>
 
 class OpticalFlowCheck : public HealthAndArmingCheckBase
 {

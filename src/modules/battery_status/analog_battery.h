@@ -37,6 +37,7 @@
 #include <lib/mathlib/math/filter/AlphaFilter.hpp>
 #include <parameters/param.h>
 #include <uORB/topics/vehicle_status.h>
+#include <uORB/topics/subscription_info.h>
 
 class AnalogBattery : public Battery
 {

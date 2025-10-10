@@ -65,6 +65,7 @@
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/sensor_gps.h>
 #include <uORB/topics/mag_worker_data.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace matrix;
 using namespace time_literals;

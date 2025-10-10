@@ -57,6 +57,7 @@
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/sensor_gps.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace matrix;
 using namespace time_literals;

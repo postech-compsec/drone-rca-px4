@@ -54,6 +54,7 @@
 #include <systemlib/mavlink_log.h>
 #include <parameters/param.h>
 #include <systemlib/err.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace time_literals;
 

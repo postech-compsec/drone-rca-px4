@@ -41,6 +41,7 @@
 #include <uORB/topics/vehicle_status.h>
 #include <uORB/topics/vehicle_control_mode.h>
 #include <uORB/topics/config_overrides.h>
+#include <uORB/topics/subscription_info.h>
 
 #include <lib/modes/ui.hpp>
 #include "UserModeIntention.hpp"

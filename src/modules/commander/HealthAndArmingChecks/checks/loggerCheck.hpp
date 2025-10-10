@@ -38,6 +38,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/logger_status.h>
+#include <uORB/topics/subscription_info.h>
 
 class LoggerChecks : public HealthAndArmingCheckBase
 {

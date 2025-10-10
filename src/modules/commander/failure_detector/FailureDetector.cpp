@@ -46,7 +46,7 @@ void FailureInjector::update()
 {
 	vehicle_command_s vehicle_command;
 
-	while (_vehicle_command_sub.update(&vehicle_command)) {
+	while (_vehicle_command_sub.update(&vehicle_command, M_COMMANDER)) {
 		if (vehicle_command.command != vehicle_command_s::VEHICLE_CMD_INJECT_FAILURE) {
 			continue;
 		}
@@ -189,7 +189,7 @@ bool FailureDetector::update(const vehicle_status_s &vehicle_status, const vehic
 	// esc_status subscriber is shared between subroutines
 	esc_status_s esc_status;
 
-	if (_esc_status_sub.update(&esc_status)) {
+	if (_esc_status_sub.update(&esc_status, M_COMMANDER)) {
 		_failure_injector.manipulateEscStatus(esc_status);
 
 		if (_param_escs_en.get()) {
@@ -212,7 +212,7 @@ void FailureDetector::updateAttitudeStatus(const vehicle_status_s &vehicle_statu
 {
 	vehicle_attitude_s attitude;
 
-	if (_vehicle_attitude_sub.update(&attitude)) {
+	if (_vehicle_attitude_sub.update(&attitude, M_COMMANDER)) {
 
 		const matrix::Eulerf euler(matrix::Quatf(attitude.q));
 		float roll(euler.phi());
@@ -260,7 +260,7 @@ void FailureDetector::updateExternalAtsStatus()
 {
 	pwm_input_s pwm_input;
 
-	if (_pwm_input_sub.update(&pwm_input)) {
+	if (_pwm_input_sub.update(&pwm_input, M_COMMANDER)) {
 
 		uint32_t pulse_width = pwm_input.pulse_width;
 		bool ats_trigger_status = (pulse_width >= (uint32_t)_param_fd_ext_ats_trig.get()) && (pulse_width < 3_ms);

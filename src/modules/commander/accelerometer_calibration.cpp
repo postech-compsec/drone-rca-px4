@@ -145,6 +145,7 @@
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/sensor_accel.h>
 #include <uORB/topics/vehicle_attitude.h>
+#include <uORB/topics/subscription_info.h>
 
 using namespace matrix;
 using namespace time_literals;

@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/mission_result.h>
+#include <uORB/topics/subscription_info.h>
 
 class MissionChecks : public HealthAndArmingCheckBase
 {

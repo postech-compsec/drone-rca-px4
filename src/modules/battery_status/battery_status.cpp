@@ -58,6 +58,7 @@
 #include <lib/conversion/rotation.h>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/SubscriptionCallback.hpp>
+#include <uORB/topics/subscription_info.h>
 #include <uORB/Publication.hpp>
 #include <uORB/topics/parameter_update.h>
 #include <uORB/topics/adc_report.h>
@@ -183,7 +184,7 @@ BatteryStatus::adc_poll()
 
 	adc_report_s adc_report;
 
-	if (_adc_report_sub.update(&adc_report)) {
+	if (_adc_report_sub.update(&adc_report, M_BATTERY_STATUS)) {
 
 		/* Read add channels we got */
 		for (unsigned i = 0; i < PX4_MAX_ADC_CHANNELS; ++i) {

@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/wind.h>
+#include <uORB/topics/subscription_info.h>
 
 class WindChecks : public HealthAndArmingCheckBase
 {

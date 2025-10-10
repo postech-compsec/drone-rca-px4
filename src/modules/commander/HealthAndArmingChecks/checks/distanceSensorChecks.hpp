@@ -38,6 +38,7 @@
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/distance_sensor.h>
+#include <uORB/topics/subscription_info.h>
 
 class DistanceSensorChecks : public HealthAndArmingCheckBase
 {

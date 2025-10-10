@@ -56,6 +56,7 @@
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/gimbal_device_attitude_status.h>
+#include <uORB/topics/subscription_info.h>
 
 class CameraFeedback : public ModuleBase<CameraFeedback>, public ModuleParams, public px4::WorkItem
 {

@@ -39,6 +39,7 @@
 #include <uORB/SubscriptionMultiArray.hpp>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/rtl_time_estimate.h>
+#include <uORB/topics/subscription_info.h>
 
 class BatteryChecks : public HealthAndArmingCheckBase
 {

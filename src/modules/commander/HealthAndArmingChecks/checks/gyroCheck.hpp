@@ -40,6 +40,7 @@
 #include <uORB/topics/estimator_status.h>
 #include <uORB/topics/sensor_gyro.h>
 #include <lib/sensor_calibration/Gyroscope.hpp>
+#include <uORB/topics/subscription_info.h>
 
 class GyroChecks : public HealthAndArmingCheckBase
 {

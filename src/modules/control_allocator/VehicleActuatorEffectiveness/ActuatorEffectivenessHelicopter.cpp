@@ -215,7 +215,7 @@ bool ActuatorEffectivenessHelicopter::mainMotorEnaged()
 {
 	manual_control_switches_s manual_control_switches;
 
-	if (_manual_control_switches_sub.update(&manual_control_switches)) {
+	if (_manual_control_switches_sub.update(&manual_control_switches, M_CONTROL_ALLOCATOR)) {
 		_main_motor_engaged = manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_NONE
 				      || manual_control_switches.engage_main_motor_switch == manual_control_switches_s::SWITCH_POS_ON;
 	}
@@ -227,7 +227,7 @@ float ActuatorEffectivenessHelicopter::throttleSpoolupProgress()
 {
 	vehicle_status_s vehicle_status;
 
-	if (_vehicle_status_sub.update(&vehicle_status)) {
+	if (_vehicle_status_sub.update(&vehicle_status, M_CONTROL_ALLOCATOR)) {
 		_armed = vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED;
 		_armed_time = vehicle_status.armed_time;
 	}

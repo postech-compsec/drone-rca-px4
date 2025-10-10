@@ -39,6 +39,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/cpuload.h>
+#include <uORB/topics/subscription_info.h>
 
 class CpuResourceChecks : public HealthAndArmingCheckBase
 {

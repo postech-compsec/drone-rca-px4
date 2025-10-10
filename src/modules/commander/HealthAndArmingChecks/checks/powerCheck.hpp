@@ -38,6 +38,7 @@
 #include <lib/hysteresis/hysteresis.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/system_power.h>
+#include <uORB/topics/subscription_info.h>
 
 class PowerChecks : public HealthAndArmingCheckBase
 {

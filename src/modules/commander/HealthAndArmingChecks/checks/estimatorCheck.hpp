@@ -45,6 +45,7 @@
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/sensor_gps.h>
+#include <uORB/topics/subscription_info.h>
 
 #include <lib/hysteresis/hysteresis.h>
 

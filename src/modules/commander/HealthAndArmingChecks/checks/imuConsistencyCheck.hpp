@@ -37,6 +37,7 @@
 
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/sensors_status_imu.h>
+#include <uORB/topics/subscription_info.h>
 
 class ImuConsistencyChecks : public HealthAndArmingCheckBase
 {

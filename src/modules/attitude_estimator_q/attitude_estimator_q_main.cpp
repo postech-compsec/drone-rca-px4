@@ -61,6 +61,7 @@
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_magnetometer.h>
 #include <uORB/topics/vehicle_odometry.h>
+#include <uORB/topics/subscription_info.h>
 
 using matrix::Dcmf;
 using matrix::Eulerf;
@@ -224,7 +225,7 @@ void AttitudeEstimatorQ::update_gps_position()
 	if (_vehicle_gps_position_sub.updated()) {
 		sensor_gps_s gps;
 
-		if (_vehicle_gps_position_sub.update(&gps)) {
+		if (_vehicle_gps_position_sub.update(&gps, M_ATTITUDE_ESTIMATOR_Q)) {
 			if (_param_att_mag_decl_a.get() && (gps.eph < 20.0f)) {
 				// set magnetic declination automatically
 				float mag_decl_deg = get_mag_declination_degrees(gps.latitude_deg, gps.longitude_deg);
@@ -240,7 +241,7 @@ void AttitudeEstimatorQ::update_magnetometer()
 	if (_vehicle_magnetometer_sub.updated()) {
 		vehicle_magnetometer_s magnetometer;
 
-		if (_vehicle_magnetometer_sub.update(&magnetometer)) {
+		if (_vehicle_magnetometer_sub.update(&magnetometer, M_ATTITUDE_ESTIMATOR_Q)) {
 			_mag(0) = magnetometer.magnetometer_ga[0];
 			_mag(1) = magnetometer.magnetometer_ga[1];
 			_mag(2) = magnetometer.magnetometer_ga[2];
@@ -258,7 +259,7 @@ void AttitudeEstimatorQ::update_motion_capture_odometry()
 	if (_vehicle_mocap_odometry_sub.updated()) {
 		vehicle_odometry_s mocap;
 
-		if (_vehicle_mocap_odometry_sub.update(&mocap)) {
+		if (_vehicle_mocap_odometry_sub.update(&mocap, M_ATTITUDE_ESTIMATOR_Q)) {
 			// validation check for mocap attitude data
 			bool mocap_att_valid = PX4_ISFINITE(mocap.q[0])
 					       && (PX4_ISFINITE(mocap.orientation_variance[0]) ? sqrtf(fmaxf(
@@ -336,7 +337,7 @@ void AttitudeEstimatorQ::update_vehicle_local_position()
 	if (_vehicle_local_position_sub.updated()) {
 		vehicle_local_position_s lpos;
 
-		if (_vehicle_local_position_sub.update(&lpos)) {
+		if (_vehicle_local_position_sub.update(&lpos, M_ATTITUDE_ESTIMATOR_Q)) {
 
 			if (_param_att_acc_comp.get() && (hrt_elapsed_time(&lpos.timestamp) < 20_ms)
 			    && lpos.v_xy_valid && lpos.v_z_valid && (lpos.eph < 5.0f) && _initialized) {
@@ -369,7 +370,7 @@ void AttitudeEstimatorQ::update_visual_odometry()
 	if (_vehicle_visual_odometry_sub.updated()) {
 		vehicle_odometry_s vision;
 
-		if (_vehicle_visual_odometry_sub.update(&vision)) {
+		if (_vehicle_visual_odometry_sub.update(&vision, M_ATTITUDE_ESTIMATOR_Q)) {
 			// validation check for vision attitude data
 			bool vision_att_valid = PX4_ISFINITE(vision.q[0])
 						&& (PX4_ISFINITE(vision.orientation_variance[0]) ? sqrtf(fmaxf(
