@@ -373,7 +373,7 @@ public:
 	 *      using the data.
 	 * @return    OK on success, PX4_ERROR otherwise with errno set accordingly.
 	 */
-	int  orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint64_t _timestamp = 0, uint8_t orb_id = static_cast<uint8_t>(ORB_ID::INVALID), uint8_t _subscriber_id = 0);
+	int  orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint8_t orb_id = static_cast<uint8_t>(ORB_ID::INVALID), uint8_t _subscriber_id = 0);
 
 	/**
 	 * Check whether a topic has been published to since the last orb_copy.
@@ -442,7 +442,7 @@ public:
 
 	static uint8_t orb_get_queue_size(const void *node_handle);
 
-	static bool orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated, uint64_t _timestamp = 0, uint8_t orb_id = static_cast<uint8_t>(ORB_ID::INVALID), uint8_t _subscriber_id = 0);
+	static bool orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated, uint8_t orb_id = static_cast<uint8_t>(ORB_ID::INVALID), uint8_t _subscriber_id = 0);
 
 	static bool register_callback(void *node_handle, SubscriptionCallback *callback_sub);
 

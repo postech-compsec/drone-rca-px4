@@ -48,6 +48,8 @@
 #include "uORBUtils.hpp"
 #include "uORBManager.hpp"
 
+#include <drivers/drv_hrt.h> // for hrt_absolute_time()
+
 #ifdef CONFIG_ORB_COMMUNICATOR
 pthread_mutex_t uORB::Manager::_communicator_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
@@ -376,7 +378,7 @@ int uORB::Manager::orb_publish(const struct orb_metadata *meta, orb_advert_t han
 	return uORB::DeviceNode::publish(meta, handle, data);
 }
 
-int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint64_t _timestamp, uint8_t orb_id, uint8_t _subscriber_id)
+int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *buffer, uint8_t orb_id, uint8_t _subscriber_id)
 {
 	int ret;
 
@@ -392,7 +394,7 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	}
 
 	subscription_info_s sub_info{};
-	sub_info.timestamp = _timestamp;
+	sub_info.timestamp = hrt_absolute_time();
 	sub_info.subscriber_id = _subscriber_id;
 	sub_info.topic_id = orb_id;
 
@@ -466,7 +468,7 @@ void uORB::Manager::orb_remove_internal_subscriber(void *node_handle)
 
 uint8_t uORB::Manager::orb_get_queue_size(const void *node_handle) { return static_cast<const DeviceNode *>(node_handle)->get_queue_size(); }
 
-bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated, uint64_t _timestamp, uint8_t orb_id, uint8_t _subscriber_id)
+bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &generation, bool only_if_updated, uint8_t orb_id, uint8_t _subscriber_id)
 {
 	if (!is_advertised(node_handle)) {
 		return false;
@@ -478,7 +480,7 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 
 	if(static_cast<const uORB::DeviceNode *>(node_handle)->updates_available(generation)){ // updates_available : 최근의 업데이트로 인해 로컬에는 없고 리모트에만 있는 업데이트 개수
 		subscription_info_s sub_info{};
-		sub_info.timestamp = _timestamp;
+		sub_info.timestamp = hrt_absolute_time();
 		sub_info.subscriber_id = _subscriber_id;
 		sub_info.topic_id = orb_id;
 
