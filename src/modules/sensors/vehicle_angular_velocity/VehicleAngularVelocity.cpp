@@ -209,7 +209,7 @@ void VehicleAngularVelocity::SensorBiasUpdate(bool force)
 	if (_estimator_selector_status_sub.updated()) {
 		estimator_selector_status_s estimator_selector_status;
 
-		if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.copy(&estimator_selector_status, M_SENSORS)) {
 			_estimator_sensor_bias_sub.ChangeInstance(estimator_selector_status.primary_instance);
 		}
 	}
@@ -217,7 +217,7 @@ void VehicleAngularVelocity::SensorBiasUpdate(bool force)
 	if (_estimator_sensor_bias_sub.updated() || force) {
 		estimator_sensor_bias_s bias;
 
-		if (_estimator_sensor_bias_sub.copy(&bias) && (bias.gyro_device_id == _selected_sensor_device_id)) {
+		if (_estimator_sensor_bias_sub.copy(&bia, M_SENSORS) && (bias.gyro_device_id == _selected_sensor_device_id)) {
 			_bias = Vector3f{bias.gyro_bias};
 
 		} else {
@@ -230,7 +230,7 @@ bool VehicleAngularVelocity::SensorSelectionUpdate(const hrt_abstime &time_now_u
 {
 	if (_sensor_selection_sub.updated() || (_selected_sensor_device_id == 0) || force) {
 		sensor_selection_s sensor_selection{};
-		_sensor_selection_sub.copy(&sensor_selection);
+		_sensor_selection_sub.copy(&sensor_selection, M_SENSORS);
 
 		bool selected_device_id_valid = false;
 		uint32_t device_id = sensor_selection.gyro_device_id;
@@ -367,7 +367,7 @@ void VehicleAngularVelocity::ParametersUpdate(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSORS);
 
 		const bool nf0_enabled_prev = (_param_imu_gyro_nf0_frq.get() > 0.f) && (_param_imu_gyro_nf0_bw.get() > 0.f);
 		const bool nf1_enabled_prev = (_param_imu_gyro_nf1_frq.get() > 0.f) && (_param_imu_gyro_nf1_bw.get() > 0.f);
@@ -577,7 +577,7 @@ void VehicleAngularVelocity::UpdateDynamicNotchEscRpm(const hrt_abstime &time_no
 
 		esc_status_s esc_status;
 
-		if (_esc_status_sub.copy(&esc_status) && (time_now_us < esc_status.timestamp + DYNAMIC_NOTCH_FITLER_TIMEOUT)) {
+		if (_esc_status_sub.copy(&esc_status, M_SENSORS) && (time_now_us < esc_status.timestamp + DYNAMIC_NOTCH_FITLER_TIMEOUT)) {
 
 			const float bandwidth_hz = _param_imu_gyro_dnf_bw.get();
 			const float freq_min = math::max(_param_imu_gyro_dnf_min.get(), bandwidth_hz);
@@ -677,7 +677,7 @@ void VehicleAngularVelocity::UpdateDynamicNotchFFT(const hrt_abstime &time_now_u
 
 		sensor_gyro_fft_s sensor_gyro_fft;
 
-		if (_sensor_gyro_fft_sub.copy(&sensor_gyro_fft)
+		if (_sensor_gyro_fft_sub.copy(&sensor_gyro_fft, M_SENSORS)
 		    && (sensor_gyro_fft.device_id == _selected_sensor_device_id)
 		    && (time_now_us < sensor_gyro_fft.timestamp + DYNAMIC_NOTCH_FITLER_TIMEOUT)
 		    && ((fabsf(sensor_gyro_fft.sensor_sample_rate_hz - _filter_sample_rate_hz) / _filter_sample_rate_hz) < 0.02f)) {

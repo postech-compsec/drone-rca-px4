@@ -69,7 +69,7 @@ void SpacecraftHandler::Run()
 	}
 
 	if (_vehicle_control_mode_sub.updated()) {
-		_vehicle_control_mode_sub.copy(&_vehicle_control_mode);
+		_vehicle_control_mode_sub.copy(&_vehicle_control_mode, M_SPACECRAFT);
 	}
 
 	const hrt_abstime timestamp_prev = _timestamp;

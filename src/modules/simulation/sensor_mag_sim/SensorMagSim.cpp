@@ -101,7 +101,7 @@ void SensorMagSim::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSOR_MAG_SIM);
 
 		updateParams();
 	}
@@ -109,7 +109,7 @@ void SensorMagSim::Run()
 	if (_vehicle_global_position_sub.updated()) {
 		vehicle_global_position_s gpos;
 
-		if (_vehicle_global_position_sub.copy(&gpos)) {
+		if (_vehicle_global_position_sub.copy(&gpos, M_SENSOR_MAG_SIM)) {
 			if (gpos.eph < 1000) {
 
 				// magnetic field data returned by the geo library using the current GPS position

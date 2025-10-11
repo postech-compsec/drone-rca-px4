@@ -134,7 +134,7 @@ void VehicleAcceleration::SensorBiasUpdate(bool force)
 	if (_estimator_selector_status_sub.updated()) {
 		estimator_selector_status_s estimator_selector_status;
 
-		if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.copy(&estimator_selector_status, M_SENSORS)) {
 			_estimator_sensor_bias_sub.ChangeInstance(estimator_selector_status.primary_instance);
 		}
 	}
@@ -142,7 +142,7 @@ void VehicleAcceleration::SensorBiasUpdate(bool force)
 	if (_estimator_sensor_bias_sub.updated() || force) {
 		estimator_sensor_bias_s bias;
 
-		if (_estimator_sensor_bias_sub.copy(&bias)) {
+		if (_estimator_sensor_bias_sub.copy(&bias, M_SENSORS)) {
 			if (bias.accel_device_id == _calibration.device_id()) {
 				_bias = Vector3f{bias.accel_bias};
 
@@ -157,7 +157,7 @@ bool VehicleAcceleration::SensorSelectionUpdate(bool force)
 {
 	if (_sensor_selection_sub.updated() || (_calibration.device_id() == 0) || force) {
 		sensor_selection_s sensor_selection{};
-		_sensor_selection_sub.copy(&sensor_selection);
+		_sensor_selection_sub.copy(&sensor_selection, M_SENSORS);
 
 		if ((sensor_selection.accel_device_id != 0) && (_calibration.device_id() != sensor_selection.accel_device_id)) {
 			for (uint8_t i = 0; i < MAX_SENSOR_COUNT; i++) {
@@ -197,7 +197,7 @@ void VehicleAcceleration::ParametersUpdate(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSORS);
 
 		updateParams();
 

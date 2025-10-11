@@ -87,7 +87,7 @@ void VehicleOpticalFlow::ParametersUpdate()
 	if (_params_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_params_sub.copy(&param_update);
+		_params_sub.copy(&param_update, M_SENSORS);
 
 		updateParams();
 
@@ -315,7 +315,7 @@ void VehicleOpticalFlow::Run()
 
 				vehicle_attitude_s vehicle_attitude{};
 
-				if (_vehicle_attitude_sub.copy(&vehicle_attitude)) {
+				if (_vehicle_attitude_sub.copy(&vehicle_attitude, M_SENSORS)) {
 					const matrix::Dcmf R_to_earth = matrix::Quatf(vehicle_attitude.q);
 					const Vector3f flow_vel_ne = R_to_earth * vel_optflow_body;
 
@@ -412,7 +412,7 @@ void VehicleOpticalFlow::UpdateSensorGyro()
 {
 	if (_sensor_selection_sub.updated()) {
 		sensor_selection_s sensor_selection{};
-		_sensor_selection_sub.copy(&sensor_selection);
+		_sensor_selection_sub.copy(&sensor_selection, M_SENSORS);
 
 		for (uint8_t i = 0; i < MAX_SENSOR_COUNT; i++) {
 			uORB::SubscriptionData<sensor_gyro_s> sensor_gyro_sub{ORB_ID(sensor_gyro), i};
@@ -446,7 +446,7 @@ void VehicleOpticalFlow::UpdateSensorGyro()
 		const unsigned last_generation = _sensor_gyro_sub.get_last_generation();
 		sensor_gyro_s sensor_gyro;
 
-		if (_sensor_gyro_sub.copy(&sensor_gyro)) {
+		if (_sensor_gyro_sub.copy(&sensor_gyro, M_SENSORS)) {
 
 			if (_sensor_gyro_sub.get_last_generation() != last_generation + 1) {
 				if (!sensor_gyro_lost_printed) {

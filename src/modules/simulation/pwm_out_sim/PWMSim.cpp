@@ -114,7 +114,7 @@ void PWMSim::Run()
 	// check for parameter updates
 	if (_parameter_update_sub.updated()) {
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_PWM_OUT_SIM);
 		updateParams();
 	}
 

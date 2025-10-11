@@ -196,7 +196,7 @@ void Sih::sensor_step()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_SIMULATOR_SIH);
 
 		// update parameters from storage
 		updateParams();

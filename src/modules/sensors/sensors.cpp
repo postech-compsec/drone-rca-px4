@@ -277,7 +277,7 @@ void Sensors::diff_pres_poll()
 		}
 
 		vehicle_air_data_s air_data{};
-		_vehicle_air_data_sub.copy(&air_data);
+		_vehicle_air_data_sub.copy(&air_data, M_SENSORS);
 		const float temperature = air_data.ambient_temperature;
 
 		// push raw data into validator
@@ -516,7 +516,7 @@ void Sensors::Run()
 	if (_vcontrol_mode_sub.updated()) {
 		vehicle_control_mode_s vcontrol_mode{};
 
-		if (_vcontrol_mode_sub.copy(&vcontrol_mode)) {
+		if (_vcontrol_mode_sub.copy(&vcontrol_mode, M_SENSORS)) {
 			_armed = vcontrol_mode.flag_armed;
 		}
 	}
@@ -589,7 +589,7 @@ void Sensors::Run()
 		if (_parameter_update_sub.updated()) {
 			// clear update
 			parameter_update_s pupdate;
-			_parameter_update_sub.copy(&pupdate);
+			_parameter_update_sub.copy(&pupdate, M_SENSORS);
 
 			// update parameters from storage
 			parameters_update();

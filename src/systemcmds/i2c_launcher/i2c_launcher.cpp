@@ -74,7 +74,7 @@ void I2CLauncher::Run()
 
 	if (_parameter_update_sub.updated()) {
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_I2C_LAUNCHER);
 		updateParams();
 	}
 
@@ -82,7 +82,7 @@ void I2CLauncher::Run()
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, M_I2C_LAUNCHER)) {
 
 			_armed = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED);
 		}

@@ -97,7 +97,7 @@ void SensorAgpSim::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSOR_AGP_SIM);
 
 		updateParams();
 	}
@@ -105,7 +105,7 @@ void SensorAgpSim::Run()
 	if (_vehicle_global_position_sub.updated()) {
 
 		vehicle_global_position_s gpos{};
-		_vehicle_global_position_sub.copy(&gpos);
+		_vehicle_global_position_sub.copy(&gpos, M_SENSOR_AGP_SIM);
 
 		const uint64_t now = gpos.timestamp;
 		const float dt = (now - _time_last_update) * 1e-6f;

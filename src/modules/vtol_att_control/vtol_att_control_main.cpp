@@ -100,7 +100,7 @@ VtolAttitudeControl::init()
 
 void VtolAttitudeControl::vehicle_status_poll()
 {
-	_vehicle_status_sub.copy(&_vehicle_status);
+	_vehicle_status_sub.copy(&_vehicle_status, M_VTOL_ATT_CONTROL);
 
 	// abort front transition when RTL is triggered
 	if (_vehicle_status.nav_state == vehicle_status_s::NAVIGATION_STATE_AUTO_RTL
@@ -116,7 +116,7 @@ void VtolAttitudeControl::action_request_poll()
 	while (_action_request_sub.updated()) {
 		action_request_s action_request;
 
-		if (_action_request_sub.copy(&action_request)) {
+		if (_action_request_sub.copy(&action_request, M_VTOL_ATT_CONTROL)) {
 			switch (action_request.action) {
 			case action_request_s::ACTION_VTOL_TRANSITION_TO_MULTICOPTER:
 				_transition_command = vtol_vehicle_status_s::VEHICLE_VTOL_STATE_MC;
@@ -244,7 +244,7 @@ VtolAttitudeControl::parameters_update()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_VTOL_ATT_CONTROL);
 
 		// update parameters from storage
 		updateParams();
@@ -358,7 +358,7 @@ VtolAttitudeControl::Run()
 		if (_home_position_sub.updated()) {
 			home_position_s home_position;
 
-			if (_home_position_sub.copy(&home_position) && home_position.valid_alt) {
+			if (_home_position_sub.copy(&home_position, M_VTOL_ATT_CONTROL) && home_position.valid_alt) {
 				_home_position_z = home_position.z;
 
 			} else {
@@ -369,7 +369,7 @@ VtolAttitudeControl::Run()
 		if (_airspeed_validated_sub.updated()) {
 			airspeed_validated_s airspeed_validated;
 
-			if (_airspeed_validated_sub.copy(&airspeed_validated)) {
+			if (_airspeed_validated_sub.copy(&airspeed_validated, M_VTOL_ATT_CONTROL)) {
 				const bool airspeed_from_sensor = airspeed_validated.airspeed_source == airspeed_validated_s::SENSOR_1
 								  || airspeed_validated.airspeed_source == airspeed_validated_s::SENSOR_2
 								  || airspeed_validated.airspeed_source == airspeed_validated_s::SENSOR_3;

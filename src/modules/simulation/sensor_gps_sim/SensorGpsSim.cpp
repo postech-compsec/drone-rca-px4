@@ -101,7 +101,7 @@ void SensorGpsSim::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSOR_GPS_SIM);
 
 		updateParams();
 	}
@@ -109,10 +109,10 @@ void SensorGpsSim::Run()
 	if (_vehicle_local_position_sub.updated() && _vehicle_global_position_sub.updated()) {
 
 		vehicle_local_position_s lpos{};
-		_vehicle_local_position_sub.copy(&lpos);
+		_vehicle_local_position_sub.copy(&lpos, M_SENSOR_GPS_SIM);
 
 		vehicle_global_position_s gpos{};
-		_vehicle_global_position_sub.copy(&gpos);
+		_vehicle_global_position_sub.copy(&gpos, M_SENSOR_GPS_SIM);
 
 		double latitude = gpos.lat + math::degrees((double)generate_wgn() * 0.2 / CONSTANTS_RADIUS_OF_EARTH);
 		double longitude = gpos.lon + math::degrees((double)generate_wgn() * 0.2 / CONSTANTS_RADIUS_OF_EARTH);

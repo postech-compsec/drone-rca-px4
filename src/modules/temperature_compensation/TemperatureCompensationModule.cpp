@@ -69,7 +69,7 @@ void TemperatureCompensationModule::parameters_update()
 	for (uint8_t uorb_index = 0; uorb_index < ACCEL_COUNT_MAX; uorb_index++) {
 		sensor_accel_s report;
 
-		if (_accel_subs[uorb_index].copy(&report)) {
+		if (_accel_subs[uorb_index].copy(&report, M_TEMPERATURE_COMPENSATION)) {
 			int temp = _temperature_compensation.set_sensor_id_accel(report.device_id, uorb_index);
 
 			if (temp < 0) {
@@ -87,7 +87,7 @@ void TemperatureCompensationModule::parameters_update()
 	for (uint8_t uorb_index = 0; uorb_index < GYRO_COUNT_MAX; uorb_index++) {
 		sensor_gyro_s report;
 
-		if (_gyro_subs[uorb_index].copy(&report)) {
+		if (_gyro_subs[uorb_index].copy(&report, M_TEMPERATURE_COMPENSATION)) {
 			int temp = _temperature_compensation.set_sensor_id_gyro(report.device_id, uorb_index);
 
 			if (temp < 0) {
@@ -105,7 +105,7 @@ void TemperatureCompensationModule::parameters_update()
 	for (uint8_t uorb_index = 0; uorb_index < MAG_COUNT_MAX; uorb_index++) {
 		sensor_mag_s report;
 
-		if (_mag_subs[uorb_index].copy(&report)) {
+		if (_mag_subs[uorb_index].copy(&report, M_TEMPERATURE_COMPENSATION)) {
 			int temp = _temperature_compensation.set_sensor_id_mag(report.device_id, uorb_index);
 
 			if (temp < 0) {
@@ -123,7 +123,7 @@ void TemperatureCompensationModule::parameters_update()
 	for (uint8_t uorb_index = 0; uorb_index < BARO_COUNT_MAX; uorb_index++) {
 		sensor_baro_s report;
 
-		if (_baro_subs[uorb_index].copy(&report)) {
+		if (_baro_subs[uorb_index].copy(&report, M_TEMPERATURE_COMPENSATION)) {
 			int temp = _temperature_compensation.set_sensor_id_baro(report.device_id, uorb_index);
 
 			if (temp < 0) {
@@ -277,7 +277,7 @@ void TemperatureCompensationModule::Run()
 		vehicle_command_updates++;
 		vehicle_command_s cmd;
 
-		if (_vehicle_command_sub.copy(&cmd)) {
+		if (_vehicle_command_sub.copy(&cmd, M_TEMPERATURE_COMPENSATION)) {
 			if (cmd.command == vehicle_command_s::VEHICLE_CMD_PREFLIGHT_CALIBRATION) {
 				bool got_temperature_calibration_command = false;
 				bool accel = false;
@@ -336,7 +336,7 @@ void TemperatureCompensationModule::Run()
 	if (_parameter_update_sub.updated()) {
 		// Read from param to clear updated flag
 		parameter_update_s update;
-		_parameter_update_sub.copy(&update);
+		_parameter_update_sub.copy(&update, M_TEMPERATURE_COMPENSATION);
 
 		parameters_update();
 	}

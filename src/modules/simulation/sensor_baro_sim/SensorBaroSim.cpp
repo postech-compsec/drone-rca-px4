@@ -100,7 +100,7 @@ void SensorBaroSim::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSOR_BARO_SIM);
 
 		updateParams();
 	}
@@ -108,7 +108,7 @@ void SensorBaroSim::Run()
 	if (_vehicle_global_position_sub.updated()) {
 		vehicle_global_position_s gpos;
 
-		if (_vehicle_global_position_sub.copy(&gpos)) {
+		if (_vehicle_global_position_sub.copy(&gpos, M_SENSOR_BARO_SIM)) {
 
 			const float dt = math::constrain((gpos.timestamp - _last_update_time) * 1e-6f, 0.001f, 0.1f);
 

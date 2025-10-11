@@ -51,7 +51,7 @@ void SpacecraftPositionControl::updateParams()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_SPACECRAFT);
 
 		// update parameters from storage
 		ModuleParams::updateParams();
@@ -322,7 +322,7 @@ void SpacecraftPositionControl::poll_manual_setpoint(const float dt,
 		const vehicle_attitude_s &_vehicle_att)
 {
 	if (_vehicle_control_mode.flag_control_manual_enabled && _vehicle_control_mode.flag_armed) {
-		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint)) {
+		if (_manual_control_setpoint_sub.copy(&_manual_control_setpoint, M_SPACECRAFT)) {
 			if (!_vehicle_control_mode.flag_control_offboard_enabled) {
 				if (_vehicle_control_mode.flag_control_attitude_enabled &&
 				    _vehicle_control_mode.flag_control_position_enabled) {

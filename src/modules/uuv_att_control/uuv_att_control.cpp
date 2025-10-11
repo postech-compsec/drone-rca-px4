@@ -86,7 +86,7 @@ void UUVAttitudeControl::parameters_update(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_UUV_ATT_CONTROL);
 
 		// update parameters from storage
 		updateParams();
@@ -318,7 +318,7 @@ void UUVAttitudeControl::Run()
 		_last_run = attitude.timestamp_sample;
 
 		vehicle_angular_velocity_s angular_velocity {};
-		_angular_velocity_sub.copy(&angular_velocity);
+		_angular_velocity_sub.copy(&angular_velocity, M_UUV_ATT_CONTROL);
 
 		/* Check that we are not in position / velocity / altitude modes
 		   and that we are using manual inputs */

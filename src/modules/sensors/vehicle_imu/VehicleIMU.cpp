@@ -111,7 +111,7 @@ bool VehicleIMU::ParametersUpdate(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSORS);
 
 		const auto imu_integ_rate_prev = _param_imu_integ_rate.get();
 
@@ -185,7 +185,7 @@ void VehicleIMU::Run()
 	if (_vehicle_control_mode_sub.updated()) {
 		vehicle_control_mode_s vehicle_control_mode;
 
-		if (_vehicle_control_mode_sub.copy(&vehicle_control_mode)) {
+		if (_vehicle_control_mode_sub.copy(&vehicle_control_mode, M_SENSORS)) {
 			_armed = vehicle_control_mode.flag_armed;
 		}
 	}

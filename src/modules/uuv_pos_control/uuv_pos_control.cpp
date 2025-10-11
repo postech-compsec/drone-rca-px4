@@ -83,7 +83,7 @@ void UUVPOSControl::parameters_update(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_UUV_POS_CONTROL);
 
 		// update parameters from storage
 		updateParams();

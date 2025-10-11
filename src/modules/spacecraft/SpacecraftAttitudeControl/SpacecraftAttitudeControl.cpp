@@ -160,7 +160,7 @@ SpacecraftAttitudeControl::updateAttitudeControl()
 		if (_vehicle_attitude_setpoint_sub.updated()) {
 			vehicle_attitude_setpoint_s vehicle_attitude_setpoint;
 
-			if (_vehicle_attitude_setpoint_sub.copy(&vehicle_attitude_setpoint)
+			if (_vehicle_attitude_setpoint_sub.copy(&vehicle_attitude_setpoint, M_SPACECRAFT)
 			    && (vehicle_attitude_setpoint.timestamp > _last_attitude_setpoint)) {
 				_attitude_control.setAttitudeSetpoint(Quatf(vehicle_attitude_setpoint.q_d));
 				_thrust_setpoint_body = Vector3f(vehicle_attitude_setpoint.thrust_body);
@@ -190,7 +190,7 @@ SpacecraftAttitudeControl::updateAttitudeControl()
 		if (_vehicle_local_position_sub.updated()) {
 			vehicle_local_position_s vehicle_local_position;
 
-			if (_vehicle_local_position_sub.copy(&vehicle_local_position)) {
+			if (_vehicle_local_position_sub.copy(&vehicle_local_position, M_SPACECRAFT)) {
 				_heading_good_for_control = vehicle_local_position.heading_good_for_control;
 			}
 		}

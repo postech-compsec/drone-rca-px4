@@ -162,7 +162,7 @@ void GZBridge::Run()
 
 	if (_parameter_update_sub.updated()) {
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_GZ_BRIDGE);
 
 		updateParams();
 

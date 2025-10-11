@@ -101,7 +101,7 @@ void SensorAirspeedSim::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSOR_AIRSPEED_SIM);
 
 		updateParams();
 	}
@@ -111,13 +111,13 @@ void SensorAirspeedSim::Run()
 		    && _vehicle_attitude_sub.updated()) {
 
 			vehicle_local_position_s lpos{};
-			_vehicle_local_position_sub.copy(&lpos);
+			_vehicle_local_position_sub.copy(&lpos, M_SENSOR_AIRSPEED_SIM);
 
 			vehicle_global_position_s gpos{};
-			_vehicle_global_position_sub.copy(&gpos);
+			_vehicle_global_position_sub.copy(&gpos, M_SENSOR_AIRSPEED_SIM);
 
 			vehicle_attitude_s attitude{};
-			_vehicle_attitude_sub.copy(&attitude);
+			_vehicle_attitude_sub.copy(&attitude, M_SENSOR_AIRSPEED_SIM);
 
 			Vector3f local_velocity = Vector3f{lpos.vx, lpos.vy, lpos.vz};
 			Vector3f body_velocity = Dcmf{Quatf{attitude.q}} .transpose() * local_velocity;

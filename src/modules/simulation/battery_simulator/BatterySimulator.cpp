@@ -65,7 +65,7 @@ void BatterySimulator::Run()
 	if (_parameter_update_sub.updated()) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_BATTERY_SIMULATOR);
 
 		updateParams();
 	}
@@ -75,7 +75,7 @@ void BatterySimulator::Run()
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, M_BATTERY_SIMULATOR)) {
 			_armed = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED);
 		}
 	}

@@ -89,7 +89,7 @@ float VehicleAirData::AirTemperatureUpdate(const float temperature_baro, Tempera
 	float temperature = source == TemperatureSource::EXTERNAL_BARO ? temperature_baro : DEFAULT_TEMPERATURE_CELSIUS;
 	differential_pressure_s differential_pressure;
 
-	if (_differential_pressure_sub.copy(&differential_pressure)
+	if (_differential_pressure_sub.copy(&differential_pressure, M_SENSORS)
 	    && time_now_us - differential_pressure.timestamp_sample < 1_s
 	    && PX4_ISFINITE(differential_pressure.temperature)) {
 		temperature = differential_pressure.temperature;
@@ -105,7 +105,7 @@ bool VehicleAirData::ParametersUpdate(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, M_SENSORS);
 
 		updateParams();
 

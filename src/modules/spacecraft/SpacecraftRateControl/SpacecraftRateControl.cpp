@@ -159,7 +159,7 @@ void SpacecraftRateControl::updateRateControl()
 
 		} else if (_vehicle_rates_setpoint_sub.update(&vehicle_rates_setpoint, M_SPACECRAFT)) {
 			// Get rates from other controllers (e.g. position or attitude controller)
-			if (_vehicle_rates_setpoint_sub.copy(&vehicle_rates_setpoint)) {
+			if (_vehicle_rates_setpoint_sub.copy(&vehicle_rates_setpoint, M_SPACECRAFT)) {
 				_rates_setpoint(0) = PX4_ISFINITE(vehicle_rates_setpoint.roll) ? vehicle_rates_setpoint.roll : rates(0);
 				_rates_setpoint(1) = PX4_ISFINITE(vehicle_rates_setpoint.pitch) ? vehicle_rates_setpoint.pitch : rates(1);
 				_rates_setpoint(2) = PX4_ISFINITE(vehicle_rates_setpoint.yaw) ? vehicle_rates_setpoint.yaw : rates(2);
@@ -217,7 +217,7 @@ void SpacecraftRateControl::updateRateControl()
 				if (_battery_status_sub.updated()) {
 					battery_status_s battery_status;
 
-					if (_battery_status_sub.copy(&battery_status) && battery_status.connected && battery_status.scale > 0.f) {
+					if (_battery_status_sub.copy(&battery_status, M_SPACECRAFT) && battery_status.connected && battery_status.scale > 0.f) {
 						_battery_status_scale = battery_status.scale;
 					}
 				}

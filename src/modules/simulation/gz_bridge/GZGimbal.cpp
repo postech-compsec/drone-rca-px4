@@ -130,7 +130,7 @@ bool GZGimbal::pollSetpoint()
 	if (_gimbal_device_set_attitude_sub.updated()) {
 		gimbal_device_set_attitude_s msg;
 
-		if (_gimbal_device_set_attitude_sub.copy(&msg)) {
+		if (_gimbal_device_set_attitude_sub.copy(&msg, M_GZ_BRIDGE)) {
 			const matrix::Eulerf gimbal_att_stp(matrix::Quatf(msg.q));
 			_roll_stp = gimbal_att_stp.phi();
 			_pitch_stp = gimbal_att_stp.theta();
@@ -146,7 +146,7 @@ bool GZGimbal::pollSetpoint()
 	} else if (_gimbal_controls_sub.updated()) {
 		gimbal_controls_s msg;
 
-		if (_gimbal_controls_sub.copy(&msg)) {
+		if (_gimbal_controls_sub.copy(&msg, M_GZ_BRIDGE)) {
 			// map control inputs from [-1;1] to [min_angle; max_angle] using the range parameters
 			_roll_stp = math::constrain(math::radians(msg.control[msg.INDEX_ROLL] * _mnt_range_roll / 2), _roll_min, _roll_max);
 			_pitch_stp = math::constrain(math::radians(msg.control[msg.INDEX_PITCH] * _mnt_range_pitch / 2), _pitch_min,
@@ -164,7 +164,7 @@ void GZGimbal::publishDeviceInfo()
 {
 	if (_vehicle_command_sub.updated()) {
 		vehicle_command_s cmd;
-		_vehicle_command_sub.copy(&cmd);
+		_vehicle_command_sub.copy(&cmd, M_GZ_BRIDGE);
 
 		if (cmd.command == vehicle_command_s::VEHICLE_CMD_REQUEST_MESSAGE &&
 		    (uint16_t)cmd.param1 == vehicle_command_s::VEHICLE_CMD_GIMBAL_DEVICE_INFORMATION) {

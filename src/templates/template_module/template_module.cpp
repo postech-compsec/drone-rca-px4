@@ -181,7 +181,7 @@ void TemplateModule::parameters_update(bool force)
 	if (_parameter_update_sub.updated() || force) {
 		// clear update
 		parameter_update_s update;
-		_parameter_update_sub.copy(&update);
+		_parameter_update_sub.copy(&update, M_TEMPLATE_MODULE);
 
 		// update parameters from storage
 		updateParams();
