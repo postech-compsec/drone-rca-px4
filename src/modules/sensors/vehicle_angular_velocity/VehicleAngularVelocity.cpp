@@ -217,7 +217,7 @@ void VehicleAngularVelocity::SensorBiasUpdate(bool force)
 	if (_estimator_sensor_bias_sub.updated() || force) {
 		estimator_sensor_bias_s bias;
 
-		if (_estimator_sensor_bias_sub.copy(&bia, M_SENSORS) && (bias.gyro_device_id == _selected_sensor_device_id)) {
+		if (_estimator_sensor_bias_sub.copy(&bias, M_SENSORS) && (bias.gyro_device_id == _selected_sensor_device_id)) {
 			_bias = Vector3f{bias.gyro_bias};
 
 		} else {

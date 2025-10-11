@@ -789,7 +789,7 @@ void VehicleIMU::SensorCalibrationUpdate()
 	for (int i = 0; i < _estimator_sensor_bias_subs.size(); i++) {
 		estimator_sensor_bias_s estimator_sensor_bias;
 
-		if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bia, M_SENSORS)
+		if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bias, M_SENSORS)
 		    && (hrt_elapsed_time(&estimator_sensor_bias.timestamp) < 1_s)) {
 
 			// find corresponding accel bias
