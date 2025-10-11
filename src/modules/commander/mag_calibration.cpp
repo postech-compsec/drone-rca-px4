@@ -300,7 +300,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 		/* Wait clocking for new data on all gyro */
 		sensor_gyro_s gyro;
 
-		if (gyro_sub.updateBlocking(gyro, 1000_ms)) {
+		if (gyro_sub.updateBlocking(gyro, 1000_ms, M_COMMANDER)) {
 
 			/* ensure we have a valid first timestamp */
 			if (last_gyro > 0) {

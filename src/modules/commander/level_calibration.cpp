@@ -96,7 +96,7 @@ int do_level_calibration(orb_advert_t *mavlink_log_pub)
 
 			vehicle_attitude_s att{};
 
-			if (!att_sub.updateBlocking(att, 100000)) {
+			if (!att_sub.updateBlocking(att, 100000, M_COMMANDER)) {
 				// attitude estimator is not running
 				calibration_log_critical(mavlink_log_pub, "attitude estimator not running - check system boot");
 				calibration_log_critical(mavlink_log_pub, CAL_QGC_FAILED_MSG, "level");
