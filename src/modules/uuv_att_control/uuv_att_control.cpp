@@ -305,7 +305,7 @@ void UUVAttitudeControl::Run()
 	perf_begin(_loop_perf);
 
 	/* check vehicle control mode for changes to publication state */
-	_vcontrol_mode_sub.update(&_vcontrol_mode);
+	_vcontrol_mode_sub.update(&_vcontrol_mode, M_UUV_ATT_CONTROL);
 
 	/* update parameters from storage */
 	parameters_update();
@@ -313,7 +313,7 @@ void UUVAttitudeControl::Run()
 	vehicle_attitude_s attitude;
 
 	/* only run controller if attitude changed */
-	if (_vehicle_attitude_sub.update(&attitude)) {
+	if (_vehicle_attitude_sub.update(&attitude, M_UUV_ATT_CONTROL)) {
 		const float dt = math::constrain(((attitude.timestamp_sample - _last_run) * 1e-6f), 0.0002f, 0.02f);
 		_last_run = attitude.timestamp_sample;
 
@@ -328,12 +328,12 @@ void UUVAttitudeControl::Run()
 		    && !_vcontrol_mode.flag_control_altitude_enabled) {
 
 			/* Update manual setpoints */
-			_manual_control_setpoint_sub.update(&_manual_control_setpoint);
+			_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_UUV_ATT_CONTROL);
 
 			if (_vcontrol_mode.flag_control_attitude_enabled
 			    && _vcontrol_mode.flag_control_rates_enabled) {
 				/* Run stabilized mode */
-				_vehicle_rates_setpoint_sub.update(&_rates_setpoint);
+				_vehicle_rates_setpoint_sub.update(&_rates_setpoint, M_UUV_ATT_CONTROL);
 
 				// Check setpoint validty
 				check_setpoint_validity(attitude);
@@ -364,13 +364,13 @@ void UUVAttitudeControl::Run()
 		} else {
 			if (_vcontrol_mode.flag_control_attitude_enabled) {
 				/* Get attitude and rate setpoints and control system */
-				_vehicle_attitude_setpoint_sub.update(&_attitude_setpoint);
-				_vehicle_rates_setpoint_sub.update(&_rates_setpoint);
+				_vehicle_attitude_setpoint_sub.update(&_attitude_setpoint, M_UUV_ATT_CONTROL);
+				_vehicle_rates_setpoint_sub.update(&_rates_setpoint, M_UUV_ATT_CONTROL);
 				control_attitude_geo(attitude, _attitude_setpoint, angular_velocity, _rates_setpoint, true);
 
 			} else {
 				/* Get rate setpoints and control system */
-				_vehicle_rates_setpoint_sub.update(&_rates_setpoint);
+				_vehicle_rates_setpoint_sub.update(&_rates_setpoint, M_UUV_ATT_CONTROL);
 				control_attitude_geo(attitude, _attitude_setpoint, angular_velocity, _rates_setpoint, false);
 			}
 		}

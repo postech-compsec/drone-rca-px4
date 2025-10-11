@@ -285,7 +285,7 @@ bool VehicleIMU::UpdateAccel()
 	// integrate queued accel
 	sensor_accel_s accel;
 
-	if (_sensor_accel_sub.update(&accel)) {
+	if (_sensor_accel_sub.update(&accel, M_SENSORS)) {
 		if (_sensor_accel_sub.get_last_generation() != _accel_last_generation + 1) {
 			_data_gap = true;
 			perf_count(_accel_generation_gap_perf);
@@ -414,7 +414,7 @@ bool VehicleIMU::UpdateGyro()
 	// integrate queued gyro
 	sensor_gyro_s gyro;
 
-	if (_sensor_gyro_sub.update(&gyro)) {
+	if (_sensor_gyro_sub.update(&gyro, M_SENSORS)) {
 		if (_sensor_gyro_sub.get_last_generation() != _gyro_last_generation + 1) {
 			_data_gap = true;
 			perf_count(_gyro_generation_gap_perf);
@@ -789,7 +789,7 @@ void VehicleIMU::SensorCalibrationUpdate()
 	for (int i = 0; i < _estimator_sensor_bias_subs.size(); i++) {
 		estimator_sensor_bias_s estimator_sensor_bias;
 
-		if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bias)
+		if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bia, M_SENSORS)
 		    && (hrt_elapsed_time(&estimator_sensor_bias.timestamp) < 1_s)) {
 
 			// find corresponding accel bias

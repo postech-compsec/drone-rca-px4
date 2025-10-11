@@ -234,7 +234,7 @@ void VehicleAcceleration::Run()
 	int sensor_sub_updates = 0;
 	sensor_accel_s sensor_data;
 
-	while ((sensor_sub_updates < sensor_accel_s::ORB_QUEUE_LENGTH) && _sensor_sub.update(&sensor_data)) {
+	while ((sensor_sub_updates < sensor_accel_s::ORB_QUEUE_LENGTH) && _sensor_sub.update(&sensor_data, M_SENSORS)) {
 		sensor_sub_updates++;
 
 		const Vector3f accel_raw{sensor_data.x, sensor_data.y, sensor_data.z};

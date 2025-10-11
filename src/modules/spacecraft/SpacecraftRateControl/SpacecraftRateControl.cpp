@@ -77,7 +77,7 @@ void SpacecraftRateControl::updateParams()
 
 void SpacecraftRateControl::updateRateControl()
 {
-	if (_vehicle_angular_velocity_sub.update(&angular_velocity)) {
+	if (_vehicle_angular_velocity_sub.update(&angular_velocity, M_SPACECRAFT)) {
 		const hrt_abstime now = angular_velocity.timestamp_sample;
 
 		// Guard against too small (< 0.125ms) and too large (> 20ms) dt's.
@@ -88,8 +88,8 @@ void SpacecraftRateControl::updateRateControl()
 		const Vector3f angular_accel{angular_velocity.xyz_derivative};
 
 		/* check for updates in other topics */
-		_vehicle_control_mode_sub.update(&_vehicle_control_mode);
-		_vehicle_status_sub.update(&_vehicle_status);
+		_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_SPACECRAFT);
+		_vehicle_status_sub.update(&_vehicle_status, M_SPACECRAFT);
 
 		// use rates setpoint topic
 		vehicle_rates_setpoint_s vehicle_rates_setpoint{};
@@ -100,7 +100,7 @@ void SpacecraftRateControl::updateRateControl()
 			// generate the rate setpoint from sticks
 			manual_control_setpoint_s manual_control_setpoint;
 
-			if (_manual_control_setpoint_sub.update(&manual_control_setpoint)) {
+			if (_manual_control_setpoint_sub.update(&manual_control_setpoint, M_SPACECRAFT)) {
 				if (_vehicle_control_mode.flag_control_rates_enabled) {
 					// manual rates control - ACRO mode
 					const Vector3f man_rate_sp{manual_control_setpoint.roll,
@@ -157,7 +157,7 @@ void SpacecraftRateControl::updateRateControl()
 				}
 			}
 
-		} else if (_vehicle_rates_setpoint_sub.update(&vehicle_rates_setpoint)) {
+		} else if (_vehicle_rates_setpoint_sub.update(&vehicle_rates_setpoint, M_SPACECRAFT)) {
 			// Get rates from other controllers (e.g. position or attitude controller)
 			if (_vehicle_rates_setpoint_sub.copy(&vehicle_rates_setpoint)) {
 				_rates_setpoint(0) = PX4_ISFINITE(vehicle_rates_setpoint.roll) ? vehicle_rates_setpoint.roll : rates(0);
@@ -177,7 +177,7 @@ void SpacecraftRateControl::updateRateControl()
 			// update saturation status from control allocation feedback
 			control_allocator_status_s control_allocator_status;
 
-			if (_control_allocator_status_sub.update(&control_allocator_status)) {
+			if (_control_allocator_status_sub.update(&control_allocator_status, M_SPACECRAFT)) {
 				Vector<bool, 3> saturation_positive;
 				Vector<bool, 3> saturation_negative;
 

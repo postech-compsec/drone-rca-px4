@@ -82,7 +82,7 @@ void VotedSensorsUpdate::parametersUpdate()
 	// run through all IMUs
 	for (uint8_t uorb_index = 0; uorb_index < MAX_SENSOR_COUNT; uorb_index++) {
 		uORB::SubscriptionData<vehicle_imu_s> imu{ORB_ID(vehicle_imu), uorb_index};
-		imu.update();
+		imu.update(M_SENSORS);
 
 		if (imu.advertised() && (imu.get().timestamp != 0)
 		    && (imu.get().accel_device_id != 0) && (imu.get().gyro_device_id != 0)) {
@@ -144,11 +144,11 @@ void VotedSensorsUpdate::imuPoll(struct sensor_combined_s &raw)
 		vehicle_imu_s imu_report;
 
 		if ((_accel.priority[uorb_index] > 0) && (_gyro.priority[uorb_index] > 0)
-		    && _vehicle_imu_sub[uorb_index].update(&imu_report)) {
+		    && _vehicle_imu_sub[uorb_index].update(&imu_report, M_SENSORS)) {
 
 			// copy corresponding vehicle_imu_status for accel & gyro error counts
 			vehicle_imu_status_s imu_status{};
-			_vehicle_imu_status_subs[uorb_index].copy(&imu_status);
+			_vehicle_imu_status_subs[uorb_index].copy(&imu_status, M_SENSORS);
 
 			_accel_device_id[uorb_index] = imu_report.accel_device_id;
 			_gyro_device_id[uorb_index] = imu_report.gyro_device_id;
@@ -197,7 +197,7 @@ void VotedSensorsUpdate::imuPoll(struct sensor_combined_s &raw)
 
 		if (!_param_sens_imu_mode.get() && ((_selection.timestamp != 0) || (_sensor_selection_sub.updated()))) {
 			// use sensor_selection to find best
-			if (_sensor_selection_sub.update(&_selection)) {
+			if (_sensor_selection_sub.update(&_selection, M_SENSORS)) {
 				// reset inconsistency checks against primary
 				for (int sensor_index = 0; sensor_index < MAX_SENSOR_COUNT; sensor_index++) {
 					_accel_diff[sensor_index].zero();
@@ -258,7 +258,7 @@ void VotedSensorsUpdate::imuPoll(struct sensor_combined_s &raw)
 			for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
 				vehicle_imu_s report{};
 
-				if (_vehicle_imu_sub[i].copy(&report)) {
+				if (_vehicle_imu_sub[i].copy(&report, M_SENSORS)) {
 					if ((report.gyro_device_id != 0) && (report.gyro_device_id == _gyro_device_id[gyro_best_index])) {
 						_vehicle_imu_sub[i].registerCallback();
 					}

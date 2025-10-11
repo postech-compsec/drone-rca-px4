@@ -180,7 +180,7 @@ void SpacecraftPositionControl::updatePositionControl()
 	vehicle_local_position_s vehicle_local_position;
 	vehicle_attitude_s v_att;
 
-	if (_local_pos_sub.update(&vehicle_local_position)) {
+	if (_local_pos_sub.update(&vehicle_local_position, M_SPACECRAFT)) {
 		const float dt =
 			math::constrain(((vehicle_local_position.timestamp_sample - _time_stamp_last_loop) * 1e-6f), 0.002f, 0.04f);
 		_time_stamp_last_loop = vehicle_local_position.timestamp_sample;
@@ -188,7 +188,7 @@ void SpacecraftPositionControl::updatePositionControl()
 		if (_vehicle_control_mode_sub.updated()) {
 			const bool previous_position_control_enabled = _vehicle_control_mode.flag_control_position_enabled;
 
-			if (_vehicle_control_mode_sub.update(&_vehicle_control_mode)) {
+			if (_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_SPACECRAFT)) {
 				if (!previous_position_control_enabled && _vehicle_control_mode.flag_control_position_enabled) {
 					_time_position_control_enabled = _vehicle_control_mode.timestamp;
 
@@ -201,8 +201,8 @@ void SpacecraftPositionControl::updatePositionControl()
 
 		// TODO: check if setpoint is different than the previous one and reset integral then
 		// 		 _control.resetIntegral();
-		_trajectory_setpoint_sub.update(&_setpoint);
-		_vehicle_attitude_sub.update(&v_att);
+		_trajectory_setpoint_sub.update(&_setpoint, M_SPACECRAFT);
+		_vehicle_attitude_sub.update(&v_att, M_SPACECRAFT);
 
 		// adjust existing (or older) setpoint with any EKF reset deltas
 		if ((_setpoint.timestamp != 0) && (_setpoint.timestamp < vehicle_local_position.timestamp)) {

@@ -269,7 +269,7 @@ void UUVPOSControl::Run()
 	perf_begin(_loop_perf);
 
 	/* check vehicle control mode for changes to publication state */
-	_vcontrol_mode_sub.update(&_vcontrol_mode);
+	_vcontrol_mode_sub.update(&_vcontrol_mode, M_UUV_POS_CONTROL);
 
 	/* update parameters from storage */
 	parameters_update();
@@ -278,12 +278,12 @@ void UUVPOSControl::Run()
 	vehicle_local_position_s vlocal_pos;
 
 	/* only run controller if local_pos changed */
-	if (_vehicle_local_position_sub.update(&vlocal_pos)) {
+	if (_vehicle_local_position_sub.update(&vlocal_pos, M_UUV_POS_CONTROL)) {
 		const float dt = math::constrain(((vlocal_pos.timestamp_sample - _last_run) * 1e-6f), 0.0002f, 0.02f);
 		_last_run = vlocal_pos.timestamp_sample;
 
 		// Update vehicle attitude
-		_vehicle_attitude_sub.update(&_vehicle_attitude);
+		_vehicle_attitude_sub.update(&_vehicle_attitude, M_UUV_POS_CONTROL);
 
 		/* Run position or altitude mode from manual setpoints*/
 		if (_vcontrol_mode.flag_control_manual_enabled
@@ -295,7 +295,7 @@ void UUVPOSControl::Run()
 			const bool altitude_only_flag = _vcontrol_mode.flag_control_altitude_enabled
 							&& ! _vcontrol_mode.flag_control_position_enabled;
 
-			_manual_control_setpoint_sub.update(&_manual_control_setpoint);
+			_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_UUV_POS_CONTROL);
 
 			// Ensure no nan and sufficiently recent setpoint
 			check_setpoint_validity(vlocal_pos);
@@ -315,7 +315,7 @@ void UUVPOSControl::Run()
 							&& ! _vcontrol_mode.flag_control_position_enabled;
 
 			// get manual control setpoint
-			_trajectory_setpoint_sub.update(&_trajectory_setpoint);
+			_trajectory_setpoint_sub.update(&_trajectory_setpoint, M_UUV_POS_CONTROL);
 
 			pose_controller_6dof(Vector3f(_trajectory_setpoint.position), _vehicle_attitude,
 					     vlocal_pos, altitude_only_flag);

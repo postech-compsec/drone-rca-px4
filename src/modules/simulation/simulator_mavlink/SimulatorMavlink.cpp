@@ -1282,7 +1282,7 @@ void SimulatorMavlink::check_failure_injections()
 {
 	vehicle_command_s vehicle_command;
 
-	while (_vehicle_command_sub.update(&vehicle_command)) {
+	while (_vehicle_command_sub.update(&vehicle_command, M_SIMULATOR_MAVLINK)) {
 		if (vehicle_command.command != vehicle_command_s::VEHICLE_CMD_INJECT_FAILURE) {
 			continue;
 		}

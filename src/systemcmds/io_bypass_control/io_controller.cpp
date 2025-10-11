@@ -100,7 +100,7 @@ void IOController::Run()
 {
 	actuator_outputs_s actuator_outputs;
 
-	while (_actuator_outputs_sub.update(&actuator_outputs)) {
+	while (_actuator_outputs_sub.update(&actuator_outputs, M_IO_BYPASS_CONTROL)) {
 
 		if (actuator_outputs.timestamp == 0 ||
 		    hrt_elapsed_time(&actuator_outputs.timestamp) > 100_ms) {

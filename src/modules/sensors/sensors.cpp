@@ -262,7 +262,7 @@ void Sensors::diff_pres_poll()
 {
 	differential_pressure_s diff_pres{};
 
-	if (_diff_pres_sub.update(&diff_pres)) {
+	if (_diff_pres_sub.update(&diff_pres, M_SENSORS)) {
 
 		if (!PX4_ISFINITE(diff_pres.differential_pressure_pa)) {
 			// ignore invalid data and reset accumulated
@@ -359,7 +359,7 @@ void Sensors::adc_poll()
 	if (_parameters.diff_pres_analog_scale > 0.0f) {
 		adc_report_s adc;
 
-		if (_adc_report_sub.update(&adc)) {
+		if (_adc_report_sub.update(&adc, M_SENSORS)) {
 			/* Read add channels we got */
 			for (unsigned i = 0; i < PX4_MAX_ADC_CHANNELS; i++) {
 				if (adc.channel_id[i] == -1) {

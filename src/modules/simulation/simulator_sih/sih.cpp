@@ -304,7 +304,7 @@ void Sih::read_motors(const float dt)
 {
 	actuator_outputs_s actuators_out;
 
-	if (_actuator_out_sub.update(&actuators_out)) {
+	if (_actuator_out_sub.update(&actuators_out, M_SPACECRAFT)) {
 		_last_actuator_output_time = actuators_out.timestamp;
 
 		for (int i = 0; i < NUM_ACTUATORS_MAX; i++) { // saturate the motor signals

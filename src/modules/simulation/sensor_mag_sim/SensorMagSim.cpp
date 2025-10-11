@@ -127,7 +127,7 @@ void SensorMagSim::Run()
 	if (_mag_earth_available) {
 		vehicle_attitude_s attitude;
 
-		if (_vehicle_attitude_sub.update(&attitude)) {
+		if (_vehicle_attitude_sub.update(&attitude, M_SENSOR_MAG_SIM)) {
 			Vector3f expected_field = Dcmf{Quatf{attitude.q}} .transpose() * _mag_earth_pred;
 
 			expected_field += noiseGauss3f(0.02f, 0.02f, 0.03f);

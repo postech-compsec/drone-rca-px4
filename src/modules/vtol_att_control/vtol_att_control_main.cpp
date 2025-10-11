@@ -142,7 +142,7 @@ void VtolAttitudeControl::vehicle_cmd_poll()
 {
 	vehicle_command_s vehicle_command;
 
-	while (_vehicle_cmd_sub.update(&vehicle_command)) {
+	while (_vehicle_cmd_sub.update(&vehicle_command, M_VTOL_ATT_CONTROL)) {
 		if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_DO_VTOL_TRANSITION) {
 
 			uint8_t result = vehicle_command_ack_s::VEHICLE_CMD_RESULT_ACCEPTED;
@@ -316,10 +316,10 @@ VtolAttitudeControl::Run()
 
 	perf_begin(_loop_perf);
 
-	bool updated_fw_in = _vehicle_torque_setpoint_virtual_fw_sub.update(&_vehicle_torque_setpoint_virtual_fw);
-	updated_fw_in |= _vehicle_thrust_setpoint_virtual_fw_sub.update(&_vehicle_thrust_setpoint_virtual_fw);
-	bool updated_mc_in = _vehicle_torque_setpoint_virtual_mc_sub.update(&_vehicle_torque_setpoint_virtual_mc);
-	updated_mc_in |= _vehicle_thrust_setpoint_virtual_mc_sub.update(&_vehicle_thrust_setpoint_virtual_mc);
+	bool updated_fw_in = _vehicle_torque_setpoint_virtual_fw_sub.update(&_vehicle_torque_setpoint_virtual_fw, M_VTOL_ATT_CONTROL);
+	updated_fw_in |= _vehicle_thrust_setpoint_virtual_fw_sub.update(&_vehicle_thrust_setpoint_virtual_fw, M_VTOL_ATT_CONTROL);
+	bool updated_mc_in = _vehicle_torque_setpoint_virtual_mc_sub.update(&_vehicle_torque_setpoint_virtual_mc, M_VTOL_ATT_CONTROL);
+	updated_mc_in |= _vehicle_thrust_setpoint_virtual_mc_sub.update(&_vehicle_thrust_setpoint_virtual_mc, M_VTOL_ATT_CONTROL);
 
 	// run on actuator publications corresponding to VTOL mode
 	bool should_run = false;
@@ -347,13 +347,13 @@ VtolAttitudeControl::Run()
 	if (should_run) {
 		parameters_update();
 
-		_vehicle_control_mode_sub.update(&_vehicle_control_mode);
-		_vehicle_attitude_sub.update(&_vehicle_attitude);
-		_local_pos_sub.update(&_local_pos);
-		_local_pos_sp_sub.update(&_local_pos_sp);
-		_pos_sp_triplet_sub.update(&_pos_sp_triplet);
-		_tecs_status_sub.update(&_tecs_status);
-		_land_detected_sub.update(&_land_detected);
+		_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_VTOL_ATT_CONTROL);
+		_vehicle_attitude_sub.update(&_vehicle_attitude, M_VTOL_ATT_CONTROL);
+		_local_pos_sub.update(&_local_pos, M_VTOL_ATT_CONTROL);
+		_local_pos_sp_sub.update(&_local_pos_sp, M_VTOL_ATT_CONTROL);
+		_pos_sp_triplet_sub.update(&_pos_sp_triplet, M_VTOL_ATT_CONTROL);
+		_tecs_status_sub.update(&_tecs_status, M_VTOL_ATT_CONTROL);
+		_land_detected_sub.update(&_land_detected, M_VTOL_ATT_CONTROL);
 
 		if (_home_position_sub.updated()) {
 			home_position_s home_position;
@@ -389,15 +389,15 @@ VtolAttitudeControl::Run()
 
 		vehicle_air_data_s air_data;
 
-		if (_vehicle_air_data_sub.update(&air_data)) {
+		if (_vehicle_air_data_sub.update(&air_data, M_VTOL_ATT_CONTROL)) {
 			_air_density = air_data.rho;
 		}
 
 		_vtol_type->handleEkfResets();
 
 		// check if mc and fw sp were updated
-		const bool mc_att_sp_updated = _mc_virtual_att_sp_sub.update(&_mc_virtual_att_sp);
-		const bool fw_att_sp_updated = _fw_virtual_att_sp_sub.update(&_fw_virtual_att_sp);
+		const bool mc_att_sp_updated = _mc_virtual_att_sp_sub.update(&_mc_virtual_att_sp, M_VTOL_ATT_CONTROL);
+		const bool fw_att_sp_updated = _fw_virtual_att_sp_sub.update(&_fw_virtual_att_sp, M_VTOL_ATT_CONTROL);
 
 		// update the vtol state machine which decides which mode we are in
 		_vtol_type->update_vtol_state();

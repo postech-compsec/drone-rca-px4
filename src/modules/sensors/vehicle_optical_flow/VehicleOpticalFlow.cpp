@@ -109,7 +109,7 @@ void VehicleOpticalFlow::Run()
 
 	sensor_optical_flow_s sensor_optical_flow;
 
-	if (_sensor_flow_sub.update(&sensor_optical_flow)) {
+	if (_sensor_flow_sub.update(&sensor_optical_flow, M_SENSORS)) {
 
 		// clear data accumulation if there's a gap in data
 		const uint64_t integration_gap_threshold_us = sensor_optical_flow.integration_timespan_us * 2;
@@ -361,7 +361,7 @@ void VehicleOpticalFlow::UpdateDistanceSensor()
 	if ((_distance_sensor_selected < 0) && _distance_sensor_subs.advertised()) {
 		for (unsigned i = 0; i < _distance_sensor_subs.size(); i++) {
 
-			if (_distance_sensor_subs[i].update(&distance_sensor)) {
+			if (_distance_sensor_subs[i].update(&distance_sensor, M_SENSORS)) {
 				// only use the first instace which has the correct orientation
 				if ((hrt_elapsed_time(&distance_sensor.timestamp) < 100_ms)
 				    && (distance_sensor.orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING)) {
@@ -380,7 +380,7 @@ void VehicleOpticalFlow::UpdateDistanceSensor()
 		}
 	}
 
-	if (_distance_sensor_selected >= 0 && _distance_sensor_subs[_distance_sensor_selected].update(&distance_sensor)) {
+	if (_distance_sensor_selected >= 0 && _distance_sensor_subs[_distance_sensor_selected].update(&distance_sensor, M_SENSORS)) {
 		// range sample
 		if (distance_sensor.orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING) {
 

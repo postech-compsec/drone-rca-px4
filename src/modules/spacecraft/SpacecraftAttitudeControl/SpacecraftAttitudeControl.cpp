@@ -148,7 +148,7 @@ SpacecraftAttitudeControl::updateAttitudeControl()
 	// run controller on attitude updates
 	vehicle_attitude_s v_att;
 
-	if (_vehicle_attitude_sub.update(&v_att)) {
+	if (_vehicle_attitude_sub.update(&v_att, M_SPACECRAFT)) {
 
 		// Guard against too small (< 0.2ms) and too large (> 20ms) dt's.
 		const float dt = math::constrain(((v_att.timestamp_sample - _last_run) * 1e-6f), 0.0002f, 0.02f);
@@ -184,8 +184,8 @@ SpacecraftAttitudeControl::updateAttitudeControl()
 		}
 
 		/* check for updates in other topics */
-		_manual_control_setpoint_sub.update(&_manual_control_setpoint);
-		_vehicle_control_mode_sub.update(&_vehicle_control_mode);
+		_manual_control_setpoint_sub.update(&_manual_control_setpoin, M_SPACECRAFT);
+		_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_SPACECRAFT);
 
 		if (_vehicle_local_position_sub.updated()) {
 			vehicle_local_position_s vehicle_local_position;

@@ -294,7 +294,7 @@ void VehicleMagnetometer::UpdateMagCalibration()
 		for (int i = 0; i < math::min(_estimator_sensor_bias_subs.size(), mag_cal_size); i++) {
 			estimator_sensor_bias_s estimator_sensor_bias;
 
-			if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bias)) {
+			if (_estimator_sensor_bias_subs[i].update(&estimator_sensor_bias, M_SENSORS)) {
 
 				const Vector3f bias{estimator_sensor_bias.mag_bias};
 				const Vector3f bias_variance{estimator_sensor_bias.mag_bias_variance};
@@ -411,7 +411,7 @@ void VehicleMagnetometer::UpdatePowerCompensation()
 		if (_armed && (_mag_comp_type == MagCompensationType::Throttle)) {
 			vehicle_thrust_setpoint_s vehicle_thrust_setpoint;
 
-			if (_vehicle_thrust_setpoint_0_sub.update(&vehicle_thrust_setpoint)) {
+			if (_vehicle_thrust_setpoint_0_sub.update(&vehicle_thrust_setpoint, M_SENSORS)) {
 				const matrix::Vector3f thrust_setpoint = matrix::Vector3f(vehicle_thrust_setpoint.xyz);
 
 				for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
@@ -424,7 +424,7 @@ void VehicleMagnetometer::UpdatePowerCompensation()
 
 			battery_status_s bat_stat;
 
-			if (_battery_status_sub.update(&bat_stat)) {
+			if (_battery_status_sub.update(&bat_stat, M_SENSORS)) {
 				float power = bat_stat.current_a * 0.001f; // current in [kA]
 
 				for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
@@ -489,7 +489,7 @@ void VehicleMagnetometer::Run()
 			int sensor_mag_updates = 0;
 			sensor_mag_s report;
 
-			while ((sensor_mag_updates < sensor_mag_s::ORB_QUEUE_LENGTH) && _sensor_sub[uorb_index].update(&report)) {
+			while ((sensor_mag_updates < sensor_mag_s::ORB_QUEUE_LENGTH) && _sensor_sub[uorb_index].update(&report, M_SENSORS)) {
 				sensor_mag_updates++;
 
 				if (_calibration[uorb_index].device_id() != report.device_id) {

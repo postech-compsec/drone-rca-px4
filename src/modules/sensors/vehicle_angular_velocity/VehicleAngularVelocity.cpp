@@ -825,7 +825,7 @@ void VehicleAngularVelocity::Run()
 		int sensor_sub_updates = 0;
 		sensor_gyro_fifo_s sensor_fifo_data;
 
-		while ((sensor_sub_updates < sensor_gyro_fifo_s::ORB_QUEUE_LENGTH) && _sensor_gyro_fifo_sub.update(&sensor_fifo_data)) {
+		while ((sensor_sub_updates < sensor_gyro_fifo_s::ORB_QUEUE_LENGTH) && _sensor_gyro_fifo_sub.update(&sensor_fifo_data, M_SENSORS)) {
 			sensor_sub_updates++;
 
 			const float inverse_dt_s = 1e6f / sensor_fifo_data.dt;
@@ -869,7 +869,7 @@ void VehicleAngularVelocity::Run()
 		int sensor_sub_updates = 0;
 		sensor_gyro_s sensor_data;
 
-		while ((sensor_sub_updates < sensor_gyro_s::ORB_QUEUE_LENGTH) && _sensor_sub.update(&sensor_data)) {
+		while ((sensor_sub_updates < sensor_gyro_s::ORB_QUEUE_LENGTH) && _sensor_sub.update(&sensor_data, M_SENSORS)) {
 			sensor_sub_updates++;
 
 			if (Vector3f(sensor_data.x, sensor_data.y, sensor_data.z).isAllFinite()) {

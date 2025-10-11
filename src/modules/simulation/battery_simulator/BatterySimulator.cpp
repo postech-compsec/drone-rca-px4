@@ -120,7 +120,7 @@ void BatterySimulator::updateCommands()
 {
 	vehicle_command_s vehicle_command;
 
-	while (_vehicle_command_sub.update(&vehicle_command)) {
+	while (_vehicle_command_sub.update(&vehicle_command, M_BATTERY_SIMULATOR)) {
 		if (vehicle_command.command != vehicle_command_s::VEHICLE_CMD_INJECT_FAILURE) {
 			continue;
 		}
