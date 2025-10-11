@@ -155,22 +155,22 @@ bool MicroBenchORB::time_px4_uorb()
 	bool updated = false;
 
 	PERF("orb_check vehicle_status", ret = orb_check(fd_status, &updated), 100);
-	PERF("orb_copy vehicle_status", ret = orb_copy(ORB_ID(failsafe_flags), fd_status, &status), 100);
+	PERF("orb_copy vehicle_status", ret = orb_copy_w_subid(ORB_ID(failsafe_flags), fd_status, &status), 100, M_MICROBENCH);
 
 	printf("\n");
 
 	PERF("orb_check vehicle_local_position", ret = orb_check(fd_lpos, &updated), 100);
-	PERF("orb_copy vehicle_local_position", ret = orb_copy(ORB_ID(vehicle_local_position), fd_lpos, &lpos), 100);
+	PERF("orb_copy vehicle_local_position", ret = orb_copy_w_subid(ORB_ID(vehicle_local_position), fd_lpos, &lpos), 100, M_MICROBENCH);
 
 	printf("\n");
 
 	PERF("orb_check sensor_gyro", ret = orb_check(fd_gyro, &updated), 100);
-	PERF("orb_copy sensor_gyro", ret = orb_copy(ORB_ID(sensor_gyro), fd_gyro, &gyro), 100);
+	PERF("orb_copy sensor_gyro", ret = orb_copy_w_subid(ORB_ID(sensor_gyro), fd_gyro, &gyro), 100, M_MICROBENCH);
 
 	printf("\n");
 
 	PERF("orb_check sensor_gyro_fifo", ret = orb_check(fd_gyro_fifo, &updated), 100);
-	PERF("orb_copy sensor_gyro_fifo", ret = orb_copy(ORB_ID(sensor_gyro_fifo), fd_gyro_fifo, &gyro_fifo), 100);
+	PERF("orb_copy sensor_gyro_fifo", ret = orb_copy_w_subid(ORB_ID(sensor_gyro_fifo), fd_gyro_fifo, &gyro_fifo), 100, M_MICROBENCH);
 
 	printf("\n");
 

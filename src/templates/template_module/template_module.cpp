@@ -164,7 +164,7 @@ void TemplateModule::run()
 		} else if (fds[0].revents & POLLIN) {
 
 			struct sensor_combined_s sensor_combined;
-			orb_copy(ORB_ID(sensor_combined), sensor_combined_sub, &sensor_combined);
+			orb_copy_w_subid(ORB_ID(sensor_combined), sensor_combined_sub, &sensor_combined, M_TEMPLATE_MODULE);
 			// TODO: do something with the data...
 
 		}

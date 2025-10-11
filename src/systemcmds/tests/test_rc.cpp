@@ -64,7 +64,7 @@ int test_rc(int argc, char *argv[])
 	/* read low-level values from FMU or IO RC inputs (PPM, Spektrum, S.Bus) */
 	struct input_rc_s rc_input;
 	struct input_rc_s rc_last;
-	orb_copy(ORB_ID(input_rc), _rc_sub, &rc_input);
+	orb_copy_w_subid(ORB_ID(input_rc), _rc_sub, &rc_input, M_TESTS);
 	px4_usleep(100000);
 
 	/* open PPM input and expect values close to the output values */
@@ -99,7 +99,7 @@ int test_rc(int argc, char *argv[])
 
 				if (fds[0].revents & POLLIN) {
 
-					orb_copy(ORB_ID(input_rc), _rc_sub, &rc_input);
+					orb_copy_w_subid(ORB_ID(input_rc), _rc_sub, &rc_input, M_TESTS);
 
 					/* go and check values */
 					for (unsigned i = 0; i < rc_input.channel_count; i++) {
