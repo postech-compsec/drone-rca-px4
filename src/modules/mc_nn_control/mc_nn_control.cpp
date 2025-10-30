@@ -208,7 +208,7 @@ void MulticopterNeuralNetworkControl::CheckModeRegistration()
 	register_ext_component_reply_s register_ext_component_reply;
 	int tries = register_ext_component_reply.ORB_QUEUE_LENGTH;
 
-	while (_register_ext_component_reply_sub.update(&register_ext_component_reply) && --tries >= 0) {
+	while (_register_ext_component_reply_sub.update(&register_ext_component_reply, M_MC_NN_CONTROL) && --tries >= 0) {
 		if (register_ext_component_reply.request_id == _mode_request_id && register_ext_component_reply.success) {
 			_arming_check_id = register_ext_component_reply.arming_check_id;
 			_mode_id = register_ext_component_reply.mode_id;
@@ -501,7 +501,7 @@ void MulticopterNeuralNetworkControl::Run()
 	int32_t start_time1 = GetTime();
 
 	// run controller on angular velocity updates
-	if (_angular_velocity_sub.update(&_angular_velocity)) {
+	if (_angular_velocity_sub.update(&_angular_velocity, M_MC_NN_CONTROL)) {
 		const float dt = math::constrain(((_angular_velocity.timestamp_sample - _last_run) * 1e-6f), 0.0002f, 0.02f);
 		_last_run = _angular_velocity.timestamp_sample;
 
@@ -522,7 +522,7 @@ void MulticopterNeuralNetworkControl::Run()
 
 		if (_param_manual_control.get()) {
 			// Run manual control mode
-			_manual_control_setpoint_sub.update(&_manual_control_setpoint);
+			_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_MC_NN_CONTROL);
 
 			// Ensure no nan and sufficiently recent setpoint
 			check_setpoint_validity(_position);

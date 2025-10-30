@@ -69,7 +69,7 @@ void FeasibilityChecker::updateData()
 	home_position_s home = {};
 
 	if (_home_pos_sub.updated()) {
-		_home_pos_sub.update(&home);
+		_home_pos_sub.update(&home, M_NAVIGATOR);
 
 		if (home.valid_hpos) {
 			_home_lat_lon = matrix::Vector2d(home.lat, home.lon);

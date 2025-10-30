@@ -92,7 +92,7 @@ void MissionBase::updateMavlinkMission()
 {
 	if (_mission_sub.updated()) {
 		mission_s new_mission;
-		_mission_sub.update(&new_mission);
+		_mission_sub.update(&new_mission, M_NAVIGATOR);
 
 		const bool mission_items_changed = (new_mission.mission_id != _mission.mission_id);
 		const bool mission_data_changed = checkMissionDataChanged(new_mission);

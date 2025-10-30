@@ -229,7 +229,7 @@ MulticopterAttitudeControl::Run()
 	if (_hover_thrust_estimate_sub.updated()) {
 		hover_thrust_estimate_s hover_thrust_estimate;
 
-		if (_hover_thrust_estimate_sub.update(&hover_thrust_estimate)) {
+		if (_hover_thrust_estimate_sub.update(&hover_thrust_estimate, M_MC_ATT_CONTROL)) {
 			if (hover_thrust_estimate.valid) {
 				_hover_thrust_estimate = math::constrain(hover_thrust_estimate.hover_thrust, .05f, .9f);
 
@@ -243,7 +243,7 @@ MulticopterAttitudeControl::Run()
 	// run controller on attitude updates
 	vehicle_attitude_s v_att;
 
-	if (_vehicle_attitude_sub.update(&v_att)) {
+	if (_vehicle_attitude_sub.update(&v_att, M_MC_ATT_CONTROL)) {
 
 		// Guard against too small (< 0.2ms) and too large (> 20ms) dt's.
 		const float dt = math::constrain(((v_att.timestamp_sample - _last_run) * 1e-6f), 0.0002f, 0.02f);
@@ -252,8 +252,8 @@ MulticopterAttitudeControl::Run()
 		const Quatf q{v_att.q};
 
 		/* check for updates in other topics */
-		_manual_control_setpoint_sub.update(&_manual_control_setpoint);
-		_vehicle_control_mode_sub.update(&_vehicle_control_mode);
+		_manual_control_setpoint_sub.update(&_manual_control_setpoint, M_MC_ATT_CONTROL);
+		_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_MC_ATT_CONTROL);
 
 		if (_vehicle_status_sub.updated()) {
 			vehicle_status_s vehicle_status;

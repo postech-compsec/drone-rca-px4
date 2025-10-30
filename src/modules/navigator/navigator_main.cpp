@@ -235,9 +235,9 @@ void Navigator::run()
 			params_update();
 		}
 
-		_land_detected_sub.update(&_land_detected);
+		_land_detected_sub.update(&_land_detected, M_NAVIGATOR);
 		_position_controller_status_sub.update();
-		_home_pos_sub.update(&_home_pos);
+		_home_pos_sub.update(&_home_pos, M_NAVIGATOR);
 
 		// Handle Vehicle commands
 		int vehicle_command_updates = 0;

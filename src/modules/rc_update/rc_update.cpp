@@ -366,7 +366,7 @@ void RCUpdate::Run()
 	/* read low-level values from FMU or IO RC inputs (PPM, Spektrum, S.Bus) */
 	input_rc_s input_rc;
 
-	if (_input_rc_sub.update(&input_rc)) {
+	if (_input_rc_sub.update(&input_rc, M_RC_UPDATE)) {
 
 		// warn if the channel count is changing (possibly indication of error)
 		if (!input_rc.rc_lost) {
