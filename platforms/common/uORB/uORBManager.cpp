@@ -400,11 +400,11 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	sub_info.topic_id = static_cast<uint8_t>(_orb_id);
 
 	// For pub only valid things
-	///*
+	/*
 	if(_subscriber_id == 0){
 		return PX4_OK;
 	}
-	//*/
+	*/
 
 	auto *mgr = uORB::Manager::get_instance();
 	if(mgr->sub_info_pub == nullptr){
@@ -479,7 +479,7 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 		return false;
 	}
 
-	/*
+
 	if(static_cast<const uORB::DeviceNode *>(node_handle)->updates_available(generation)){ // updates_available : 최근의 업데이트로 인해 로컬에는 없고 리모트에만 있는 업데이트 개수
 		subscription_info_s sub_info{};
 		sub_info.timestamp = hrt_absolute_time();
@@ -487,11 +487,11 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 		sub_info.topic_id = orb_id;
 
 		// For pub only valid things
-
+		/*
 		if(_subscriber_id == 0){
 			return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
 		}
-
+		*/
 
 		auto *mgr = uORB::Manager::get_instance();
 		if(mgr->sub_info_pub == nullptr){
@@ -501,7 +501,7 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 			::orb_publish(ORB_ID(subscription_info), mgr->sub_info_pub, &sub_info);
 		}
 	}
-	*/
+
 
 	return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
 }
