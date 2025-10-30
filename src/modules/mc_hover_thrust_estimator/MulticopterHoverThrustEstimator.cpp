@@ -167,8 +167,8 @@ void MulticopterHoverThrustEstimator::Run()
 		vehicle_thrust_setpoint_s vehicle_thrust_setpoint;
 		control_allocator_status_s control_allocator_status;
 
-		if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint)
-		    && _control_allocator_status_sub.update(&control_allocator_status)
+		if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint, M_MC_HOVER_THRUST_ESTIMATOR)
+		    && _control_allocator_status_sub.update(&control_allocator_status, M_MC_HOVER_THRUST_ESTIMATOR)
 		    && (hrt_elapsed_time(&vehicle_thrust_setpoint.timestamp) < 20_ms)
 		    && (hrt_elapsed_time(&vehicle_attitude.timestamp) < 20_ms)
 		   ) {

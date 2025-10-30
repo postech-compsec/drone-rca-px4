@@ -391,7 +391,7 @@ void MulticopterPositionControl::Run()
 	perf_begin(_cycle_perf);
 	vehicle_local_position_s vehicle_local_position;
 
-	if (_local_pos_sub.update(&vehicle_local_position)) {
+	if (_local_pos_sub.update(&vehicle_local_position, M_MC_NN_CONTROL)) {
 		const float dt =
 			math::constrain(((vehicle_local_position.timestamp_sample - _time_stamp_last_loop) * 1e-6f), 0.002f, 0.04f);
 		_time_stamp_last_loop = vehicle_local_position.timestamp_sample;
@@ -401,7 +401,7 @@ void MulticopterPositionControl::Run()
 		if (_vehicle_control_mode_sub.updated()) {
 			const bool previous_position_control_enabled = _vehicle_control_mode.flag_multicopter_position_control_enabled;
 
-			if (_vehicle_control_mode_sub.update(&_vehicle_control_mode)) {
+			if (_vehicle_control_mode_sub.update(&_vehicle_control_mode, M_MC_NN_CONTROL)) {
 				if (!previous_position_control_enabled && _vehicle_control_mode.flag_multicopter_position_control_enabled) {
 					_time_position_control_enabled = _vehicle_control_mode.timestamp;
 
@@ -412,12 +412,12 @@ void MulticopterPositionControl::Run()
 			}
 		}
 
-		_vehicle_land_detected_sub.update(&_vehicle_land_detected);
+		_vehicle_land_detected_sub.update(&_vehicle_land_detected, M_MC_NN_CONTROL);
 
 		if (_param_mpc_use_hte.get()) {
 			hover_thrust_estimate_s hte;
 
-			if (_hover_thrust_estimate_sub.update(&hte)) {
+			if (_hover_thrust_estimate_sub.update(&hte, M_MC_NN_CONTROL)) {
 				if (hte.valid) {
 					_control.updateHoverThrust(hte.hover_thrust);
 				}
@@ -435,7 +435,7 @@ void MulticopterPositionControl::Run()
 			_goto_control.update(dt, states.position, states.yaw);
 		}
 
-		_trajectory_setpoint_sub.update(&_setpoint);
+		_trajectory_setpoint_sub.update(&_setpoint, M_MC_NN_CONTROL);
 
 		adjustSetpointForEKFResets(vehicle_local_position, _setpoint);
 
@@ -453,7 +453,7 @@ void MulticopterPositionControl::Run()
 		    && (_setpoint.timestamp >= _time_position_control_enabled)) {
 
 			// update vehicle constraints and handle smooth takeoff
-			_vehicle_constraints_sub.update(&_vehicle_constraints);
+			_vehicle_constraints_sub.update(&_vehicle_constraints, M_MC_NN_CONTROL);
 
 			// fix to prevent the takeoff ramp to ramp to a too high value or get stuck because of NAN
 			// TODO: this should get obsolete once the takeoff limiting moves into the flight tasks

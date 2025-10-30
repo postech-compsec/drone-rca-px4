@@ -105,7 +105,7 @@ void PayloadDeliverer::Run()
 
 	gripper_update(now);
 
-	if (_vehicle_command_sub.update(&vcmd)) {
+	if (_vehicle_command_sub.update(&vcmd, M_PAYLOAD_DELIVERER)) {
 		handle_vehicle_command(now, &vcmd);
 
 	} else {

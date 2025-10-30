@@ -45,7 +45,7 @@ using namespace time_literals;
 
 bool GotoControl::checkForSetpoint(const hrt_abstime &now, const bool enabled)
 {
-	_goto_setpoint_sub.update(&_goto_setpoint);
+	_goto_setpoint_sub.update(&_goto_setpoint, M_MC_POS_CONTROL);
 
 	if (!enabled) {
 		// Flag the setpoint as invalid if disabled, so if it is enabled in near future,
