@@ -332,7 +332,7 @@ int ADC::test()
 
 	px4_usleep(20000);	// sleep 20ms and wait for adc report
 
-	if (adc_sub_test.update(&adc)) {
+	if (adc_sub_test.update(&adc, M_BOARD_ADC)) {
 		PX4_INFO_RAW("DeviceID: %" PRId32 "\n", adc.device_id);
 		PX4_INFO_RAW("Resolution: %" PRId32 "\n", adc.resolution);
 		PX4_INFO_RAW("Voltage Reference: %f\n", (double)adc.v_ref);
@@ -347,7 +347,7 @@ int ADC::test()
 			PX4_INFO_RAW("\n");
 			px4_usleep(500000);
 
-			if (!adc_sub_test.update(&adc)) {
+			if (!adc_sub_test.update(&adc, M_BOARD_ADC)) {
 				PX4_INFO_RAW("\t ADC test failed.\n");
 			}
 		}

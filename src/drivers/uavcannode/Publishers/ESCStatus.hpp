@@ -72,7 +72,7 @@ public:
 		// esc_status -> uavcan::equipment::esc::Status
 		esc_status_s esc_status;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&esc_status)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&esc_status, M_UAVCANNODE)) {
 
 			for (size_t i = 0; i < esc_status.esc_count; i++) {
 				uavcan::equipment::esc::Status status{};

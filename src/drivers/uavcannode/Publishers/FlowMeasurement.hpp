@@ -73,7 +73,7 @@ public:
 		// optical_flow -> com::hex::equipment::flow::Measurement
 		vehicle_optical_flow_s optical_flow;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&optical_flow)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&optical_flow, M_UAVCANNODE)) {
 			com::hex::equipment::flow::Measurement measurement{};
 			measurement.integration_interval  = optical_flow.integration_timespan_us * 1e-6f; // us -> s
 

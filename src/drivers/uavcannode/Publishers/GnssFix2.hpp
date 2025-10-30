@@ -76,7 +76,7 @@ public:
 		// sensor_gps -> uavcan::equipment::gnss::Fix2
 		sensor_gps_s gps;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&gps)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&gps, M_UAVCANNODE)) {
 			uavcan::equipment::gnss::Fix2 fix2{};
 
 			fix2.gnss_time_standard = fix2.GNSS_TIME_STANDARD_UTC;

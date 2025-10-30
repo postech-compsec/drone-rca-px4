@@ -128,7 +128,7 @@ LidarLitePWM::collect()
 {
 	pwm_input_s pwm_input;
 
-	if (_sub_pwm_input.update(&pwm_input)) {
+	if (_sub_pwm_input.update(&pwm_input, M_LL40LS_PWM)) {
 
 		_pwm = pwm_input;
 

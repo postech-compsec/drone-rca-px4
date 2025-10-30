@@ -69,7 +69,7 @@ int UavcanRemoteIDController::init()
 
 void UavcanRemoteIDController::periodic_update(const uavcan::TimerEvent &)
 {
-	_vehicle_status.update();
+	_vehicle_status.update(M_UAVCAN);
 
 	send_basic_id();
 	send_location();
@@ -238,7 +238,7 @@ void UavcanRemoteIDController::send_system()
 {
 	open_drone_id_system_s system;
 
-	if (_open_drone_id_system.advertised() && _open_drone_id_system.copy(&system)) {
+	if (_open_drone_id_system.advertised() && _open_drone_id_system.copy(&system, M_UAVCAN)) {
 
 		// Use what ground station sends us.
 
@@ -303,7 +303,7 @@ void UavcanRemoteIDController::send_self_id()
 {
 	open_drone_id_self_id_s self_id;
 
-	if (_open_drone_id_self_id.copy(&self_id)) {
+	if (_open_drone_id_self_id.copy(&self_id, M_UAVCAN)) {
 
 		dronecan::remoteid::SelfID msg {};
 
@@ -325,7 +325,7 @@ void UavcanRemoteIDController::send_operator_id()
 {
 	open_drone_id_operator_id_s operator_id;
 
-	if (_open_drone_id_operator_id.copy(&operator_id)) {
+	if (_open_drone_id_operator_id.copy(&operator_id, M_UAVCAN)) {
 
 		dronecan::remoteid::OperatorID msg {};
 

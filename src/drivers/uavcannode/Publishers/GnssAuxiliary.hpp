@@ -76,7 +76,7 @@ public:
 		// sensor_gps -> uavcan::equipment::gnss::Auxiliary
 		sensor_gps_s gps;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&gps)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&gps, M_UAVCANNODE)) {
 			uavcan::equipment::gnss::Auxiliary auxiliary{};
 
 			//auxiliary.gdop = gps.gdop;

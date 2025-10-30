@@ -73,7 +73,7 @@ public:
 		// battery_status -> uavcan::equipment::power::BatteryInfo
 		battery_status_s battery;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&battery)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&battery, M_UAVCANNODE)) {
 			uavcan::equipment::power::BatteryInfo battery_info{};
 			battery_info.voltage = battery.voltage_v;
 			battery_info.current = fabs(battery.current_a);

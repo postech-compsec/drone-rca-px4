@@ -75,7 +75,7 @@ public:
 		// gps_inject_data -> ardupilot::gnss::MovingBaselineData
 		gps_inject_data_s inject_data;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&inject_data)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&inject_data, M_UAVCANNODE)) {
 			// Prevent republishing rtcm data we received from uavcan
 			union device::Device::DeviceId device_id;
 			device_id.devid = inject_data.device_id;

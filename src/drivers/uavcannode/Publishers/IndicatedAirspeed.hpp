@@ -76,7 +76,7 @@ public:
 
 		airspeed_s airspeed_m;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&airspeed_m)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&airspeed_m, M_UAVCANNODE)) {
 			uavcan::equipment::air_data::IndicatedAirspeed indicated_as{};
 
 			indicated_as.indicated_airspeed = airspeed_m.indicated_airspeed_m_s;

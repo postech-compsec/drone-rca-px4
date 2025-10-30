@@ -546,7 +546,7 @@ void PX4IO::Run()
 		/* vehicle command */
 		if (_t_vehicle_command.updated()) {
 			vehicle_command_s cmd{};
-			_t_vehicle_command.copy(&cmd);
+			_t_vehicle_command.copy(&cmd, M_PX4IO);
 
 			// Check for a DSM pairing command
 			if (((unsigned int)cmd.command == vehicle_command_s::VEHICLE_CMD_START_RX_PAIR) && ((int)cmd.param1 == 0)) {
@@ -778,7 +778,7 @@ PX4IO::io_set_arming_state()
 
 	actuator_armed_s armed;
 
-	if (_t_actuator_armed.copy(&armed)) {
+	if (_t_actuator_armed.copy(&armed, M_PX4IO)) {
 		if (armed.armed || armed.in_esc_calibration_mode) {
 			set |= PX4IO_P_SETUP_ARMING_FMU_ARMED;
 
@@ -870,7 +870,7 @@ int PX4IO::io_handle_status(uint16_t status)
 	 */
 	vehicle_status_s vehicle_status;
 
-	if (_t_vehicle_status.update(&vehicle_status)) {
+	if (_t_vehicle_status.update(&vehicle_status, M_PX4IO)) {
 		if (_previous_safety_off != vehicle_status.safety_off) {
 			io_reg_set(PX4IO_PAGE_SETUP, PX4IO_P_SETUP_SAFETY_OFF, vehicle_status.safety_off);
 			_previous_safety_off = vehicle_status.safety_off;

@@ -71,7 +71,7 @@ public:
 		// sensor_hygrometer -> dronecan::sensors::hyrometer::Hygrometer
 		sensor_hygrometer_s hygro;
 
-		if ((hrt_elapsed_time(&_last_hygrometer_publish) > 1_s) && uORB::SubscriptionCallbackWorkItem::update(&hygro)) {
+		if ((hrt_elapsed_time(&_last_hygrometer_publish) > 1_s) && uORB::SubscriptionCallbackWorkItem::update(&hygro, M_UAVCANNODE)) {
 
 			// hygrometer temp in degrees C, humidity in percent
 			dronecan::sensors::hygrometer::Hygrometer hygro_measurement{};

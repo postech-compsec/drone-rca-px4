@@ -72,7 +72,7 @@ public:
 		// distance_sensor[] -> uavcan::equipment::range_sensor::Measurement
 		distance_sensor_s dist;
 
-		if (uORB::SubscriptionCallbackWorkItem::update(&dist)) {
+		if (uORB::SubscriptionCallbackWorkItem::update(&dist, M_UAVCANNODE)) {
 			uavcan::equipment::range_sensor::Measurement range_sensor{};
 
 			range_sensor.sensor_id = get_instance();
