@@ -1,0 +1,135 @@
+{
+  "fileType": "Plan",
+  "geoFence": {
+  "circles": [
+    { "circle": { "center": [47.40370144, 8.545296592], "radius": 390.66 }, "inclusion": true, "version": 1 }
+  ],
+  "polygons": [
+    { "inclusion": false, "polygon": [[47.40590179, 8.537434107], [47.40590179, 8.553753893], [47.38958201, 8.553753893], [47.38958201, 8.537434107]], "version": 1 }
+  ],
+  "version": 2
+},
+  "groundStation": "QGroundControl",
+  "mission": {
+  "cruiseSpeed": 13.408,
+  "firmwareType": 12,
+  "globalPlanAltitudeMode": 1,
+  "hoverSpeed": 3.456,
+  "items": [
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 56.351,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 1,
+      "frame": 3,
+      "command": 22,
+      "params": [15, 0, 0, null, 47.3977367, 8.546176776, 56.351],
+      "type": "SimpleItem"
+    },
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 32.220,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 2,
+      "frame": 3,
+      "command": 16,
+      "params": [0, 5, 0, null, 47.39051046, 8.549327711, 32.220],
+      "type": "SimpleItem"
+    },
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 75.347,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 3,
+      "frame": 3,
+      "command": 19,
+      "params": [12.7, 0, 0, null, 47.3985523378, 8.5490797787, 75.347],
+      "type": "SimpleItem"
+    },
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 76.731,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 4,
+      "frame": 3,
+      "command": 16,
+      "params": [0, 5, 0, null, 47.39173287, 8.544552349, 76.731],
+      "type": "SimpleItem"
+    },
+    {
+      "CorridorWidth": 82.4,
+      "EntryPoint": 1,
+      "TransectStyleComplexItem": {
+  "CameraCalc": {
+  "AdjustedFootprintFrontal": 27.8,
+  "AdjustedFootprintSide": 39.0,
+  "CameraName": "Custom Camera",
+  "DistanceToSurface": 55.7,
+  "DistanceToSurfaceRelative": true,
+  "FixedOrientation": false,
+  "FocalLength": 21.9,
+  "FrontalOverlap": 79,
+  "ImageDensity": 25.0,
+  "ImageHeight": 3236,
+  "ImageWidth": 4075,
+  "Landscape": true,
+  "MinTriggerInterval": 0,
+  "SensorHeight": 8.1,
+  "SensorWidth": 18.0,
+  "SideOverlap": 71,
+  "ValueSetIsDistance": true,
+  "version": 1
+},
+  "CameraTriggerInTurnAround": true,
+  "FollowTerrain": false,
+  "HoverAndCapture": true,
+  "Items": [],
+  "Refly90Degrees": true,
+  "TurnAroundDistance": 6.2,
+  "VisualTransectPoints": [],
+  "version": 1
+},
+      "complexItemType": "CorridorScan",
+      "polyline": [
+        [47.4065058407, 8.5366389799],
+        [47.4055248558, 8.5387223845],
+        [47.4045438709, 8.5408057891],
+        [47.4035628859, 8.5428891936]
+      ],
+      "type": "ComplexItem",
+      "version": 3
+    },
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 0.000,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 6,
+      "frame": 3,
+      "command": 21,
+      "params": [0, 0, 0, null, 47.39868884, 8.54373939, 0.0],
+      "type": "SimpleItem"
+    }
+  ],
+  "plannedHomePosition": [
+    47.3972234139,
+    8.5456243608,
+    488.000
+  ],
+  "vehicleType": 2,
+  "version": 2
+},
+  "rallyPoints": {
+  "points": [
+    [47.40512998, 8.55001069, 31.3],
+    [47.3982989518, 8.5516215852, 62.9],
+    [47.3962868928, 8.5381189000, 43.8]
+  ],
+  "version": 2
+},
+  "version": 1
+}

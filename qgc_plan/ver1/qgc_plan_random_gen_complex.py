@@ -213,12 +213,9 @@ def camera_calc_random(alt_min: float, alt_max: float) -> dict:
 def complex_survey(polygon: List[Tuple[float,float]], alt_min: float, alt_max: float) -> dict:
     cam = camera_calc_random(alt_min, alt_max)
     return {
+        "version": 3,
         "type": "ComplexItem",
         "complexItemType": "survey",
-        "version": 4,
-        "polygon": [[lat, lon] for (lat, lon) in polygon],
-        "entryLocation": 0,
-        "flyAlternateTransects": False,
         "TransectStyleComplexItem": {
             "CameraCalc": cam,
             "Angle": random.uniform(0.0, 180.0),
@@ -227,18 +224,21 @@ def complex_survey(polygon: List[Tuple[float,float]], alt_min: float, alt_max: f
             "Refly90Degrees": False,
             "FollowTerrain": False,
         },
+        "angle": ,
+        "entryLocation": 0,
+        "flyAlternateTransects": False,
+        "polygon": [[lat, lon] for (lat, lon) in polygon],
     }
 
 
 def complex_corridor(polyline: List[Tuple[float,float]], alt_min: float, alt_max: float, width_m: float) -> dict:
     cam = camera_calc_random(alt_min, alt_max)
     return {
+        "version": 3,
         "type": "ComplexItem",
         "complexItemType": "CorridorScan",
-        "version": 1,
-        "polyline": [[lat, lon] for (lat, lon) in polyline],
-        "entryLocation": 0,
-        "corridorWidth": width_m,
+        "CorridorWidth": width_m,
+        "EntryPoint": 0,
         "TransectStyleComplexItem": {
             "CameraCalc": cam,
             "Angle": 0.0,
@@ -246,6 +246,7 @@ def complex_corridor(polyline: List[Tuple[float,float]], alt_min: float, alt_max
             "HoverAndCapture": False,
             "FollowTerrain": False,
         },
+        "polyline": [[lat, lon] for (lat, lon) in polyline],
     }
 
 
@@ -253,11 +254,11 @@ def complex_structure(polygon: List[Tuple[float,float]], alt_min: float, alt_max
     """Minimal StructureScan spec (QGC complexItemType "StructureScan", version 2)."""
     cam = camera_calc_random(alt_min, alt_max)
     return {
+        "version": 2,
         "type": "ComplexItem",
         "complexItemType": "StructureScan",
-        "version": 2,
-        "polygon": [[lat, lon] for (lat, lon) in polygon],
         "Altitude": random.uniform(alt_min, alt_max),
+        "polygon": [[lat, lon] for (lat, lon) in polygon],
         "CameraCalc": cam,
         "entryLocation": 0,
     }

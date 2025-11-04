@@ -52,7 +52,7 @@ void AccelerometerChecks::checkAndReport(const Context &context, Report &reporte
 
 		if (exists) {
 			sensor_accel_s accel_data;
-			is_valid = _sensor_accel_sub[instance].copy(&accel_data) && (accel_data.device_id != 0) && (accel_data.timestamp != 0)
+			is_valid = _sensor_accel_sub[instance].copy(&accel_data, M_COMMANDER) && (accel_data.device_id != 0) && (accel_data.timestamp != 0)
 				   && (hrt_elapsed_time(&accel_data.timestamp) < 1_s);
 
 			if (context.status().hil_state == vehicle_status_s::HIL_STATE_ON) {
@@ -106,7 +106,7 @@ bool AccelerometerChecks::isAccelRequired(int instance)
 {
 	sensor_accel_s sensor_accel;
 
-	if (!_sensor_accel_sub[instance].copy(&sensor_accel)) {
+	if (!_sensor_accel_sub[instance].copy(&sensor_accel, M_COMMANDER)) {
 		return false;
 	}
 
