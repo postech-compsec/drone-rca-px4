@@ -2752,7 +2752,7 @@ void Commander::dataLinkCheck()
 	for (auto &telemetry_status :  _telemetry_status_subs) {
 		telemetry_status_s telemetry;
 
-		if (telemetry_status.update(&telemetry)) {
+		if (telemetry_status.update(&telemetry, M_COMMANDER)) {
 
 			// handle different radio types
 			switch (telemetry.type) {

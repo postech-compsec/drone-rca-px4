@@ -442,7 +442,7 @@ int do_accel_calibration_quick(orb_advert_t *mavlink_log_pub)
 		Vector3f accel_sum{};
 		unsigned count = 0;
 
-		while (accel_subs[accel_index].update(&arp)) {
+		while (accel_subs[accel_index].update(&arp, M_COMMANDER)) {
 			// fetch optional thermal offset corrections in sensor/board frame
 			if ((arp.timestamp > 0) && (arp.device_id != 0)) {
 				Vector3f offset{0, 0, 0};

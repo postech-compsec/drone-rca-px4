@@ -2581,7 +2581,7 @@ void EKF2::UpdateRangeSample(ekf2_timestamps_s &ekf2_timestamps)
 		if (_distance_sensor_subs.advertised()) {
 			for (unsigned i = 0; i < _distance_sensor_subs.size(); i++) {
 
-				if (_distance_sensor_subs[i].update(&distance_sensor)) {
+				if (_distance_sensor_subs[i].update(&distance_sensor, M_EKF2)) {
 					// only use the first instace which has the correct orientation
 					if ((distance_sensor.timestamp != 0) && (distance_sensor.timestamp > timestamp_stale)
 					    && (distance_sensor.orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING)) {
@@ -2601,7 +2601,7 @@ void EKF2::UpdateRangeSample(ekf2_timestamps_s &ekf2_timestamps)
 		}
 	}
 
-	if (_distance_sensor_selected >= 0 && _distance_sensor_subs[_distance_sensor_selected].update(&distance_sensor)) {
+	if (_distance_sensor_selected >= 0 && _distance_sensor_subs[_distance_sensor_selected].update(&distance_sensor, M_EKF2)) {
 		// EKF range sample
 		if (distance_sensor.orientation == distance_sensor_s::ROTATION_DOWNWARD_FACING) {
 			estimator::sensor::rangeSample range_sample {

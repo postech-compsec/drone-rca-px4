@@ -157,7 +157,7 @@ bool EKF2Selector::UpdateErrorScores()
 	if (_sensors_status_imu.updated()) {
 		sensors_status_imu_s sensors_status_imu;
 
-		if (_sensors_status_imu.copy(&sensors_status_imu)) {
+		if (_sensors_status_imu.copy(&sensors_status_imu, M_EKF2)) {
 
 			const float time_step_s = constrain((sensors_status_imu.timestamp - _last_update_us) * 1e-6f, 0.f, 0.02f);
 			_last_update_us = sensors_status_imu.timestamp;
