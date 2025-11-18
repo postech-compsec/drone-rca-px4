@@ -92,7 +92,7 @@ int do_baro_calibration(orb_advert_t *mavlink_log_pub)
 		for (int instance = 0; instance < MAX_SENSOR_COUNT; instance++) {
 			sensor_baro_s sensor_baro;
 
-			while (sensor_baro_subs[instance].update(&sensor_baro)) {
+			while (s[instance].update(&sensor_baro, M_COMMANDER)) {
 				calibration[instance].set_device_id(sensor_baro.device_id);
 
 				// pressure corrected with offset (if available)
