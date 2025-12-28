@@ -111,7 +111,7 @@ static calibrate_return gyro_calibration_worker(gyro_worker_data_t &worker_data)
 
 					sensor_gyro_s gyro_report;
 
-					while (gyro_sub[gyro_index].update(&gyro_report)) {
+					while (gyro_sub[gyro_index].update(&gyro_report, M_COMMANDER)) {
 						// fetch optional thermal offset corrections in sensor frame
 						const Vector3f &thermal_offset{worker_data.calibrations[gyro_index].thermal_offset()};
 

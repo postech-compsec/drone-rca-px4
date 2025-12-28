@@ -102,7 +102,7 @@ void ManualControl::processInput(hrt_abstime now)
 	for (int i = 0; i < MAX_MANUAL_INPUT_COUNT; i++) {
 		manual_control_setpoint_s manual_control_input;
 
-		if (_manual_control_input_subs[i].update(&manual_control_input)) {
+		if (_manual_control_input_subs[i].update(&manual_control_input, M_MANUAL_CONTROL)) {
 			_selector.updateWithNewInputSample(now, manual_control_input, i);
 		}
 	}

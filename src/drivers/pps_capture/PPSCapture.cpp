@@ -115,7 +115,7 @@ void PPSCapture::Run()
 
 	sensor_gps_s sensor_gps;
 
-	if (_sensor_gps_sub.update(&sensor_gps)) {
+	if (_sensor_gps_sub.update(&sensor_gps, M_PPS_CAPTURE)) {
 		_last_gps_utc_timestamp = sensor_gps.time_utc_usec;
 		_last_gps_timestamp = sensor_gps.timestamp;
 	}

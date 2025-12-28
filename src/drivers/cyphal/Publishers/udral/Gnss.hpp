@@ -62,7 +62,7 @@ public:
 	{
 		if (_gps_sub.updated() && _port_id != CANARD_PORT_ID_UNSET) {
 			sensor_gps_s gps {};
-			_gps_sub.update(&gps);
+			_gps_sub.update(&gps, M_CYPHAL);
 			size_t payload_size = reg_udral_physics_kinematics_geodetic_Point_0_1_SERIALIZATION_BUFFER_SIZE_BYTES_;
 
 			reg_udral_physics_kinematics_geodetic_Point_0_1 geo {};

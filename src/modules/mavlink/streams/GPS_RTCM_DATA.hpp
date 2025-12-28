@@ -62,7 +62,7 @@ private:
 		gps_inject_data_s gps_inject_data;
 		bool sent = false;
 
-		while ((_mavlink->get_free_tx_buf() >= get_size()) && _gps_inject_data_sub.update(&gps_inject_data)) {
+		while ((_mavlink->get_free_tx_buf() >= get_size()) && _gps_inject_data_sub.update(&gps_inject_data, M_MAVLINK)) {
 			mavlink_gps_rtcm_data_t msg{};
 
 			msg.len = gps_inject_data.len;

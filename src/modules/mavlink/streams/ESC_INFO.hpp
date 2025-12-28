@@ -64,7 +64,7 @@ private:
 		static constexpr uint8_t batch_size = MAVLINK_MSG_ESC_INFO_FIELD_TEMPERATURE_LEN;
 		esc_status_s esc_status;
 
-		if (_esc_status_sub.update(&esc_status)) {
+		if (_esc_status_sub.update(&esc_status, M_MAVLINK)) {
 			mavlink_esc_info_t msg{};
 
 			msg.time_usec = esc_status.timestamp;

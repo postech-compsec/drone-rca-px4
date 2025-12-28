@@ -68,11 +68,11 @@ private:
 		bool sent = false;
 		parameter_update_s parameter_update;
 
-		if (_parameter_update_sub.update(&parameter_update)) {
+		if (_parameter_update_sub.update(&parameter_update, M_MAVLINK)) {
 			for (int mag = 0; mag < MAX_SENSOR_COUNT; mag++) {
 				sensor_mag_s sensor_mag;
 
-				if (_sensor_mag_subs[mag].update(&sensor_mag) && (sensor_mag.device_id != 0)) {
+				if (_sensor_mag_subs[mag].update(&sensor_mag, M_MAVLINK) && (sensor_mag.device_id != 0)) {
 					calibration::Magnetometer calibration{sensor_mag.device_id};
 
 					if (calibration.calibrated()) {

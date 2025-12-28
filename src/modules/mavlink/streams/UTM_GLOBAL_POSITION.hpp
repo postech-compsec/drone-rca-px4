@@ -71,7 +71,7 @@ private:
 	{
 		vehicle_global_position_s global_pos;
 
-		if (_global_pos_sub.update(&global_pos)) {
+		if (_global_pos_sub.update(&global_pos, M_MAVLINK)) {
 			mavlink_utm_global_position_t msg{};
 
 			// Compute Unix epoch and set time field

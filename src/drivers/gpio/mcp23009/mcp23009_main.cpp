@@ -76,7 +76,7 @@ void MCP23009::RunImpl()
 
 	gpio_config_s config;
 
-	if (_gpio_config_sub.update(&config) && config.device_id == get_device_id()) {
+	if (_gpio_config_sub.update(&config, M_MCP23009) && config.device_id == get_device_id()) {
 		PinType type = PinType::Input;
 
 		switch (config.config) {
@@ -91,7 +91,7 @@ void MCP23009::RunImpl()
 
 	gpio_out_s output;
 
-	if (_gpio_out_sub.update(&output) && output.device_id == get_device_id()) {
+	if (_gpio_out_sub.update(&output, M_MCP23009) && output.device_id == get_device_id()) {
 		write(output.state, output.mask);
 	}
 

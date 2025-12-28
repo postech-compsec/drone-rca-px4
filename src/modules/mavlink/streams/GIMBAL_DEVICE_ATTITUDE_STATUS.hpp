@@ -65,7 +65,7 @@ private:
 	{
 		gimbal_device_attitude_status_s gimbal_device_attitude_status{};
 
-		if (_gimbal_device_attitude_status_sub.update(&gimbal_device_attitude_status)) {
+		if (_gimbal_device_attitude_status_sub.update(&gimbal_device_attitude_status, M_MAVLINK)) {
 
 			if (gimbal_device_attitude_status.received_from_mavlink) {
 				// If we have already received the gimbal device's attitude via

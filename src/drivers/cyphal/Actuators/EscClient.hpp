@@ -78,13 +78,13 @@ public:
 	{
 		actuator_test_s actuator_test;
 
-		if (_actuator_test_sub.update(&actuator_test)) {
+		if (_actuator_test_sub.update(&actuator_test, M_CYPHAL)) {
 			_actuator_test_timestamp = actuator_test.timestamp;
 		}
 
 		if (_armed_sub.updated()) {
 			actuator_armed_s new_arming;
-			_armed_sub.update(&new_arming);
+			_armed_sub.update(&new_arming, M_CYPHAL);
 
 			if (new_arming.armed != _armed.armed) {
 				_armed = new_arming;

@@ -65,7 +65,7 @@ private:
 		for (int i = 0; i < _distance_sensor_subs.size(); i++) {
 			distance_sensor_s dist_sensor;
 
-			if (_distance_sensor_subs[i].update(&dist_sensor)) {
+			if (_distance_sensor_subs[i].update(&dist_sensor, M_MAVLINK)) {
 				mavlink_distance_sensor_t msg{};
 
 				msg.time_boot_ms = dist_sensor.timestamp / 1000; /* us to ms */

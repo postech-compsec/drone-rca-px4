@@ -264,7 +264,7 @@ private:
 	{
 		vehicle_attitude_setpoint_s attitude_sp;
 
-		if (_attitude_sp_sub.update(&attitude_sp)) {
+		if (_attitude_sp_sub.update(&attitude_sp, M_MAVLINK)) {
 
 			msg->target_heading = static_cast<uint8_t>(math::degrees(matrix::wrap_2pi(matrix::Eulerf(matrix::Quatf(
 						      attitude_sp.q_d)).psi())) * 0.5f);
@@ -299,7 +299,7 @@ private:
 		// use primary estimator_status
 		estimator_selector_status_s estimator_selector_status;
 
-		if (_estimator_selector_status_sub.update(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.update(&estimator_selector_status, M_MAVLINK)) {
 
 			if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
 				if (estimator_selector_status.primary_instance != _estimator_status_sub.get_instance()) {
@@ -310,7 +310,7 @@ private:
 
 		estimator_status_s estimator_status;
 
-		if (_estimator_status_sub.update(&estimator_status)) {
+		if (_estimator_status_sub.update(&estimator_status, M_MAVLINK)) {
 			if (estimator_status.gps_check_fail_flags > 0 ||
 			    estimator_status.filter_fault_flags > 0) {
 
@@ -331,7 +331,7 @@ private:
 	{
 		position_controller_status_s pos_ctrl_status;
 
-		if (_pos_ctrl_status_sub.update(&pos_ctrl_status)) {
+		if (_pos_ctrl_status_sub.update(&pos_ctrl_status, M_MAVLINK)) {
 			uint16_t target_distance;
 			convert_limit_safe(pos_ctrl_status.wp_dist * 0.1f, target_distance);
 			msg->target_distance = target_distance;
@@ -345,7 +345,7 @@ private:
 	{
 		geofence_result_s geofence;
 
-		if (_geofence_sub.update(&geofence)) {
+		if (_geofence_sub.update(&geofence, M_MAVLINK)) {
 			if (geofence.geofence_max_dist_triggered || geofence.geofence_max_alt_triggered
 			    || geofence.geofence_custom_fence_triggered) {
 				msg->failure_flags |= HL_FAILURE_FLAG_GEOFENCE;
@@ -362,7 +362,7 @@ private:
 		vehicle_global_position_s global_pos;
 		vehicle_local_position_s local_pos;
 
-		if (_global_pos_sub.update(&global_pos) && _local_pos_sub.copy(&local_pos)) {
+		if (_global_pos_sub.update(&global_pos, M_MAVLINK) && _local_pos_sub.copy(&local_pos)) {
 			msg->latitude = global_pos.lat * 1e7;
 			msg->longitude = global_pos.lon * 1e7;
 
@@ -387,7 +387,7 @@ private:
 	{
 		vehicle_attitude_s attitude;
 
-		if (_attitude_sub.update(&attitude)) {
+		if (_attitude_sub.update(&attitude, M_MAVLINK)) {
 
 			const matrix::Eulerf euler = matrix::Quatf(attitude.q);
 			msg->heading = static_cast<uint8_t>(math::degrees(matrix::wrap_2pi(euler.psi())) * 0.5f);
@@ -402,7 +402,7 @@ private:
 	{
 		mission_result_s mission_result;
 
-		if (_mission_result_sub.update(&mission_result)) {
+		if (_mission_result_sub.update(&mission_result, M_MAVLINK)) {
 			msg->wp_num = mission_result.seq_current;
 			return true;
 		}
@@ -472,7 +472,7 @@ private:
 	{
 		failsafe_flags_s failsafe_flags;
 
-		if (_failsafe_flags_sub.update(&failsafe_flags)) {
+		if (_failsafe_flags_sub.update(&failsafe_flags, M_MAVLINK)) {
 			if (failsafe_flags.offboard_control_signal_lost) {
 				msg->failure_flags |= HL_FAILURE_FLAG_OFFBOARD_LINK;
 			}
@@ -529,7 +529,7 @@ private:
 	{
 		airspeed_s airspeed;
 
-		if (_airspeed_sub.update(&airspeed)) {
+		if (_airspeed_sub.update(&airspeed, M_MAVLINK)) {
 			_airspeed.add_value(airspeed.indicated_airspeed_m_s, _update_rate_filtered);
 		}
 	}
@@ -539,7 +539,7 @@ private:
 	{
 		tecs_status_s tecs_status;
 
-		if (_tecs_status_sub.update(&tecs_status)) {
+		if (_tecs_status_sub.update(&tecs_status, M_MAVLINK)) {
 			_airspeed_sp.add_value(tecs_status.true_airspeed_sp, _update_rate_filtered);
 		}
 	}
@@ -549,7 +549,7 @@ private:
 		battery_status_s battery;
 
 		for (int i = 0; i < battery_status_s::MAX_INSTANCES; i++) {
-			if (_batteries[i].subscription.update(&battery)) {
+			if (_batteries[i].subscription.update(&battery, M_MAVLINK)) {
 				_batteries[i].connected = battery.connected;
 				_batteries[i].analyzer.add_value(battery.remaining, _update_rate_filtered);
 			}
@@ -560,7 +560,7 @@ private:
 	{
 		vehicle_local_position_s local_pos;
 
-		if (_local_pos_sub.update(&local_pos)) {
+		if (_local_pos_sub.update(&local_pos, M_MAVLINK)) {
 			_climb_rate.add_value(fabsf(local_pos.vz), _update_rate_filtered);
 			_groundspeed.add_value(sqrtf(local_pos.vx * local_pos.vx + local_pos.vy * local_pos.vy), _update_rate_filtered);
 		}
@@ -570,7 +570,7 @@ private:
 	{
 		sensor_gps_s gps;
 
-		if (_gps_sub.update(&gps)) {
+		if (_gps_sub.update(&gps, M_MAVLINK)) {
 			_eph.add_value(gps.eph, _update_rate_filtered);
 			_epv.add_value(gps.epv, _update_rate_filtered);
 		}
@@ -580,7 +580,7 @@ private:
 	{
 		vehicle_status_s status;
 
-		if (_status_sub.update(&status)) {
+		if (_status_sub.update(&status, M_MAVLINK)) {
 			if (status.arming_state == vehicle_status_s::ARMING_STATE_ARMED) {
 				vehicle_thrust_setpoint_s vehicle_thrust_setpoint{};
 
@@ -605,7 +605,7 @@ private:
 	{
 		wind_s wind;
 
-		if (_wind_sub.update(&wind)) {
+		if (_wind_sub.update(&wind, M_MAVLINK)) {
 			_windspeed.add_value(sqrtf(wind.windspeed_north * wind.windspeed_north + wind.windspeed_east * wind.windspeed_east),
 					     _update_rate_filtered);
 		}
@@ -615,7 +615,7 @@ private:
 	{
 		vehicle_air_data_s air_data;
 
-		if (_vehicle_air_data_sub.update(&air_data)) {
+		if (_vehicle_air_data_sub.update(&air_data, M_MAVLINK)) {
 			_temperature.add_value(air_data.ambient_temperature, _update_rate_filtered);
 		}
 	}

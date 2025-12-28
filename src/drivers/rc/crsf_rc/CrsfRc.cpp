@@ -228,7 +228,7 @@ void CrsfRc::Run()
 			case 0:
 				battery_status_s battery_status;
 
-				if (_battery_status_sub.update(&battery_status)) {
+				if (_battery_status_sub.update(&battery_status, M_CRSF_RC)) {
 					uint16_t voltage = battery_status.voltage_v * 10;
 					uint16_t current = battery_status.current_a * 10;
 					int fuel = battery_status.discharged_mah;
@@ -241,7 +241,7 @@ void CrsfRc::Run()
 			case 1:
 				sensor_gps_s sensor_gps;
 
-				if (_vehicle_gps_position_sub.update(&sensor_gps)) {
+				if (_vehicle_gps_position_sub.update(&sensor_gps, M_CRSF_RC)) {
 					int32_t latitude = static_cast<int32_t>(round(sensor_gps.latitude_deg * 1e7));
 					int32_t longitude = static_cast<int32_t>(round(sensor_gps.longitude_deg * 1e7));
 					uint16_t groundspeed = sensor_gps.vel_d_m_s / 3.6f * 10.f;
@@ -256,7 +256,7 @@ void CrsfRc::Run()
 			case 2:
 				vehicle_attitude_s vehicle_attitude;
 
-				if (_vehicle_attitude_sub.update(&vehicle_attitude)) {
+				if (_vehicle_attitude_sub.update(&vehicle_attitude, M_CRSF_RC)) {
 					matrix::Eulerf attitude = matrix::Quatf(vehicle_attitude.q);
 					int16_t pitch = attitude(1) * 1e4f;
 					int16_t roll = attitude(0) * 1e4f;
@@ -269,7 +269,7 @@ void CrsfRc::Run()
 			case 3:
 				vehicle_status_s vehicle_status;
 
-				if (_vehicle_status_sub.update(&vehicle_status)) {
+				if (_vehicle_status_sub.update(&vehicle_status, M_CRSF_RC)) {
 					const char *flight_mode = "(unknown)";
 
 					switch (vehicle_status.nav_state) {

@@ -75,7 +75,7 @@ private:
 
 				mavlink_log_s mavlink_log;
 
-				if (_mavlink_log_sub.update(&mavlink_log)) {
+				if (_mavlink_log_sub.update(&mavlink_log, M_MAVLINK)) {
 					// don't send stale messages
 					if (hrt_elapsed_time(&mavlink_log.timestamp) < 5_s) {
 

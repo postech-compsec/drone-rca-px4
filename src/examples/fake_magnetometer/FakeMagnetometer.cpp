@@ -81,7 +81,7 @@ void FakeMagnetometer::Run()
 	if (_mag_earth_available) {
 		vehicle_attitude_s attitude;
 
-		if (_vehicle_attitude_sub.update(&attitude)) {
+		if (_vehicle_attitude_sub.update(&attitude, M_FAKE_MAGNETOMETER)) {
 			Vector3f expected_field = Dcmf{Quatf{attitude.q}} .transpose() * _mag_earth_pred;
 
 			_px4_mag.update(hrt_absolute_time(), expected_field(0), expected_field(1), expected_field(2));

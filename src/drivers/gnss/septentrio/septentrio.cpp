@@ -1522,7 +1522,7 @@ void SeptentrioDriver::handle_inject_data_topic()
 			}
 		}
 
-		updated = _gps_inject_data_sub[_selected_rtcm_instance].update(&msg);
+		updated = _gps_inject_data_sub[_selected_rtcm_instance].update(&msg, M_SEPTENTRIO);
 
 	} while (updated && num_injections < max_num_injections);
 }

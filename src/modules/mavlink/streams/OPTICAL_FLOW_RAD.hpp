@@ -62,7 +62,7 @@ private:
 	{
 		vehicle_optical_flow_s flow;
 
-		if (_vehicle_optical_flow_sub.update(&flow)) {
+		if (_vehicle_optical_flow_sub.update(&flow, M_MAVLINK)) {
 			mavlink_optical_flow_rad_t msg{};
 
 			msg.time_usec = flow.timestamp_sample;

@@ -564,7 +564,7 @@ bool MavlinkParametersManager::send_uavcan()
 	/* Send parameter values received from the UAVCAN topic */
 	uavcan_parameter_value_s value{};
 
-	if (_uavcan_parameter_value_sub.update(&value)) {
+	if (_uavcan_parameter_value_sub.update(&value, M_MAVLINK)) {
 
 		// Check if we received a matching parameter, drop it from the list and request the next
 		if ((_uavcan_open_request_list != nullptr)

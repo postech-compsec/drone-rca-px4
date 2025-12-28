@@ -64,7 +64,7 @@ private:
 	{
 		figure_eight_status_s figure_eight_status;
 
-		if ((_mavlink->get_free_tx_buf() >= get_size()) && _figure_eight_status_subs.update(&figure_eight_status)) {
+		if ((_mavlink->get_free_tx_buf() >= get_size()) && _figure_eight_status_subs.update(&figure_eight_status, M_MAVLINK)) {
 			mavlink_figure_eight_execution_status_t msg_figure_eight_execution_status{};
 
 			msg_figure_eight_execution_status.time_usec = figure_eight_status.timestamp;

@@ -180,7 +180,7 @@ private:
 		register_ext_component_reply_s reply;
 		bool dynamic_update = false;
 
-		if (_register_ext_component_reply_sub.update(&reply)) {
+		if (_register_ext_component_reply_sub.update(&reply, M_MAVLINK)) {
 			if (reply.success && reply.mode_id != -1) {
 				if (!_external_mode_names) {
 					_external_mode_names = new ExternalModeName[MAX_NUM_EXTERNAL_MODES];

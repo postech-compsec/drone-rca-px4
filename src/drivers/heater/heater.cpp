@@ -203,7 +203,7 @@ void Heater::Run()
 		heater_off();
 		ScheduleDelayed(CONTROLLER_PERIOD_DEFAULT - _controller_time_on_usec);
 
-	} else if (_sensor_accel_sub.update(&sensor_accel)) {
+	} else if (_sensor_accel_sub.update(&sensor_accel, M_HEATER)) {
 
 		// Update the current IMU sensor temperature if valid.
 		if (PX4_ISFINITE(sensor_accel.temperature)) {

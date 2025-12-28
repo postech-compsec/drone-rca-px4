@@ -147,7 +147,7 @@ void TemperatureCompensationModule::accelPoll()
 		sensor_accel_s sensor_accel;
 
 		// Grab temperature from accel
-		if (_accel_subs[uorb_index].update(&sensor_accel)) {
+		if (_accel_subs[uorb_index].update(&sensor_accel, M_TEMPERATURE_COMPENSATION)) {
 			if (PX4_ISFINITE(sensor_accel.temperature)) {
 				// Update the offsets and mark for publication if they've changed
 				if (_temperature_compensation.update_offsets_accel(uorb_index, sensor_accel.temperature, offsets[uorb_index]) == 2) {
@@ -170,7 +170,7 @@ void TemperatureCompensationModule::gyroPoll()
 		sensor_gyro_s sensor_gyro;
 
 		// Grab temperature from gyro
-		if (_gyro_subs[uorb_index].update(&sensor_gyro)) {
+		if (_gyro_subs[uorb_index].update(&sensor_gyro, M_TEMPERATURE_COMPENSATION)) {
 			if (PX4_ISFINITE(sensor_gyro.temperature)) {
 				// Update the offsets and mark for publication if they've changed
 				if (_temperature_compensation.update_offsets_gyro(uorb_index, sensor_gyro.temperature, offsets[uorb_index]) == 2) {
@@ -187,7 +187,7 @@ void TemperatureCompensationModule::gyroPoll()
 				// Use accelerometer of the same instance if gyro temperature was NAN.
 				sensor_accel_s sensor_accel;
 
-				if (_accel_subs[uorb_index].update(&sensor_accel)) {
+				if (_accel_subs[uorb_index].update(&sensor_accel, M_TEMPERATURE_COMPENSATION)) {
 					_corrections.gyro_temperature[uorb_index] = sensor_accel.temperature;
 					_corrections_changed = true;
 				}
@@ -205,7 +205,7 @@ void TemperatureCompensationModule::magPoll()
 		sensor_mag_s sensor_mag;
 
 		// Grab temperature from report
-		if (_mag_subs[uorb_index].update(&sensor_mag)) {
+		if (_mag_subs[uorb_index].update(&sensor_mag, M_TEMPERATURE_COMPENSATION)) {
 			if (PX4_ISFINITE(sensor_mag.temperature)) {
 				// Update the offsets and mark for publication if they've changed
 				if (_temperature_compensation.update_offsets_mag(uorb_index, sensor_mag.temperature, offsets[uorb_index]) == 2) {
@@ -222,7 +222,7 @@ void TemperatureCompensationModule::magPoll()
 				// Use primary baro instance if mag temperature was NAN.
 				sensor_baro_s sensor_baro;
 
-				if (_accel_subs[0].update(&sensor_baro)) {
+				if (_accel_subs[0].update(&sensor_baro, M_TEMPERATURE_COMPENSATION)) {
 					_corrections.mag_temperature[uorb_index] = sensor_baro.temperature;
 					_corrections_changed = true;
 				}
@@ -240,7 +240,7 @@ void TemperatureCompensationModule::baroPoll()
 		sensor_baro_s sensor_baro;
 
 		// Grab temperature from report
-		if (_baro_subs[uorb_index].update(&sensor_baro)) {
+		if (_baro_subs[uorb_index].update(&sensor_baro, M_TEMPERATURE_COMPENSATION)) {
 			if (PX4_ISFINITE(sensor_baro.temperature)) {
 				// Update the offsets and mark for publication if they've changed
 				if (_temperature_compensation.update_offsets_baro(uorb_index, sensor_baro.temperature, offsets[uorb_index]) == 2) {
@@ -257,7 +257,7 @@ void TemperatureCompensationModule::baroPoll()
 				// Use primary accelerometer instance if baro temperature was NAN.
 				sensor_accel_s sensor_accel;
 
-				if (_accel_subs[0].update(&sensor_accel)) {
+				if (_accel_subs[0].update(&sensor_accel, M_TEMPERATURE_COMPENSATION)) {
 					_corrections.baro_temperature[uorb_index] = sensor_accel.temperature;
 					_corrections_changed = true;
 				}

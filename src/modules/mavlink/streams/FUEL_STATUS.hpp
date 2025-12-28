@@ -61,7 +61,7 @@ private:
 	{
 		fuel_tank_status_s fuel_status;
 
-		if (_fuel_tank_status_sub.update(&fuel_status)) {
+		if (_fuel_tank_status_sub.update(&fuel_status, M_MAVLINK)) {
 			mavlink_fuel_status_t msg{};
 
 			msg.id = fuel_status.fuel_tank_id;

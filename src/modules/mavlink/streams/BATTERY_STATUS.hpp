@@ -65,7 +65,7 @@ private:
 		for (auto &battery_sub : _battery_status_subs) {
 			battery_status_s battery_status;
 
-			if (battery_sub.update(&battery_status)) {
+			if (battery_sub.update(&battery_status, M_MAVLINK)) {
 				/* battery status message with higher resolution */
 				mavlink_battery_status_t bat_msg{};
 				// TODO: Determine how to better map between battery ID within the firmware and in MAVLink

@@ -63,7 +63,7 @@ private:
 		bool updated = false;
 
 		for (auto &orbit_sub : _orbit_status_subs) {
-			if (orbit_sub.update(&orbit_status)) {
+			if (orbit_sub.update(&orbit_status, M_MAVLINK)) {
 				mavlink_orbit_execution_status_t msg_orbit_execution_status{};
 
 				msg_orbit_execution_status.time_usec = orbit_status.timestamp;

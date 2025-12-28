@@ -344,7 +344,7 @@ static calibrate_return mag_calibration_worker(detect_orientation_return orienta
 					bool updated = false;
 					sensor_mag_s mag;
 
-					while (mag_sub[cur_mag].update(&mag)) {
+					while (mag_sub[cur_mag].update(&mag, M_COMMANDER)) {
 						if (worker_data->append_to_existing_calibration) {
 							// keep and update the existing calibration when we are not doing a full 6-axis calibration
 							const Matrix3f &scale = worker_data->calibration[cur_mag].scale();

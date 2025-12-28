@@ -65,7 +65,7 @@ private:
 	{
 		vehicle_attitude_s att;
 
-		if (_att_sub.update(&att)) {
+		if (_att_sub.update(&att, M_MAVLINK)) {
 			vehicle_angular_velocity_s angular_velocity{};
 			_angular_velocity_sub.copy(&angular_velocity);
 

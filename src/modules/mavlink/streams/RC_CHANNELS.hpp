@@ -61,7 +61,7 @@ private:
 	{
 		input_rc_s rc;
 
-		if (_input_rc_sub.update(&rc)) {
+		if (_input_rc_sub.update(&rc, M_MAVLINK)) {
 			// send RC channel data and RSSI
 			mavlink_rc_channels_t msg{};
 

@@ -70,7 +70,7 @@ private:
 		for (int i = 0; i < _battery_info_subs.size(); ++i) {
 			battery_info_s battery_info;
 
-			if (_battery_info_subs[i].update(&battery_info)) {
+			if (_battery_info_subs[i].update(&battery_info, M_MAVLINK)) {
 				_serial_number_ids[i] = battery_info.id;
 				memcpy(_serial_numbers[i], battery_info.serial_number, sizeof(_serial_numbers[0]));
 			}
@@ -79,7 +79,7 @@ private:
 		for (auto &battery_sub : _battery_status_subs) {
 			battery_status_s battery_status;
 
-			if (battery_sub.update(&battery_status)) {
+			if (battery_sub.update(&battery_status, M_MAVLINK)) {
 				mavlink_battery_info_t msg{};
 				bool battery_has_serial_number = false;
 

@@ -76,7 +76,7 @@ private:
 	{
 		vehicle_attitude_s att;
 
-		if (_att_sub.update(&att)) {
+		if (_att_sub.update(&att, M_MAVLINK)) {
 			mavlink_autopilot_state_for_gimbal_device_t msg{};
 
 			bool hil_state = false;
@@ -119,7 +119,7 @@ private:
 			{
 				estimator_selector_status_s estimator_selector_status;
 
-				if (_estimator_selector_status_sub.update(&estimator_selector_status)) {
+				if (_estimator_selector_status_sub.update(&estimator_selector_status, M_MAVLINK)) {
 					_estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance);
 
 				}

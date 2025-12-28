@@ -160,7 +160,7 @@ void MagBiasEstimator::Run()
 			int sensor_mag_updates = 0;
 			sensor_mag_s sensor_mag;
 
-			while ((sensor_mag_updates < sensor_mag_s::ORB_QUEUE_LENGTH) && _sensor_mag_subs[mag_index].update(&sensor_mag)) {
+			while ((sensor_mag_updates < sensor_mag_s::ORB_QUEUE_LENGTH) && _sensor_mag_subs[mag_index].update(&sensor_mag, M_MAG_BIAS_ESTIMATOR)) {
 				sensor_mag_updates++;
 				updated = true;
 

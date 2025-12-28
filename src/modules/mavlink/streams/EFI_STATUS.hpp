@@ -62,7 +62,7 @@ private:
 	{
 		internal_combustion_engine_status_s internal_combustion_engine_status;
 
-		if (_internal_combustion_engine_status_sub.update(&internal_combustion_engine_status)) {
+		if (_internal_combustion_engine_status_sub.update(&internal_combustion_engine_status, M_MAVLINK)) {
 			mavlink_efi_status_t msg{};
 
 			msg.health = internal_combustion_engine_status.state;

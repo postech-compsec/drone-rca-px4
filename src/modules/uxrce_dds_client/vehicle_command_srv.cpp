@@ -69,7 +69,7 @@ bool VehicleCommandSrv::process_reply()
 {
 	vehicle_command_ack_s cmd_ack;
 
-	if (is_reply_pending_ && vehicle_command_ack_sub_.update(&cmd_ack)) {
+	if (is_reply_pending_ && vehicle_command_ack_sub_.update(&cmd_ack, M_UXRCE_DDS_CLIENT)) {
 		if (cmd_ack.command == last_command_sent_ && cmd_ack.timestamp > last_command_sent_timestamp_) {
 			last_command_sent_ = 0;
 			is_reply_pending_ = false;

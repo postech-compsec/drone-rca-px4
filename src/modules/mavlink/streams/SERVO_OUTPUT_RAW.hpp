@@ -74,7 +74,7 @@ private:
 	{
 		actuator_outputs_s act;
 
-		if (_act_sub.update(&act)) {
+		if (_act_sub.update(&act, M_MAVLINK)) {
 			mavlink_servo_output_raw_t msg{};
 
 			static_assert(sizeof(act.output) / sizeof(act.output[0]) >= 16, "mavlink message requires at least 16 outputs");

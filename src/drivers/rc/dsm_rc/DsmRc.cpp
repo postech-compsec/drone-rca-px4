@@ -156,7 +156,7 @@ void DsmRc::Run()
 	/* vehicle command */
 	vehicle_command_s vcmd;
 
-	if (_vehicle_cmd_sub.update(&vcmd)) {
+	if (_vehicle_cmd_sub.update(&vcmd, M_DSM_RC)) {
 		// Check for a pairing command
 		if (vcmd.command == vehicle_command_s::VEHICLE_CMD_START_RX_PAIR) {
 

@@ -74,7 +74,7 @@ private:
 
 		estimator_status_s est;
 
-		if (_estimator_status_sub.update(&est)) {
+		if (_estimator_status_sub.update(&est, M_MAVLINK)) {
 			mavlink_estimator_status_t est_msg{};
 			est_msg.time_usec = est.timestamp;
 			est_msg.vel_ratio = est.vel_test_ratio;

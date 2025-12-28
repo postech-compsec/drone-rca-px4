@@ -68,7 +68,7 @@ private:
 		sensor_gps_s vehicle_gps_position;
 		home_position_s home_position;
 
-		if (_vehicle_gps_position_sub.update(&vehicle_gps_position) && _home_position_sub.copy(&home_position)) {
+		if (_vehicle_gps_position_sub.update(&vehicle_gps_position, M_MAVLINK) && _home_position_sub.copy(&home_position)) {
 			if (vehicle_gps_position.fix_type >= 3
 			    && home_position.valid_alt && home_position.valid_hpos) {
 

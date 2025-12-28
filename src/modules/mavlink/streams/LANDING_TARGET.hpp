@@ -61,7 +61,7 @@ private:
 	{
 		landing_target_pose_s target;
 
-		if (_landing_target_sub.update(&target)) {
+		if (_landing_target_sub.update(&target, M_MAVLINK)) {
 
 			mavlink_landing_target_t msg{};
 

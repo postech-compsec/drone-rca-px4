@@ -61,7 +61,7 @@ private:
 	{
 		debug_vect_s debug;
 
-		if (_debug_sub.update(&debug)) {
+		if (_debug_sub.update(&debug, M_MAVLINK)) {
 			mavlink_debug_vect_t msg{};
 			msg.time_usec = debug.timestamp;
 			memcpy(msg.name, debug.name, sizeof(msg.name));

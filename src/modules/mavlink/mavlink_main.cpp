@@ -2441,7 +2441,7 @@ Mavlink::task_main(int argc, char *argv[])
 
 				event_s orb_event;
 
-				while (_event_sub.update(&orb_event)) {
+				while (_event_sub.update(&orb_event, M_MAVLINK)) {
 					if (events::externalLogLevel(orb_event.log_levels) == events::LogLevel::Disabled) {
 						++event_sequence_offset; // skip this event
 
@@ -2612,7 +2612,7 @@ void Mavlink::handleCommands()
 			const unsigned last_generation = _vehicle_command_sub.get_last_generation();
 			vehicle_command_s vehicle_cmd;
 
-			if (_vehicle_command_sub.update(&vehicle_cmd)) {
+			if (_vehicle_command_sub.update(&vehicle_cmd, M_MAVLINK)) {
 				if (_vehicle_command_sub.get_last_generation() != last_generation + 1) {
 					PX4_ERR("vehicle_command lost, generation %u -> %u", last_generation, _vehicle_command_sub.get_last_generation());
 				}
@@ -2691,7 +2691,7 @@ void Mavlink::handleAndGetCurrentCommandAck()
 			vehicle_command_ack_s command_ack;
 			const unsigned last_generation = _vehicle_command_ack_sub.get_last_generation();
 
-			if (_vehicle_command_ack_sub.update(&command_ack)) {
+			if (_vehicle_command_ack_sub.update(&command_ack, M_MAVLINK)) {
 				if (_vehicle_command_ack_sub.get_last_generation() != last_generation + 1) {
 					PX4_ERR("vehicle_command_ack lost, generation %u -> %u", last_generation,
 						_vehicle_command_ack_sub.get_last_generation());

@@ -64,7 +64,7 @@ private:
 	{
 		manual_control_setpoint_s manual_control_setpoint;
 
-		if (_manual_control_setpoint_sub.update(&manual_control_setpoint)) {
+		if (_manual_control_setpoint_sub.update(&manual_control_setpoint, M_MAVLINK)) {
 			mavlink_manual_control_t msg{};
 
 			msg.target = mavlink_system.sysid;

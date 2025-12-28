@@ -63,7 +63,7 @@ private:
 	{
 		wind_s wind;
 
-		if (_wind_sub.update(&wind)) {
+		if (_wind_sub.update(&wind, M_MAVLINK)) {
 			mavlink_wind_cov_t msg{};
 
 			msg.time_usec = wind.timestamp;

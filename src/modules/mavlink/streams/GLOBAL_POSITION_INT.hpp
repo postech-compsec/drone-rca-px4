@@ -66,7 +66,7 @@ private:
 		vehicle_global_position_s gpos;
 		vehicle_local_position_s lpos;
 
-		if (_gpos_sub.update(&gpos) && _lpos_sub.update(&lpos)) {
+		if (_gpos_sub.update(&gpos, M_MAVLINK) && _lpos_sub.update(&lpos, M_MAVLINK)) {
 
 			mavlink_global_position_int_t msg{};
 

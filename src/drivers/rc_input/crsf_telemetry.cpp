@@ -77,7 +77,7 @@ bool CRSFTelemetry::send_battery()
 {
 	battery_status_s battery_status;
 
-	if (!_battery_status_sub.update(&battery_status)) {
+	if (!_battery_status_sub.update(&battery_status, M_RC_INPUT)) {
 		return false;
 	}
 
@@ -92,7 +92,7 @@ bool CRSFTelemetry::send_gps()
 {
 	sensor_gps_s vehicle_gps_position;
 
-	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position)) {
+	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position, M_RC_INPUT)) {
 		return false;
 	}
 
@@ -111,7 +111,7 @@ bool CRSFTelemetry::send_attitude()
 {
 	vehicle_attitude_s vehicle_attitude;
 
-	if (!_vehicle_attitude_sub.update(&vehicle_attitude)) {
+	if (!_vehicle_attitude_sub.update(&vehicle_attitude, M_RC_INPUT)) {
 		return false;
 	}
 
@@ -126,7 +126,7 @@ bool CRSFTelemetry::send_flight_mode()
 {
 	vehicle_status_s vehicle_status;
 
-	if (!_vehicle_status_sub.update(&vehicle_status)) {
+	if (!_vehicle_status_sub.update(&vehicle_status, M_RC_INPUT)) {
 		return false;
 	}
 

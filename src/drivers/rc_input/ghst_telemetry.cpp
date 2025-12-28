@@ -89,7 +89,7 @@ bool GHSTTelemetry::send_battery_status()
 	float fuel_in_10mAh;
 	battery_status_s battery_status;
 
-	if (_battery_status_sub.update(&battery_status)) {
+	if (_battery_status_sub.update(&battery_status, M_RC_INPUT)) {
 		voltage_in_10mV = battery_status.voltage_v * FACTOR_VOLTS_TO_10MV;
 		current_in_10mA = battery_status.current_a * FACTOR_AMPS_TO_10MA;
 		fuel_in_10mAh = battery_status.discharged_mah * FACTOR_MAH_TO_10MAH;
@@ -106,7 +106,7 @@ bool GHSTTelemetry::send_gps1_status()
 {
 	sensor_gps_s vehicle_gps_position;
 
-	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position)) {
+	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position, M_RC_INPUT)) {
 		return false;
 	}
 
@@ -121,7 +121,7 @@ bool GHSTTelemetry::send_gps2_status()
 {
 	sensor_gps_s vehicle_gps_position;
 
-	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position)) {
+	if (!_vehicle_gps_position_sub.update(&vehicle_gps_position, M_RC_INPUT)) {
 		return false;
 	}
 

@@ -428,7 +428,7 @@ int LightwareLaser::updateRestriction()
 
 	px4::msg::VehicleStatus vehicle_status;
 
-	if (_vehicle_status_sub.update(&vehicle_status)) {
+	if (_vehicle_status_sub.update(&vehicle_status, M_LIGHTWARE_LASER_I2C)) {
 		// Check if vehicle type changed
 		if (vehicle_status.vehicle_type != _vehicle_type) {
 			// Transition VTOL -> Fixed Wing

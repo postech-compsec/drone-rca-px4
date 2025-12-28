@@ -210,12 +210,12 @@ void LandingTargetEstimator::_check_params(const bool force)
 
 void LandingTargetEstimator::_update_topics()
 {
-	_vehicleLocalPosition_valid = _vehicleLocalPositionSub.update(&_vehicleLocalPosition);
-	_vehicleAttitude_valid = _attitudeSub.update(&_vehicleAttitude);
+	_vehicleLocalPosition_valid = _vehicleLocalPositionSub.update(&_vehicleLocalPosition, M_LANDING_TARGET_ESTIMATOR);
+	_vehicleAttitude_valid = _attitudeSub.update(&_vehicleAttitude, M_LANDING_TARGET_ESTIMATOR);
 	_vehicle_acceleration_valid = _vehicle_acceleration_sub.update(&_vehicle_acceleration, M_LANDING_TARGET_ESTIMATOR);
 
 
-	if (_irlockReportSub.update(&_irlockReport)) { //
+	if (_irlockReportSub.update(&_irlockReport, M_LANDING_TARGET_ESTIMATOR)) { //
 		_new_irlockReport = true;
 
 		if (!_vehicleAttitude_valid || !_vehicleLocalPosition_valid || !_vehicleLocalPosition.dist_bottom_valid) {

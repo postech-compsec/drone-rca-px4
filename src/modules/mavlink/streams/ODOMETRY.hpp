@@ -61,7 +61,7 @@ private:
 	{
 		vehicle_odometry_s odom;
 
-		if (_vehicle_odometry_sub.update(&odom)) {
+		if (_vehicle_odometry_sub.update(&odom, M_MAVLINK)) {
 			mavlink_odometry_t msg{};
 			msg.time_usec = odom.timestamp_sample;
 

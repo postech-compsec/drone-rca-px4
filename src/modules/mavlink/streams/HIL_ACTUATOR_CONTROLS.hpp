@@ -68,7 +68,7 @@ private:
 	{
 		actuator_outputs_s act;
 
-		if (_act_sub.update(&act)) {
+		if (_act_sub.update(&act, M_MAVLINK)) {
 			mavlink_hil_actuator_controls_t msg{};
 			msg.time_usec = act.timestamp;
 

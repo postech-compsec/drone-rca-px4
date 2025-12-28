@@ -66,7 +66,7 @@ private:
 	{
 		position_controller_status_s pos_ctrl_status;
 
-		if (_position_controller_status_sub.update(&pos_ctrl_status)) {
+		if (_position_controller_status_sub.update(&pos_ctrl_status, M_MAVLINK)) {
 
 			tecs_status_s tecs_status{};
 			_tecs_status_sub.copy(&tecs_status);

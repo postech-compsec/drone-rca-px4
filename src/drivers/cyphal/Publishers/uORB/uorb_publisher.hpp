@@ -65,7 +65,7 @@ public:
 		// Not sure if actuator_armed is a good indication of readiness but seems close to it
 		if (_uorb_sub.updated() && _port_id != CANARD_PORT_ID_UNSET) {
 			T data {};
-			_uorb_sub.update(&data);
+			_uorb_sub.update(&data, M_CYPHAL);
 
 			const CanardTransferMetadata transfer_metadata = {
 				.priority       = CanardPriorityNominal,

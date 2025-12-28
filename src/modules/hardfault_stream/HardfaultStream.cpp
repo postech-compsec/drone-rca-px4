@@ -81,7 +81,7 @@ bool HardfaultStream::mavlink_gcs_up()
 	for (auto &telemetry_status : _telemetry_status_subs) {
 		telemetry_status_s telemetry;
 
-		if (telemetry_status.update(&telemetry)) {
+		if (telemetry_status.update(&telemetry, M_HARDFAULT_STREAM)) {
 			if (telemetry.heartbeat_type_gcs) {
 				return true;
 			}

@@ -592,7 +592,7 @@ void GPS::handleInjectDataTopic()
 			}
 		}
 
-		updated = _orb_inject_data_sub[_selected_rtcm_instance].update(&msg);
+		updated = _orb_inject_data_sub[_selected_rtcm_instance].update(&msg, M_GPS);
 
 	} while (updated && num_injections < max_num_injections);
 }

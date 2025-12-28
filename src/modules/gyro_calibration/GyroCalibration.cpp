@@ -130,7 +130,7 @@ void GyroCalibration::Run()
 	for (int gyro = 0; gyro < _sensor_gyro_subs.size(); gyro++) {
 		sensor_gyro_s sensor_gyro;
 
-		if (_sensor_gyro_subs[gyro].update(&sensor_gyro)) {
+		if (_sensor_gyro_subs[gyro].update(&sensor_gyro, M_GYRO_CALIBRATION)) {
 			if (PX4_ISFINITE(sensor_gyro.temperature)) {
 				if ((fabsf(_temperature[gyro] - sensor_gyro.temperature) > 1.f) || !PX4_ISFINITE(_temperature[gyro])) {
 					PX4_DEBUG("gyro %d temperature change, resetting all %.6f -> %.6f", gyro, (double)_temperature[gyro],
@@ -176,7 +176,7 @@ void GyroCalibration::Run()
 	for (int accel = 0; accel < _sensor_accel_subs.size(); accel++) {
 		sensor_accel_s sensor_accel;
 
-		if (_sensor_accel_subs[accel].update(&sensor_accel)) {
+		if (_sensor_accel_subs[accel].update(&sensor_accel, M_GYRO_CALIBRATION)) {
 			const Vector3f acceleration{sensor_accel.x, sensor_accel.y, sensor_accel.z};
 
 			if ((acceleration - _acceleration[accel]).longerThan(0.5f)) {

@@ -62,7 +62,7 @@ private:
 	{
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.update(&vehicle_status)) {
+		if (_vehicle_status_sub.update(&vehicle_status, M_MAVLINK)) {
 			mavlink_current_mode_t current_mode{};
 			current_mode.custom_mode = get_px4_custom_mode(vehicle_status.nav_state).data;
 			current_mode.intended_custom_mode = get_px4_custom_mode(vehicle_status.nav_state_user_intention).data;

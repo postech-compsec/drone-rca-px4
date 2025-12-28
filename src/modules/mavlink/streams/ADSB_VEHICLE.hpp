@@ -65,7 +65,7 @@ private:
 
 		transponder_report_s pos;
 
-		while ((_mavlink->get_free_tx_buf() >= get_size()) && _transponder_report_sub.update(&pos)) {
+		while ((_mavlink->get_free_tx_buf() >= get_size()) && _transponder_report_sub.update(&pos, M_MAVLINK)) {
 
 			if (!(pos.flags & transponder_report_s::PX4_ADSB_FLAGS_RETRANSLATE)) {
 				continue;

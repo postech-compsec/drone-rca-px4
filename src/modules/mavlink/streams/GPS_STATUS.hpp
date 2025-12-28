@@ -61,7 +61,7 @@ private:
 	{
 		satellite_info_s sat;
 
-		if (_satellite_info_sub.update(&sat)) {
+		if (_satellite_info_sub.update(&sat, M_MAVLINK)) {
 			mavlink_gps_status_t msg{};
 
 			msg.satellites_visible = sat.count;

@@ -67,7 +67,7 @@ private:
 		mavlink_gps2_raw_t msg{};
 		hrt_abstime now{};
 
-		if (_sensor_gps_sub.update(&gps)) {
+		if (_sensor_gps_sub.update(&gps, M_MAVLINK)) {
 			msg.time_usec = gps.timestamp;
 			msg.fix_type = gps.fix_type;
 			msg.lat = static_cast<int32_t>(round(gps.latitude_deg * 1e7));

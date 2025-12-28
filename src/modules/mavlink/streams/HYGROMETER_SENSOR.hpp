@@ -66,7 +66,7 @@ private:
 		for (int i = 0; i < _sensor_hygrometer_subs.size(); i++) {
 			sensor_hygrometer_s sensor_hygrometer;
 
-			if (_sensor_hygrometer_subs[i].update(&sensor_hygrometer)) {
+			if (_sensor_hygrometer_subs[i].update(&sensor_hygrometer, M_MAVLINK)) {
 				mavlink_hygrometer_sensor_t msg{};
 				msg.id          = i; // uint8_t Hygrometer ID
 				msg.temperature = roundf(sensor_hygrometer.temperature * 100.f); // degrees to centidegrees (int16_t)

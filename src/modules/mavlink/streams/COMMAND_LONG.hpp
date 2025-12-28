@@ -72,7 +72,7 @@ private:
 			const unsigned last_generation = _vehicle_command_sub.get_last_generation();
 			vehicle_command_s cmd;
 
-			if (_vehicle_command_sub.update(&cmd)) {
+			if (_vehicle_command_sub.update(&cmd, M_MAVLINK)) {
 				if (_vehicle_command_sub.get_last_generation() != last_generation + 1) {
 					PX4_ERR("COMMAND_LONG vehicle_command lost, generation %d -> %d", last_generation,
 						_vehicle_command_sub.get_last_generation());

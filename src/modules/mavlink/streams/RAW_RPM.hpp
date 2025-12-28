@@ -64,7 +64,7 @@ private:
 		for (int i = 0; i < _rpm_subs.size(); i++) {
 			rpm_s rpm;
 
-			if (_rpm_subs[i].update(&rpm)) {
+			if (_rpm_subs[i].update(&rpm, M_MAVLINK)) {
 				mavlink_raw_rpm_t msg{};
 
 				msg.index = i;

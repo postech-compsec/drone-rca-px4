@@ -64,7 +64,7 @@ private:
 	{
 		vehicle_global_position_s pos{};
 
-		if (_aux_global_position_sub.update(&pos)) {
+		if (_aux_global_position_sub.update(&pos, M_MAVLINK)) {
 			mavlink_global_position_t msg{};
 
 			msg.id = UINT8_C(1);

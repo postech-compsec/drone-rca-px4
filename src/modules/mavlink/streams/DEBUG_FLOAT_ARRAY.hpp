@@ -61,7 +61,7 @@ private:
 	{
 		debug_array_s debug;
 
-		if (_debug_array_sub.update(&debug)) {
+		if (_debug_array_sub.update(&debug, M_MAVLINK)) {
 			mavlink_debug_float_array_t msg{};
 
 			msg.time_usec = debug.timestamp;

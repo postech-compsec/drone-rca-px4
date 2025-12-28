@@ -1625,7 +1625,7 @@ void MicroStrain::initializeRefPos()
 {
 	sensor_gps_s gps{0};
 
-	_vehicle_gps_position_sub.update(&gps);
+	_vehicle_gps_position_sub.update(&gps, M_MICROSTRAIN);
 
 	// Fix isn't 3D or RTK or RTCM
 	if ((gps.fix_type < 3) || (gps.fix_type > 6)) {
@@ -1667,7 +1667,7 @@ void MicroStrain::sendAidingMeasurements()
 	sensor_gps_s gps{0};
 
 	// No new data
-	if (!_vehicle_gps_position_sub.update(&gps)) {
+	if (!_vehicle_gps_position_sub.update(&gps, M_MICROSTRAIN)) {
 		return;
 	}
 

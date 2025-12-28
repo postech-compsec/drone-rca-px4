@@ -61,7 +61,7 @@ private:
 	{
 		debug_value_s debug;
 
-		if (_debug_value_sub.update(&debug)) {
+		if (_debug_value_sub.update(&debug, M_MAVLINK)) {
 			mavlink_debug_t msg{};
 			msg.time_boot_ms = debug.timestamp / 1000ULL;
 			msg.ind = debug.ind;

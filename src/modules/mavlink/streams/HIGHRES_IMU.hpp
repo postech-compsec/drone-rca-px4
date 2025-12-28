@@ -81,7 +81,7 @@ private:
 		vehicle_imu_s imu;
 
 		for (auto &imu_sub : _vehicle_imu_subs) {
-			if (imu_sub.update(&imu)) {
+			if (imu_sub.update(&imu, M_MAVLINK)) {
 				if (imu.accel_device_id == sensor_selection.accel_device_id) {
 					updated = true;
 					break;
@@ -97,7 +97,7 @@ private:
 
 			vehicle_magnetometer_s magnetometer{};
 
-			if (_magnetometer_sub.update(&magnetometer)) {
+			if (_magnetometer_sub.update(&magnetometer, M_MAVLINK)) {
 				// mark third group dimensions as changed
 				fields_updated |= (1 << 6) | (1 << 7) | (1 << 8);
 
@@ -154,7 +154,7 @@ private:
 
 			vehicle_air_data_s air_data{};
 
-			if (_air_data_sub.update(&air_data)) {
+			if (_air_data_sub.update(&air_data, M_MAVLINK)) {
 				/* mark fourth group (baro fields) dimensions as changed */
 				fields_updated |= (1 << 9) | (1 << 11) | (1 << 12);
 
@@ -164,7 +164,7 @@ private:
 
 			differential_pressure_s differential_pressure{};
 
-			if (_differential_pressure_sub.update(&differential_pressure)) {
+			if (_differential_pressure_sub.update(&differential_pressure, M_MAVLINK)) {
 				/* mark fourth group (dpres field) dimensions as changed */
 				fields_updated |= (1 << 10);
 

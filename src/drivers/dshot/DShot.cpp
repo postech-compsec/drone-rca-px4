@@ -543,7 +543,7 @@ void DShot::handle_vehicle_commands()
 {
 	vehicle_command_s vehicle_command;
 
-	while (!_current_command.valid() && _vehicle_command_sub.update(&vehicle_command)) {
+	while (!_current_command.valid() && _vehicle_command_sub.update(&vehicle_command, M_DSHOT)) {
 
 		if (vehicle_command.command == vehicle_command_s::VEHICLE_CMD_CONFIGURE_ACTUATOR) {
 			int function = (int)(vehicle_command.param5 + 0.5);

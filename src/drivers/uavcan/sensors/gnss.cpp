@@ -580,7 +580,7 @@ void UavcanGnssBridge::handleInjectDataTopic()
 			_last_rtcm_injection_time = hrt_absolute_time();
 		}
 
-		updated = _orb_inject_data_sub[_selected_rtcm_instance].update(&msg);
+		updated = _orb_inject_data_sub[_selected_rtcm_instance].update(&msg, M_UAVCAN);
 
 	} while (updated && num_injections < max_num_injections);
 }

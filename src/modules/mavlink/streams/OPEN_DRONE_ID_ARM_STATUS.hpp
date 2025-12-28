@@ -74,7 +74,7 @@ private:
 	{
 		open_drone_id_arm_status_s drone_id_arm;
 
-		if (_open_drone_id_arm_status_sub.update(&drone_id_arm)) {
+		if (_open_drone_id_arm_status_sub.update(&drone_id_arm, M_MAVLINK)) {
 
 			mavlink_open_drone_id_arm_status_t msg{};
 

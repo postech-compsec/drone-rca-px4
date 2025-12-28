@@ -61,7 +61,7 @@ private:
 	{
 		vehicle_local_position_setpoint_s pos_sp;
 
-		if (_pos_sp_sub.update(&pos_sp)) {
+		if (_pos_sp_sub.update(&pos_sp, M_MAVLINK)) {
 			mavlink_position_target_local_ned_t msg{};
 
 			msg.time_boot_ms = pos_sp.timestamp / 1000;

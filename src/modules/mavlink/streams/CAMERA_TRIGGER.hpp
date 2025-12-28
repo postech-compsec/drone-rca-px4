@@ -78,7 +78,7 @@ private:
 	{
 		camera_trigger_s camera_trigger;
 
-		if ((_mavlink->get_free_tx_buf() >= get_size()) && _camera_trigger_sub.update(&camera_trigger)) {
+		if ((_mavlink->get_free_tx_buf() >= get_size()) && _camera_trigger_sub.update(&camera_trigger, M_MAVLINK)) {
 			/* ensure that only active trigger events are sent and ignore camera capture feedback messages*/
 			if (camera_trigger.timestamp > 0 && !camera_trigger.feedback) {
 				mavlink_camera_trigger_t msg{};
@@ -86,7 +86,7 @@ private:
 				msg.seq = camera_trigger.seq;
 				mavlink_msg_camera_trigger_send_struct(_mavlink->get_channel(), &msg);
 
-				_camera_status_sub.update(&_camera_status);
+				_camera_status_sub.update(&_camera_status, M_MAVLINK);
 
 				for (int i_camera = 0; i_camera < num_cameras; i_camera++) {
 					vehicle_command_s vcmd{};

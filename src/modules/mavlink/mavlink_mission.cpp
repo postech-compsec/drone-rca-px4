@@ -1920,7 +1920,7 @@ MavlinkMissionManager::update_mission_state()
 	// Get vehicle status
 	vehicle_status_s vehicle_status;
 
-	if (!_vehicle_status_sub.update(&vehicle_status)) {
+	if (!_vehicle_status_sub.update(&vehicle_status, M_MAVLINK)) {
 		return;
 	}
 

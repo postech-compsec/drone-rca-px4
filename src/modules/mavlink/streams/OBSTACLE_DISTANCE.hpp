@@ -62,7 +62,7 @@ private:
 	{
 		obstacle_distance_s obstacle_distance;
 
-		if (_obstacle_distance_fused_sub.update(&obstacle_distance)) {
+		if (_obstacle_distance_fused_sub.update(&obstacle_distance, M_MAVLINK)) {
 			mavlink_obstacle_distance_t msg{};
 
 			msg.time_usec = obstacle_distance.timestamp;

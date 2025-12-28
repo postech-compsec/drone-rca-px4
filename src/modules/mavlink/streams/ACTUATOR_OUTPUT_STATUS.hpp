@@ -61,7 +61,7 @@ private:
 	{
 		actuator_outputs_s act;
 
-		if (_act_output_sub.update(&act)) {
+		if (_act_output_sub.update(&act, M_MAVLINK)) {
 			mavlink_actuator_output_status_t msg{};
 
 			msg.time_usec = act.timestamp;

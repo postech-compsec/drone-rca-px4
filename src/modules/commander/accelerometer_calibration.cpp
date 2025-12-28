@@ -183,7 +183,7 @@ static calibrate_return read_accelerometer_avg(accel_worker_data_s *worker_data,
 			for (unsigned accel_index = 0; accel_index < MAX_ACCEL_SENS; accel_index++) {
 				sensor_accel_s arp;
 
-				while (accel_sub[accel_index].update(&arp)) {
+				while (accel_sub[accel_index].update(&arp, M_COMMANDER)) {
 					// fetch optional thermal offset corrections
 					worker_data->calibration[accel_index].SensorCorrectionsUpdate();
 					accel_sum[accel_index] += worker_data->calibration[accel_index].Correct(Vector3f(arp.x, arp.y, arp.z));

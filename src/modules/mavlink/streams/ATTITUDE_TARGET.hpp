@@ -66,7 +66,7 @@ private:
 
 		bool updated = false;
 
-		if (_att_sp_sub.update(&att_sp)) {
+		if (_att_sp_sub.update(&att_sp, M_MAVLINK)) {
 			_last_att_sp_update = att_sp.timestamp;
 			updated = true;
 

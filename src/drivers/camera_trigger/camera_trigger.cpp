@@ -523,7 +523,7 @@ CameraTrigger::Run()
 	bool previous_trigger_state = _trigger_enabled;
 	bool previous_trigger_paused = _trigger_paused;
 
-	bool updated = _command_sub.update(&cmd);
+	bool updated = _command_sub.update(&cmd, M_CAMERA_TRIGGER);
 
 	// Command handling
 	if (updated) {
@@ -837,7 +837,7 @@ CameraTrigger::engage(void *arg)
 
 	pps_capture_s pps_capture;
 
-	if (trig->_pps_capture_sub.update(&pps_capture)) {
+	if (trig->_pps_capture_sub.update(&pps_capture, M_CAMERA_TRIGGER)) {
 		trig->_pps_hrt_timestamp = pps_capture.timestamp;
 		trig->_pps_rtc_timestamp = pps_capture.rtc_timestamp;
 	}

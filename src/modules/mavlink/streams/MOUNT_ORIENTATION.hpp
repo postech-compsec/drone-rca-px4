@@ -63,7 +63,7 @@ private:
 	{
 		mount_orientation_s mount_orientation;
 
-		if (_mount_orientation_sub.update(&mount_orientation)) {
+		if (_mount_orientation_sub.update(&mount_orientation, M_MAVLINK)) {
 			mavlink_mount_orientation_t msg{};
 
 			msg.time_boot_ms = mount_orientation.timestamp / 1000;

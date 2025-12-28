@@ -199,7 +199,7 @@ CameraCapture::publish_trigger()
 
 	pps_capture_s pps_capture;
 
-	if (_pps_capture_sub.update(&pps_capture)) {
+	if (_pps_capture_sub.update(&pps_capture, M_CAMERA_CAPTURE)) {
 		_pps_hrt_timestamp = pps_capture.timestamp;
 		_pps_rtc_timestamp = pps_capture.rtc_timestamp;
 	}
@@ -236,7 +236,7 @@ CameraCapture::Run()
 	// Command handling
 	vehicle_command_s cmd{};
 
-	if (_command_sub.update(&cmd)) {
+	if (_command_sub.update(&cmd, M_CAMERA_CAPTURE)) {
 
 		// TODO : this should eventuallly be a capture control command
 		if (cmd.command == vehicle_command_s::VEHICLE_CMD_DO_TRIGGER_CONTROL) {
