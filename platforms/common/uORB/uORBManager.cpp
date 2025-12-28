@@ -399,6 +399,10 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	ORB_ID _orb_id = (meta == nullptr) ? ORB_ID::INVALID : static_cast<ORB_ID>(meta->o_id);
 	sub_info.topic_id = static_cast<uint8_t>(_orb_id);
 
+	if(sub_info.topic_id == 242){
+		return PX4_OK;
+	}
+
 	// For pub only valid things
 	/*
 	if(_subscriber_id == 0){
@@ -485,6 +489,10 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 		sub_info.timestamp = hrt_absolute_time();
 		sub_info.subscriber_id = _subscriber_id;
 		sub_info.topic_id = orb_id;
+
+		if(sub_info.topic_id == 242){
+			return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
+		}
 
 		// For pub only valid things
 		/*
