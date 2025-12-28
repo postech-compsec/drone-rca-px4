@@ -355,7 +355,7 @@ CameraTrigger::update_distance()
 	}
 
 	vehicle_local_position_s local{};
-	_lpos_sub.copy(&local);
+	_lpos_sub.copy(&local, M_CAMERA_TRIGGER);
 
 	if (local.xy_valid) {
 		// Initialize position if not done yet

@@ -587,7 +587,7 @@ void PX4IO::Run()
 		if (_parameter_update_sub.updated() || _param_update_force) {
 			// clear update
 			parameter_update_s pupdate;
-			_parameter_update_sub.copy(&pupdate);
+			_parameter_update_sub.copy(&pupdate, M_PX4IO);
 
 			_param_update_force = false;
 

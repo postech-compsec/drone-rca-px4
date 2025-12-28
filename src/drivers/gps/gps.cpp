@@ -547,7 +547,7 @@ void GPS::handleInjectDataTopic()
 		for (int instance = 0; instance < _orb_inject_data_sub.size(); instance++) {
 			const bool exists = _orb_inject_data_sub[instance].advertised();
 
-			if (exists && _orb_inject_data_sub[instance].copy(&msg)) {
+			if (exists && _orb_inject_data_sub[instance].copy(&msg, M_GPS)) {
 				/* Don't select the own RTCM instance. In case it has a lower
 				 * instance number, it will be selected and will be rejected
 				 * later in the code, resulting in no RTCM injection at all.

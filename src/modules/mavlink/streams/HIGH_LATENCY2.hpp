@@ -249,7 +249,7 @@ private:
 	{
 		airspeed_s airspeed;
 
-		if (_airspeed_sub.copy(&airspeed)) {
+		if (_airspeed_sub.copy(&airspeed, M_MAVLINK)) {
 			if (airspeed.confidence < 0.95f) { // the same threshold as for the commander
 				msg->failure_flags |= HL_FAILURE_FLAG_DIFFERENTIAL_PRESSURE;
 			}
@@ -281,7 +281,7 @@ private:
 		for (int i = 0; i < battery_status_s::MAX_INSTANCES; i++) {
 			battery_status_s battery;
 
-			if (_batteries[i].subscription.copy(&battery)) {
+		if (_batteries[i].subscription.copy(&battery, M_MAVLINK)) {
 				updated = true;
 				_batteries[i].connected = battery.connected;
 
@@ -301,7 +301,7 @@ private:
 
 		if (_estimator_selector_status_sub.update(&estimator_selector_status, M_MAVLINK)) {
 
-			if (_estimator_selector_status_sub.copy(&estimator_selector_status)) {
+		if (_estimator_selector_status_sub.copy(&estimator_selector_status, M_MAVLINK)) {
 				if (estimator_selector_status.primary_instance != _estimator_status_sub.get_instance()) {
 					_estimator_status_sub.ChangeInstance(estimator_selector_status.primary_instance);
 				}
@@ -362,7 +362,7 @@ private:
 		vehicle_global_position_s global_pos;
 		vehicle_local_position_s local_pos;
 
-		if (_global_pos_sub.update(&global_pos, M_MAVLINK) && _local_pos_sub.copy(&local_pos)) {
+		if (_global_pos_sub.update(&global_pos, M_MAVLINK) && _local_pos_sub.copy(&local_pos, M_MAVLINK)) {
 			msg->latitude = global_pos.lat * 1e7;
 			msg->longitude = global_pos.lon * 1e7;
 
@@ -414,7 +414,7 @@ private:
 	{
 		tecs_status_s tecs_status;
 
-		if (_tecs_status_sub.copy(&tecs_status)) {
+		if (_tecs_status_sub.copy(&tecs_status, M_MAVLINK)) {
 			int16_t target_altitude;
 			convert_limit_safe(tecs_status.altitude_sp, target_altitude);
 			msg->target_altitude = target_altitude;
@@ -429,10 +429,10 @@ private:
 	{
 		vehicle_status_s status;
 
-		if (_status_sub.copy(&status)) {
+		if (_status_sub.copy(&status, M_MAVLINK)) {
 			health_report_s health_report;
 
-			if (_health_report_sub.copy(&health_report)) {
+		if (_health_report_sub.copy(&health_report, M_MAVLINK)) {
 				if ((health_report.arming_check_error_flags | health_report.health_error_flags) & (uint64_t)
 				    events::px4::enums::health_component_t::absolute_pressure) {
 					msg->failure_flags |= HL_FAILURE_FLAG_ABSOLUTE_PRESSURE;
@@ -496,7 +496,7 @@ private:
 	{
 		wind_s wind;
 
-		if (_wind_sub.copy(&wind)) {
+		if (_wind_sub.copy(&wind, M_MAVLINK)) {
 			msg->wind_heading = static_cast<uint8_t>(math::degrees(matrix::wrap_2pi(atan2f(wind.windspeed_east,
 					    wind.windspeed_north))) * 0.5f);
 			return true;
@@ -585,12 +585,12 @@ private:
 				vehicle_thrust_setpoint_s vehicle_thrust_setpoint{};
 
 				if (status.is_vtol && status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING) {
-					if (_vehicle_thrust_setpoint_1_sub.copy(&vehicle_thrust_setpoint)) {
+		if (_vehicle_thrust_setpoint_1_sub.copy(&vehicle_thrust_setpoint, M_MAVLINK)) {
 						_throttle.add_value(vehicle_thrust_setpoint.xyz[0], _update_rate_filtered);
 					}
 
 				} else {
-					if (_vehicle_thrust_setpoint_0_sub.copy(&vehicle_thrust_setpoint)) {
+		if (_vehicle_thrust_setpoint_0_sub.copy(&vehicle_thrust_setpoint, M_MAVLINK)) {
 						_throttle.add_value(-vehicle_thrust_setpoint.xyz[2], _update_rate_filtered);
 					}
 				}

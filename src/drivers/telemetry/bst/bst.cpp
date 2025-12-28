@@ -232,7 +232,7 @@ void BST::RunImpl()
 {
 	if (_attitude_sub.updated()) {
 		vehicle_attitude_s att;
-		_attitude_sub.copy(&att);
+		_attitude_sub.copy(&att, M_BST);
 		Quatf q(att.q);
 		Eulerf euler(q);
 
@@ -247,7 +247,7 @@ void BST::RunImpl()
 
 	if (_battery_sub.updated()) {
 		battery_status_s batt;
-		_battery_sub.copy(&batt);
+		_battery_sub.copy(&batt, M_BST);
 
 		BSTPacket<BSTBattery> bst_batt = {};
 		bst_batt.type = 0x08;
@@ -263,7 +263,7 @@ void BST::RunImpl()
 
 	if (_gps_sub.updated()) {
 		sensor_gps_s gps;
-		_gps_sub.copy(&gps);
+			_gps_sub.copy(&gps, M_BST);
 
 		if (gps.fix_type >= 3 && gps.eph < 50.0f) {
 			BSTPacket<BSTGPSPosition> bst_gps = {};

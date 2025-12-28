@@ -65,7 +65,7 @@ int do_trim_calibration(orb_advert_t *mavlink_log_pub)
 		return PX4_ERROR;
 	}
 
-	manual_control_setpoint_sub.copy(&manual_control_setpoint);
+	manual_control_setpoint_sub.copy(&manual_control_setpoint, M_COMMANDER);
 
 	/* load trim values which are active */
 	float roll_trim_active;

@@ -418,7 +418,7 @@ int LightwareLaser::updateRestriction()
 	if (_dist_sense_mode_change_sub.updated()) {
 		distance_sensor_mode_change_request_s dist_sense_mode_change;
 
-		if (_dist_sense_mode_change_sub.copy(&dist_sense_mode_change)) {
+		if (_dist_sense_mode_change_sub.copy(&dist_sense_mode_change, M_LIGHTWARE_LASER_I2C)) {
 			_req_mode = dist_sense_mode_change.request_on_off;
 
 		} else {
@@ -449,7 +449,7 @@ int LightwareLaser::updateRestriction()
 
 	if (_parameter_update_sub.updated()) {
 		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		_parameter_update_sub.copy(&pupdate, M_LIGHTWARE_LASER_I2C);
 		updateParams();
 	}
 
