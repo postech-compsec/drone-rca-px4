@@ -43,8 +43,9 @@
 
 using namespace matrix;
 
-CollisionPrevention::CollisionPrevention(ModuleParams *parent) :
-	ModuleParams(parent)
+CollisionPrevention::CollisionPrevention(ModuleParams *parent, uint8_t publisher_id_) :
+	ModuleParams(parent),
+	_publisher_id(publisher_id_)
 {
 	static_assert(BIN_SIZE >= 5, "BIN_SIZE must be at least 5");
 	static_assert(360 % BIN_SIZE == 0, "BIN_SIZE must divide 360 evenly");
@@ -103,6 +104,8 @@ void CollisionPrevention::modifySetpoint(Vector2f &setpoint_accel, const Vector2
 	original_setpoint.copyTo(constraints.original_setpoint);
 	setpoint_accel.copyTo(constraints.adapted_setpoint);
 	constraints.timestamp = getTime();
+	constraints.publisher_id = _publisher_id;
+	constraints.pub_timestamp = hrt_absolute_time();
 	_constraints_pub.publish(constraints);
 }
 
@@ -147,6 +150,8 @@ void CollisionPrevention::_updateObstacleMap()
 	}
 
 	// publish fused obtacle distance message with data from offboard obstacle_distance and distance sensor
+	_obstacle_map_body_frame.publisher_id = _publisher_id;
+	_obstacle_map_body_frame.pub_timestamp = hrt_absolute_time();
 	_obstacle_distance_fused_pub.publish(_obstacle_map_body_frame);
 }
 
@@ -585,5 +590,7 @@ void CollisionPrevention::_publishVehicleCmdDoLoiter()
 	command.confirmation = false;
 	command.from_external = false;
 	command.timestamp = getTime();
+	command.publisher_id = _publisher_id;
+	command.pub_timestamp = hrt_absolute_time();
 	_vehicle_command_pub.publish(command);
 }

@@ -65,7 +65,7 @@ using namespace time_literals;
 class CollisionPrevention : public ModuleParams
 {
 public:
-	CollisionPrevention(ModuleParams *parent);
+	CollisionPrevention(ModuleParams *parent, uint8_t publisher_id_ = 0);
 	~CollisionPrevention() override = default;
 
 	/**
@@ -191,6 +191,8 @@ private:
 
 	hrt_abstime	_last_timeout_warning{0};
 	hrt_abstime	_time_activated{0};
+
+	uint8_t _publisher_id{0};
 
 	DEFINE_PARAMETERS(
 		(ParamFloat<px4::params::CP_DIST>) _param_cp_dist, 		/**< collision prevention keep minimum distance */
