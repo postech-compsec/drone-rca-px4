@@ -66,6 +66,8 @@ MissionBase::MissionBase(Navigator *navigator, int32_t dataman_cache_size_signed
 	_mission.safe_points_id = 0;
 
 	_mission_pub.advertise();
+
+	_dataman_client.set_publisher_id(M_NAVIGATOR);
 }
 
 void

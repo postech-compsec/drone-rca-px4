@@ -60,6 +60,8 @@ RTL::RTL(Navigator *navigator) :
 	_rtl_direct(navigator)
 {
 	_rtl_direct.initialize();
+
+	_dataman_client_safepoint.set_publisher_id(M_NAVIGATOR);
 }
 
 void RTL::updateDatamanCache()

@@ -94,12 +94,12 @@ private:
 	//This will reset the items but it will not restore the compact key.
 	bool testResetItems();
 
-	DatamanClient _dataman_client1{};
-	DatamanClient _dataman_client2{};
-	DatamanClient _dataman_client3{};
-	DatamanClient _dataman_client_thread1{};
-	DatamanClient _dataman_client_thread2{};
-	DatamanClient _dataman_client_thread3{};
+	DatamanClient _dataman_client1{M_TESTS};
+	DatamanClient _dataman_client2{M_TESTS};
+	DatamanClient _dataman_client3{M_TESTS};
+	DatamanClient _dataman_client_thread1{M_TESTS};
+	DatamanClient _dataman_client_thread2{M_TESTS};
+	DatamanClient _dataman_client_thread3{M_TESTS};
 
 	DatamanCache _dataman_cache{"test_dm_cache_miss", 10};
 

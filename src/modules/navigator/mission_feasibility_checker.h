@@ -65,7 +65,7 @@ public:
 		_dataman_client(dataman_client),
 		_feasibility_checker()
 	{
-
+		_dataman_client.set_publisher_id(M_NAVIGATOR);
 	}
 	~MissionFeasibilityChecker() = default;
 

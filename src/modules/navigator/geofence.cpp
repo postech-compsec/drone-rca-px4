@@ -83,6 +83,8 @@ Geofence::Geofence(Navigator *navigator) :
 	}
 
 	_geofence_status_pub.advertise();
+
+	_dataman_client.set_publisher_id(M_NAVIGATOR);
 }
 
 Geofence::~Geofence()

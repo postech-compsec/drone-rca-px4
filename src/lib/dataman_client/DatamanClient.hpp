@@ -45,11 +45,13 @@ using namespace time_literals;
 class DatamanClient
 {
 public:
-	DatamanClient();
+	DatamanClient(uint8_t publisher_id_ = 0);
 	~DatamanClient();
 
 	DatamanClient(const DatamanClient &) = delete;
 	DatamanClient &operator=(const DatamanClient &) = delete;
+
+	void set_publisher_id(uint8_t publisher_id) { _publisher_id = publisher_id; }
 
 	/**
 	 * @brief Reads data synchronously from the dataman for the specified item and index.
@@ -188,6 +190,8 @@ private:
 	perf_counter_t _sync_perf{nullptr};
 
 	static constexpr uint8_t CLIENT_ID_NOT_SET{0};
+
+	uint8_t _publisher_id{0};
 };
 
 

@@ -37,8 +37,9 @@
 
 #include <dataman_client/DatamanClient.hpp>
 
-DatamanClient::DatamanClient()
+DatamanClient::DatamanClient(uint8_t publisher_id_)
 {
+	_publisher_id = publisher_id_;
 	_sync_perf = perf_alloc(PC_ELAPSED, "DatamanClient: sync");
 
 	_dataman_request_pub.advertise();
@@ -61,6 +62,8 @@ DatamanClient::DatamanClient()
 		request.timestamp = timestamp;
 		request.request_type = DM_GET_ID;
 		request.client_id = CLIENT_ID_NOT_SET;
+		request.publisher_id = _publisher_id;
+		request.pub_timestamp = hrt_absolute_time();
 
 		bool success = syncHandler(request, response, timestamp, 1000_ms);
 
@@ -164,6 +167,8 @@ bool DatamanClient::readSync(dm_item_t item, uint32_t index, uint8_t *buffer, ui
 	request.item = static_cast<uint8_t>(item);
 
 	dataman_response_s response{};
+	request.publisher_id = _publisher_id;
+	request.pub_timestamp = hrt_absolute_time();
 	bool success = syncHandler(request, response, timestamp, timeout);
 
 	if (success) {
@@ -202,6 +207,8 @@ bool DatamanClient::writeSync(dm_item_t item, uint32_t index, uint8_t *buffer, u
 	memcpy(request.data, buffer, length);
 
 	dataman_response_s response{};
+	request.publisher_id = _publisher_id;
+	request.pub_timestamp = hrt_absolute_time();
 	bool success = syncHandler(request, response, timestamp, timeout);
 
 	if (success) {
@@ -228,6 +235,8 @@ bool DatamanClient::clearSync(dm_item_t item, hrt_abstime timeout)
 	request.item = static_cast<uint8_t>(item);
 
 	dataman_response_s response{};
+	request.publisher_id = _publisher_id;
+	request.pub_timestamp = hrt_absolute_time();
 	bool success = syncHandler(request, response, timestamp, timeout);
 
 	if (success) {
@@ -273,6 +282,8 @@ bool DatamanClient::readAsync(dm_item_t item, uint32_t index, uint8_t *buffer, u
 
 		_state = State::RequestSent;
 
+		request.publisher_id = _publisher_id;
+		request.pub_timestamp = hrt_absolute_time();
 		_dataman_request_pub.publish(request);
 
 		success = true;
@@ -313,6 +324,8 @@ bool DatamanClient::writeAsync(dm_item_t item, uint32_t index, uint8_t *buffer, 
 
 		_state = State::RequestSent;
 
+		request.publisher_id = _publisher_id;
+		request.pub_timestamp = hrt_absolute_time();
 		_dataman_request_pub.publish(request);
 
 		success = true;
@@ -342,6 +355,8 @@ bool DatamanClient::clearAsync(dm_item_t item)
 		_active_request.index = request.index;
 		_state = State::RequestSent;
 
+		request.publisher_id = _publisher_id;
+		request.pub_timestamp = hrt_absolute_time();
 		_dataman_request_pub.publish(request);
 
 		success = true;
@@ -406,6 +421,8 @@ void DatamanClient::update()
 					memcpy(request.data, _active_request.buffer, _active_request.length);
 				}
 
+				request.publisher_id = _publisher_id;
+				request.pub_timestamp = hrt_absolute_time();
 				_dataman_request_pub.publish(request);
 
 				_state = State::RequestSent;
