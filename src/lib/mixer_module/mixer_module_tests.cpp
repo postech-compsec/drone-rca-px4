@@ -79,7 +79,7 @@ public:
 class OutputModuleTest : public OutputModuleInterface
 {
 public:
-	OutputModuleTest() : OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default) {};
+	OutputModuleTest(uint8_t publisher_id_ = 0) : OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default), _publisher_id(publisher_id_) {};
 
 	void Run() override
 	{
@@ -122,6 +122,8 @@ public:
 			actuator_motors.control[i] = motors[i];
 		}
 
+		actuator_motors.publisher_id = _publisher_id;
+		actuator_motors.pub_timestamp = hrt_absolute_time();
 		_actuator_motors_pub.publish(actuator_motors);
 	}
 
@@ -134,6 +136,8 @@ public:
 			actuator_servos.control[i] = servos[i];
 		}
 
+		actuator_servos.publisher_id = _publisher_id;
+		actuator_servos.pub_timestamp = hrt_absolute_time();
 		_actuator_servos_pub.publish(actuator_servos);
 	}
 
@@ -145,6 +149,8 @@ public:
 		actuator_test.value = value;
 		actuator_test.action = release_control ? actuator_test_s::ACTION_RELEASE_CONTROL : actuator_test_s::ACTION_DO_CONTROL;
 		actuator_test.timeout_ms = 0;
+		actuator_test.publisher_id = _publisher_id;
+		actuator_test.pub_timestamp = hrt_absolute_time();
 		_actuator_test_pub.publish(actuator_test);
 	}
 
@@ -156,6 +162,8 @@ public:
 		actuator_armed.termination = termination;
 		actuator_armed.kill = kill;
 		actuator_armed.prearmed = prearm;
+		actuator_armed.publisher_id = _publisher_id;
+		actuator_armed.pub_timestamp = hrt_absolute_time();
 		_actuator_armed_pub.publish(actuator_armed);
 	}
 
@@ -178,6 +186,8 @@ private:
 	uORB::Publication<actuator_motors_s> _actuator_motors_pub{ORB_ID(actuator_motors)};
 	uORB::Publication<actuator_servos_s> _actuator_servos_pub{ORB_ID(actuator_servos)};
 	uORB::Publication<actuator_armed_s> _actuator_armed_pub{ORB_ID(actuator_armed)};
+
+	uint8_t _publisher_id{0};
 };
 
 TEST_F(MixerModuleTest, basic)
