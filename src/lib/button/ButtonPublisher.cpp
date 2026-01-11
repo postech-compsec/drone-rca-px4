@@ -42,7 +42,7 @@
 
 using namespace time_literals;
 
-ButtonPublisher::ButtonPublisher()
+ButtonPublisher::ButtonPublisher(uint8_t publisher_id_) : _publisher_id(publisher_id_)
 {
 	_safety_button_pub.advertise();
 }
@@ -55,6 +55,8 @@ void ButtonPublisher::safetyButtonTriggerEvent()
 	safety_button.triggered = true;
 	safety_button.timestamp = hrt_absolute_time();
 
+	safety_button.publisher_id = _publisher_id;
+	safety_button.pub_timestamp = hrt_absolute_time();
 	_safety_button_pub.publish(safety_button);
 }
 
@@ -64,6 +66,8 @@ void ButtonPublisher::pairingButtonTriggerEvent()
 	vcmd.command = vehicle_command_s::VEHICLE_CMD_START_RX_PAIR;
 	vcmd.param1 = 10.f; // GCS pairing request handled by a companion.
 	vcmd.timestamp = hrt_absolute_time();
+	vcmd.publisher_id = _publisher_id;
+	vcmd.pub_timestamp = hrt_absolute_time();
 	_vehicle_command_pub.publish(vcmd);
 	PX4_DEBUG("Sending GCS pairing request");
 
@@ -74,11 +78,15 @@ void ButtonPublisher::pairingButtonTriggerEvent()
 	led_control.num_blinks = 20;
 	led_control.priority = 2;
 	led_control.timestamp = hrt_absolute_time();
+	led_control.publisher_id = _publisher_id;
+	led_control.pub_timestamp = hrt_absolute_time();
 	_led_control_pub.publish(led_control);
 
 	tune_control_s tune_control{};
 	tune_control.tune_id = tune_control_s::TUNE_ID_NOTIFY_POSITIVE;
 	tune_control.volume = tune_control_s::VOLUME_LEVEL_DEFAULT;
 	tune_control.timestamp = hrt_absolute_time();
+	tune_control.publisher_id = _publisher_id;
+	tune_control.pub_timestamp = hrt_absolute_time();
 	_tune_control_pub.publish(tune_control);
 }

@@ -54,7 +54,7 @@
 class ButtonPublisher
 {
 public:
-	ButtonPublisher();
+	ButtonPublisher(uint8_t publisher_id_ = 0);
 	~ButtonPublisher() = default;
 
 	/**
@@ -74,4 +74,6 @@ private:
 	uORB::Publication<vehicle_command_s>	_vehicle_command_pub{ORB_ID(vehicle_command)};
 	uORB::Publication<led_control_s> 		_led_control_pub{ORB_ID(led_control)};
 	uORB::Publication<tune_control_s> 		_tune_control_pub{ORB_ID(tune_control)};
+
+	uint8_t _publisher_id{0};
 };
