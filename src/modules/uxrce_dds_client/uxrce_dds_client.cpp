@@ -59,6 +59,7 @@ static void on_time(uxrSession *session, int64_t current_time, int64_t client_tr
 {
 	if (args) {
 		Timesync *timesync = static_cast<Timesync *>(args);
+		timesync->set_publisher_id(M_UXRCE_DDS_CLIENT);
 		timesync->update(current_time / 1000, agent_receive_timestamp, originate_timestamp);
 
 		session->time_offset = -timesync->offset() * 1000; // us -> ns

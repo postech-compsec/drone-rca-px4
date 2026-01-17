@@ -62,5 +62,5 @@ public:
 
 private:
 	Mavlink &_mavlink;
-	Timesync _timesync{};
+	Timesync _timesync{timesync_status_s::SOURCE_PROTOCOL_UNKNOWN, M_MAVLINK};
 };

@@ -93,7 +93,7 @@ static constexpr uint32_t MAX_CONSECUTIVE_HIGH_DEVIATION = 10;
 class Timesync
 {
 public:
-	Timesync(uint8_t source = timesync_status_s::SOURCE_PROTOCOL_UNKNOWN) : _source(source) {};
+	Timesync(uint8_t source = timesync_status_s::SOURCE_PROTOCOL_UNKNOWN, uint8_t publisher_id_ = 0) : _source(source), _publisher_id(publisher_id_) {};
 	~Timesync() = default;
 
 	void update(const uint64_t now_us, const int64_t remote_timestamp_ns, int64_t originate_timestamp_ns);
@@ -116,6 +116,8 @@ public:
 	 * Reset the exponential filter and its states
 	 */
 	void reset_filter();
+
+	void set_publisher_id(uint8_t publisher_id_) { _publisher_id = publisher_id_; }
 
 
 private:
@@ -141,4 +143,6 @@ private:
 	uint32_t _high_rtt_count{0};
 
 	uint8_t _source{};
+
+	uint8_t _publisher_id{0};
 };

@@ -198,7 +198,7 @@ private:
 	bool _session_created{false};
 	bool _timesync_converged{false};
 
-	Timesync _timesync{timesync_status_s::SOURCE_PROTOCOL_DDS};
+	Timesync _timesync{timesync_status_s::SOURCE_PROTOCOL_DDS, M_UXRCE_DDS_CLIENT};
 
 	perf_counter_t _loop_perf{perf_alloc(PC_ELAPSED, MODULE_NAME": cycle")};
 	perf_counter_t _loop_interval_perf{perf_alloc(PC_INTERVAL, MODULE_NAME": cycle interval")};

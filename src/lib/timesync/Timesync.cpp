@@ -117,6 +117,8 @@ void Timesync::update(const uint64_t now_us, const int64_t remote_timestamp_ns, 
 		tsync_status.round_trip_time = rtt_us;
 		tsync_status.timestamp = hrt_absolute_time();
 
+		tsync_status.publisher_id = _publisher_id;
+		tsync_status.pub_timestamp = hrt_absolute_time();
 		_timesync_status_pub.publish(tsync_status);
 	}
 }
