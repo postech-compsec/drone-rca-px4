@@ -68,7 +68,7 @@
 class Battery : public ModuleParams
 {
 public:
-	Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source);
+	Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source, uint8_t publisher_id_ = 0);
 	~Battery() = default;
 
 	/**
@@ -156,6 +156,8 @@ private:
 	uORB::Subscription _vehicle_status_sub{ORB_ID(vehicle_status)};
 	uORB::SubscriptionData<flight_phase_estimation_s> _flight_phase_estimation_sub{ORB_ID(flight_phase_estimation)};
 	uORB::PublicationMulti<battery_status_s> _battery_status_pub{ORB_ID(battery_status)};
+
+	uint8_t _publisher_id{0};
 
 	bool _external_state_of_charge{false}; ///< inticates that the soc is injected and not updated by this library
 

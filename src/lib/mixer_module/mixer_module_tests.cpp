@@ -192,7 +192,7 @@ private:
 
 TEST_F(MixerModuleTest, basic)
 {
-	OutputModuleTest test_module;
+	OutputModuleTest test_module; // publisher_exception
 	test_module.configureFunctions({});
 	MixingOutput mixing_output{PARAM_PREFIX, MAX_NUM_OUTPUTS, test_module, MixingOutput::SchedulingPolicy::Disabled, false, false};
 	mixing_output.setAllDisarmedValues(DISARMED_VALUE);
@@ -280,7 +280,7 @@ TEST_F(MixerModuleTest, basic)
 
 TEST_F(MixerModuleTest, arming)
 {
-	OutputModuleTest test_module;
+	OutputModuleTest test_module; // publisher_exception
 	test_module.configureFunctions({
 		0,
 		(int)OutputFunction::Motor3,
@@ -446,7 +446,7 @@ TEST_F(MixerModuleTest, arming)
 
 TEST_F(MixerModuleTest, prearm)
 {
-	OutputModuleTest test_module;
+	OutputModuleTest test_module; // publisher_exception
 	test_module.configureFunctions({
 		(int)OutputFunction::Motor1,
 		(int)OutputFunction::Servo1});
@@ -492,7 +492,7 @@ public:
 
 TEST_F(MixerModuleTest, OutputLimitCalcSingle)
 {
-	OutputModuleTest test_module;
+	OutputModuleTest test_module; // publisher_exception
 	test_module.configureFunctions({(int)OutputFunction::Motor1});
 	TestMixingOutput mixing_output{PARAM_PREFIX, MAX_NUM_OUTPUTS, test_module, MixingOutput::SchedulingPolicy::Disabled, false, false};
 

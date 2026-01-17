@@ -48,10 +48,11 @@
 using namespace time_literals;
 using namespace matrix;
 
-Battery::Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source) :
+Battery::Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source, uint8_t publisher_id_) :
 	ModuleParams(parent),
 	_index(index < 1 || index > 9 ? 1 : index),
-	_source(source)
+	_source(source),
+	_publisher_id(publisher_id_)
 {
 	const float expected_filter_dt = static_cast<float>(sample_interval_us) / 1_s;
 	_current_average_filter_a.setParameters(expected_filter_dt, 50.f);
@@ -179,6 +180,8 @@ battery_status_s Battery::getBatteryStatus()
 void Battery::publishBatteryStatus(const battery_status_s &battery_status)
 {
 	if (_source == _params.source) {
+		battery_status.publisher_id = _publisher_id;
+		battery_status.pub_timestamp = hrt_absolute_time();
 		_battery_status_pub.publish(battery_status);
 	}
 }

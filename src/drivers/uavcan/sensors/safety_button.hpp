@@ -61,7 +61,7 @@ private:
 		ButtonCbBinder;
 
 	uavcan::Subscriber<ardupilot::indication::Button, ButtonCbBinder> _sub_button;
-	ButtonPublisher _button_publisher;
+	ButtonPublisher _button_publisher{M_UAVCAN};
 	uint8_t _pairing_button_counter{0u};
 	hrt_abstime _start_timestamp{0};
 	hrt_abstime _new_press_timestamp{0};

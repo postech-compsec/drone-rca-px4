@@ -83,7 +83,7 @@ void UavcanSafetyButtonBridge::button_sub_cb(const
 			_new_press_timestamp = hrt_absolute_time();
 		}
 
-		if (_pairing_button_counter == ButtonPublisher::PAIRING_BUTTON_EVENT_COUNT) {
+		if (_pairing_button_counter == ButtonPublisher::PAIRING_BUTTON_EVENT_COUNT) { // publisher_exception
 			_button_publisher.pairingButtonTriggerEvent();
 			_start_timestamp = 0u;
 		}

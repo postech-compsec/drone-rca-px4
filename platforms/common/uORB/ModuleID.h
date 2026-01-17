@@ -167,5 +167,10 @@ enum ModuleID {
     M_EKF2,
     M_GPS,
     M_BST,
-    M_MC_HOVER_THRUST_ESTIMATOR
+    M_MC_HOVER_THRUST_ESTIMATOR,
+    // added
+    M_drivers__ina22,
+    M_drivers__ina226,
+    M_drivers__ina228,
+    M_drivers__ina238
 };

@@ -65,7 +65,7 @@ private:
 	void FlashButton();
 
 	bool			_has_px4io{false};
-	ButtonPublisher	_button_publisher;
+	ButtonPublisher	_button_publisher{M_SAFETY_BUTTON};
 	uint8_t			_button_counter{0};
 	uint8_t			_blink_counter{0};
 	bool			_button_prev_sate{false};	///< Previous state of the HW button

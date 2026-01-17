@@ -212,7 +212,7 @@ private:
 	uORB::PublicationMulti<input_rc_s>	_input_rc_pub{ORB_ID(input_rc)};
 	uORB::Publication<px4io_status_s>	_px4io_status_pub{ORB_ID(px4io_status)};
 
-	ButtonPublisher	_button_publisher;
+	ButtonPublisher	_button_publisher{M_PX4IO};
 	bool _previous_safety_off{false};
 
 	bool			_lockdown_override{false};	///< override the safety lockdown
