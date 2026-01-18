@@ -174,5 +174,6 @@ enum ModuleID {
     M_ina238,
     M_linux_pwm_out,
     M_pca9685_pwm_out,
-    M_pwm_out
+    M_pwm_out,
+    M_dsp_hitl
 };

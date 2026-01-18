@@ -412,7 +412,7 @@ void task_main(int argc, char *argv[])
 
 	uint64_t last_imu_update_timestamp = hrt_absolute_time();
 
-	_px4_accel = new PX4Accelerometer(1310988);
+	_px4_accel = new PX4Accelerometer(1310988, ROTATION_NONE, M_dsp_hitl);
 	_px4_gyro = new PX4Gyroscope(1310988);
 	_px4_mag = new PX4Magnetometer(197388);
 
@@ -1111,7 +1111,7 @@ handle_message_hil_sensor_dsp(mavlink_message_t *msg)
 	if ((hil_sensor.fields_updated & SensorSource::ACCEL) == SensorSource::ACCEL) {
 		if (_px4_accel == nullptr) {
 			// 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
-			_px4_accel = new PX4Accelerometer(1310988);
+			_px4_accel = new PX4Accelerometer(1310988, ROTATION_NONE, M_dsp_hitl);
 		}
 
 		if (_px4_accel != nullptr) {

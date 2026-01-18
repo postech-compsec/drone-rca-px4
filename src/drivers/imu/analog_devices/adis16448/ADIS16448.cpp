@@ -99,7 +99,7 @@ ADIS16448::ADIS16448(const I2CSPIDriverConfig &config) :
 	SPI(config),
 	I2CSPIDriver(config),
 	_drdy_gpio(config.drdy_gpio), // TODO: DRDY disabled
-	_px4_accel(get_device_id(), config.rotation),
+	_px4_accel(get_device_id(), config.rotation, M_ADIS16448),
 	_px4_gyro(get_device_id(), config.rotation),
 	_px4_mag(get_device_id(), config.rotation)
 {

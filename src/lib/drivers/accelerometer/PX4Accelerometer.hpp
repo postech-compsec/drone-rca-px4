@@ -43,7 +43,7 @@
 class PX4Accelerometer
 {
 public:
-	PX4Accelerometer(uint32_t device_id, enum Rotation rotation = ROTATION_NONE);
+	PX4Accelerometer(uint32_t device_id, enum Rotation rotation = ROTATION_NONE, uint8_t _publisher_id = 0);
 	~PX4Accelerometer();
 
 	uint32_t get_device_id() const { return _device_id; }
@@ -83,4 +83,6 @@ private:
 	uint32_t		_error_count{0};
 
 	int16_t			_last_sample[3] {};
+
+	uint8_t _publisher_id{0};
 };
