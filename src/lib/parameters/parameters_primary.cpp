@@ -60,7 +60,7 @@ static orb_advert_t param_reset_req_h     = nullptr;
 
 static int param_set_rsp_fd = PX4_ERROR;
 
-static int primary_sync_thread(int argc, char *argv[])
+static int primary_sync_thread(int argc, char *argv[], uint8_t publisher_id_ = 0)
 {
 	// Need to wait until the uORB and muORB are ready
 	// Check for uORB initialization with get_instance
@@ -138,6 +138,8 @@ static int primary_sync_thread(int argc, char *argv[])
 				_set_value_response.request_timestamp = _set_value_request.timestamp;
 				_set_value_response.parameter_index = _set_value_request.parameter_index;
 
+				_set_value_response.publisher_id = _publisher_id;
+				_set_value_response.pub_timestamp = hrt_absolute_time();
 				if (_set_value_rsp_h == nullptr) {
 					_set_value_rsp_h = orb_advertise(ORB_ID(parameter_primary_set_value_response), &_set_value_response);
 
@@ -168,7 +170,7 @@ void param_primary_init()
 }
 
 // void param_primary_set_value(param_t param, const void *val, bool from_file)
-void param_primary_set_value(param_t param, const void *val)
+void param_primary_set_value(param_t param, const void *val, uint8_t publisher_id_ = 0)
 {
 	bool send_request = true;
 	struct parameter_set_value_request_s req;
@@ -226,6 +228,8 @@ void param_primary_set_value(param_t param, const void *val)
 			param_set_value_req_h = orb_advertise(ORB_ID(parameter_remote_set_value_request), nullptr);
 		}
 
+		req.publisher_id = _publisher_id;
+		req.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(parameter_remote_set_value_request), param_set_value_req_h, &req);
 
 		param_primary_counters.set_value_request_sent++;
@@ -268,7 +272,7 @@ void param_primary_set_value(param_t param, const void *val)
 	}
 }
 
-static void param_primary_reset_internal(param_t param, bool reset_all)
+static void param_primary_reset_internal(param_t param, bool reset_all, uint8_t publisher_id_ = 0)
 {
 	if (debug) {
 		PX4_INFO("Param reset at primary");
@@ -288,6 +292,8 @@ static void param_primary_reset_internal(param_t param, bool reset_all)
 		PX4_INFO("Sending param reset request to remote");
 	}
 
+	req.publisher_id = _publisher_id;
+	req.pub_timestamp = hrt_absolute_time();
 	if (param_reset_req_h == nullptr) {
 		param_reset_req_h = orb_advertise(ORB_ID(parameter_reset_request), &req);
 

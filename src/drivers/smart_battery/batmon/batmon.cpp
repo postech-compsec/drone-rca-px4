@@ -48,7 +48,7 @@
 extern "C" __EXPORT int batmon_main(int argc, char *argv[]);
 
 Batmon::Batmon(const I2CSPIDriverConfig &config, SMBus *interface):
-	SMBUS_SBS_BaseClass(config, interface)
+	SMBUS_SBS_BaseClass(config, interface, M_BATMON)
 {
 }
 

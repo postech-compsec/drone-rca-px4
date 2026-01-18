@@ -58,7 +58,7 @@ template<class T>
 class SMBUS_SBS_BaseClass : public I2CSPIDriver<T>
 {
 public:
-	SMBUS_SBS_BaseClass(const I2CSPIDriverConfig &config, SMBus *interface);
+	SMBUS_SBS_BaseClass(const I2CSPIDriverConfig &config, SMBus *interface, , uint8_t publisher_id_ = 0);
 	SMBUS_SBS_BaseClass();
 
 	~SMBUS_SBS_BaseClass();
@@ -170,9 +170,10 @@ protected:
 };
 
 template<class T>
-SMBUS_SBS_BaseClass<T>::SMBUS_SBS_BaseClass(const I2CSPIDriverConfig &config, SMBus *interface):
+SMBUS_SBS_BaseClass<T>::SMBUS_SBS_BaseClass(const I2CSPIDriverConfig &config, SMBus *interface, uint8_t publisher_id_):
 	I2CSPIDriver<T>(config),
-	_interface(interface)
+	_interface(interface),
+	_publisher_id(publisher_id_)
 {
 	battery_info_s battery_info{};
 	battery_status_s new_report = {};
@@ -325,7 +326,11 @@ void SMBUS_SBS_BaseClass<T>::RunImpl()
 
 	// Only publish if no errors.
 	if (!ret) {
+		new_report.publisher_id = _publisher_id;
+		new_report.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(battery_status), _batt_topic, &new_report);
+		battery_info.publisher_id = _publisher_id;
+		battery_info.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(battery_info), _battery_info_topic, &battery_info);
 	}
 }
