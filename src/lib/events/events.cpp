@@ -48,6 +48,8 @@ namespace events
 void send(event_s &event)
 {
 	event.timestamp = hrt_absolute_time();
+	event.publisher_id = 0;
+	event.pub_timestamp = hrt_absolute_time();
 
 	// We need some synchronization here because:
 	// - modifying orb_event_pub

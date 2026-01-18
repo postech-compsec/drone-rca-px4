@@ -157,8 +157,6 @@ private:
 	uORB::SubscriptionData<flight_phase_estimation_s> _flight_phase_estimation_sub{ORB_ID(flight_phase_estimation)};
 	uORB::PublicationMulti<battery_status_s> _battery_status_pub{ORB_ID(battery_status)};
 
-	uint8_t _publisher_id{0};
-
 	bool _external_state_of_charge{false}; ///< inticates that the soc is injected and not updated by this library
 
 	bool _connected{false};
@@ -198,4 +196,6 @@ private:
 	static constexpr float OCV_DEFAULT = 4.2f; // [V] Initial per cell estimate of the open circuit voltage
 	static constexpr float R_COVARIANCE = 0.1f; // Initial per cell covariance of the internal resistance
 	static constexpr float OCV_COVARIANCE = 1.5f; // Initial per cell covariance of the open circuit voltage
+
+	uint8_t _publisher_id{0};
 };

@@ -100,7 +100,7 @@ enum class TRAFFIC_STATE {
 class AdsbConflict
 {
 public:
-	AdsbConflict() = default;
+	AdsbConflict(uint8_t publisher_id_ = 0) : _publisher_id(publisher_id_) {}
 	~AdsbConflict() = default;
 
 	void detect_traffic_conflict(double lat_now, double lon_now, float alt_now, float vx_now, float vy_now, float vz_now);
@@ -156,4 +156,6 @@ private:
 	hrt_abstime _last_traffic_warning_time{0};
 
 	hrt_abstime _last_buffer_full_warning_time{0};
+
+	uint8_t _publisher_id{0};
 };

@@ -180,9 +180,10 @@ battery_status_s Battery::getBatteryStatus()
 void Battery::publishBatteryStatus(const battery_status_s &battery_status)
 {
 	if (_source == _params.source) {
-		battery_status.publisher_id = _publisher_id;
-		battery_status.pub_timestamp = hrt_absolute_time();
-		_battery_status_pub.publish(battery_status);
+		battery_status_s battery_status_copy = battery_status;
+		battery_status_copy.publisher_id = _publisher_id;
+		battery_status_copy.pub_timestamp = hrt_absolute_time();
+		_battery_status_pub.publish(battery_status_copy);
 	}
 }
 

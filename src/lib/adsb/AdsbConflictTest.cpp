@@ -3,11 +3,12 @@
 #include "AdsbConflict.h"
 
 #include "AdsbConflictTest.h"
+#include <uORB/ModuleID.h>
 
 class TestAdsbConflict : public AdsbConflict
 {
 public:
-	TestAdsbConflict() : AdsbConflict() {}
+	TestAdsbConflict() : AdsbConflict(M_TESTS) {}
 	~TestAdsbConflict() = default;
 
 	void set_traffic_buffer(const traffic_buffer_s &traffic_buffer)

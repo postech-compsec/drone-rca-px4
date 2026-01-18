@@ -37,6 +37,7 @@
 #include "AdsbConflict.h"
 #include "geo/geo.h"
 
+#include <uORB/ModuleID.h>
 #include <uORB/topics/transponder_report.h>
 
 #include <float.h>
@@ -369,7 +370,7 @@ void AdsbConflict::fake_traffic(const char *callsign, float distance, float dire
 	tr.ver_velocity = ver_velocity; //-vel_d; // The vertical velocity in m/s, positive is up
 	strncpy(&tr.callsign[0], callsign, sizeof(tr.callsign) - 1);
 	tr.callsign[sizeof(tr.callsign) - 1] = 0;
-	tr.emitter_type = emitter_type; // Type from ADSB_EMITTER_TYPE enum
+tr.emitter_type = emitter_type; // Type from ADSB_EMITTER_TYPE enum
 	tr.tslc = 2; // Time since last communication in seconds
 	tr.flags = transponder_report_s::PX4_ADSB_FLAGS_VALID_COORDS | transponder_report_s::PX4_ADSB_FLAGS_VALID_HEADING |
 		   transponder_report_s::PX4_ADSB_FLAGS_VALID_VELOCITY |
@@ -377,6 +378,8 @@ void AdsbConflict::fake_traffic(const char *callsign, float distance, float dire
 		   (transponder_report_s::ADSB_EMITTER_TYPE_UAV & emitter_type ? 0 :
 		    transponder_report_s::PX4_ADSB_FLAGS_VALID_CALLSIGN); // Flags to indicate various statuses including valid data fields
 	tr.squawk = 6667;
+	tr.publisher_id = _publisher_id;
+	tr.pub_timestamp = hrt_absolute_time();
 
 #ifndef BOARD_HAS_NO_UUID
 	px4_guid_t px4_guid;

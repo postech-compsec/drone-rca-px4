@@ -63,6 +63,8 @@ __EXPORT void mavlink_vasprintf(int severity, orb_advert_t *mavlink_log_pub, con
 	mavlink_log_s log_msg;
 	log_msg.severity = severity;
 	log_msg.timestamp = hrt_absolute_time();
+	log_msg.publisher_id = 0;
+	log_msg.pub_timestamp = hrt_absolute_time();
 
 	va_list ap;
 	va_start(ap, fmt);

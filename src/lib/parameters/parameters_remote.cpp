@@ -50,6 +50,7 @@
 static bool debug = false;
 
 static struct param_remote_counters param_remote_counters;
+static uint8_t _publisher_id{0};
 
 #define TIMEOUT_WAIT 1000
 #define TIMEOUT_COUNT 50
@@ -126,6 +127,8 @@ static int remote_sync_thread(int argc, char *argv[])
 
 				param_remote_counters.set_value_request_received++;
 
+				_publisher_id = _set_value_request.publisher_id;
+
 				switch (param_type(_set_value_request.parameter_index)) {
 				case PARAM_TYPE_INT32:
 					param_set_no_remote_update(_set_value_request.parameter_index,
@@ -147,6 +150,8 @@ static int remote_sync_thread(int argc, char *argv[])
 				_set_value_response.timestamp = hrt_absolute_time();
 				_set_value_response.request_timestamp = _set_value_request.timestamp;
 				_set_value_response.parameter_index = _set_value_request.parameter_index;
+				_set_value_response.publisher_id = _publisher_id;
+				_set_value_response.pub_timestamp = hrt_absolute_time();
 
 				if (_set_value_rsp_h == nullptr) {
 					_set_value_rsp_h = orb_advertise(ORB_ID(parameter_remote_set_value_response), &_set_value_response);
@@ -181,7 +186,7 @@ void param_remote_init()
 
 }
 
-void param_remote_set_used(param_t param)
+void param_remote_set_used(param_t param, uint8_t publisher_id_)
 {
 	// Notify the parameter server that this parameter has been marked as used
 	if (debug) {
@@ -193,6 +198,8 @@ void param_remote_set_used(param_t param)
 	req.timestamp = hrt_absolute_time();
 
 	req.parameter_index = param;
+	req.publisher_id = publisher_id_;
+	req.pub_timestamp = hrt_absolute_time();
 
 	if (parameter_set_used_h == nullptr) {
 		parameter_set_used_h = orb_advertise(ORB_ID(parameter_set_used_request), &req);
@@ -204,12 +211,14 @@ void param_remote_set_used(param_t param)
 	param_remote_counters.set_used_sent++;
 }
 
-void param_remote_set_value(param_t param, const void *val)
+void param_remote_set_value(param_t param, const void *val, uint8_t publisher_id_)
 {
 	bool send_request = true;
 	struct parameter_set_value_request_s req;
 	req.timestamp = hrt_absolute_time();
 	req.parameter_index = param;
+	req.publisher_id = publisher_id_;
+	req.pub_timestamp = hrt_absolute_time();
 
 	switch (param_type(param)) {
 	case PARAM_TYPE_INT32:

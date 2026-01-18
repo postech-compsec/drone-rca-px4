@@ -33,11 +33,20 @@
 
 #include <gtest/gtest.h>
 #include "CollisionPrevention.hpp"
+#include <drivers/drv_hrt.h>
+#include <uORB/ModuleID.h>
 
 using namespace matrix;
 
 // to run: make tests TESTFILTER=CollisionPrevention
 hrt_abstime mocked_time = 0;
+
+template<typename T>
+static void tag_test_publish(T &msg)
+{
+	msg.publisher_id = M_TESTS;
+	msg.pub_timestamp = hrt_absolute_time();
+}
 const uint bin_size = CollisionPrevention::BIN_SIZE;
 const uint bin_count = CollisionPrevention::BIN_COUNT;
 
@@ -172,7 +181,9 @@ TEST_F(CollisionPreventionTest, testBehaviorOnWithObstacleMessage)
 	// WHEN: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
 	orb_advert_t vehicle_attitude_pub = orb_advertise(ORB_ID(vehicle_attitude), &attitude);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
+	tag_test_publish(attitude);
 	orb_publish(ORB_ID(vehicle_attitude), vehicle_attitude_pub, &attitude);
 	Vector2f modified_setpoint1 = original_setpoint1;
 	Vector2f modified_setpoint2 = original_setpoint2;
@@ -229,7 +240,9 @@ TEST_F(CollisionPreventionTest, testBehaviorOnWithDistanceMessage)
 	// WHEN: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t distance_sensor_pub = orb_advertise(ORB_ID(distance_sensor), &message);
 	orb_advert_t vehicle_attitude_pub = orb_advertise(ORB_ID(vehicle_attitude), &attitude);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(distance_sensor), distance_sensor_pub, &message);
+	tag_test_publish(attitude);
 	orb_publish(ORB_ID(vehicle_attitude), vehicle_attitude_pub, &attitude);
 
 	//WHEN:  We run the setpoint modification
@@ -306,7 +319,9 @@ TEST_F(CollisionPreventionTest, testPurgeOldData)
 	// WHEN: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
 	orb_advert_t vehicle_attitude_pub = orb_advertise(ORB_ID(vehicle_attitude), &attitude);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
+	tag_test_publish(attitude);
 	orb_publish(ORB_ID(vehicle_attitude), vehicle_attitude_pub, &attitude);
 
 	for (int i = 0; i < 10; i++) {
@@ -315,6 +330,7 @@ TEST_F(CollisionPreventionTest, testPurgeOldData)
 
 		mocked_time = mocked_time + 100000; //advance time by 0.1 seconds
 		message_lost_data.timestamp = mocked_time;
+		tag_test_publish(message_lost_data);
 		orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message_lost_data);
 
 		//at iteration 8 change the CP_GO_NO_DATA to True
@@ -381,7 +397,9 @@ TEST_F(CollisionPreventionTest, testNoRangeData)
 	// WHEN: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
 	orb_advert_t vehicle_attitude_pub = orb_advertise(ORB_ID(vehicle_attitude), &attitude);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
+	tag_test_publish(attitude);
 	orb_publish(ORB_ID(vehicle_attitude), vehicle_attitude_pub, &attitude);
 
 	for (int i = 0; i < 10; i++) {
@@ -435,6 +453,7 @@ TEST_F(CollisionPreventionTest, noBias)
 
 	// WHEN: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
 	Vector2f modified_setpoint = original_setpoint;
 	cp.modifySetpoint(modified_setpoint, curr_vel);
@@ -487,6 +506,7 @@ TEST_F(CollisionPreventionTest, outsideFOV)
 		Vector2f original_setpoint = {10.f * cosf(angle_rad), 10.f * sinf(angle_rad)};
 		Vector2f modified_setpoint = original_setpoint;
 		message.timestamp = hrt_absolute_time();
+		tag_test_publish(message);
 		orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
 		cp.modifySetpoint(modified_setpoint, curr_vel);
 
@@ -560,6 +580,7 @@ TEST_F(CollisionPreventionTest, goNoData)
 	//THEN: As soon as the range data contains any valid number, flying outside the FOV is allowed
 	message.timestamp = hrt_absolute_time();
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
 
 	modified_setpoint = original_setpoint;
@@ -597,6 +618,7 @@ TEST_F(CollisionPreventionTest, jerkLimit)
 
 	// AND: we publish the message and set the parameter and then run the setpoint modification
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &message);
+	tag_test_publish(message);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &message);
 	Vector2f modified_setpoint_default_jerk = original_setpoint;
 	cp.modifySetpoint(modified_setpoint_default_jerk, curr_vel);
@@ -1275,7 +1297,9 @@ TEST_F(CollisionPreventionTest, overlappingSensors)
 	//WHEN: we publish the long range sensor message
 	orb_advert_t obstacle_distance_pub = orb_advertise(ORB_ID(obstacle_distance), &long_range_msg);
 	orb_advert_t vehicle_attitude_pub = orb_advertise(ORB_ID(vehicle_attitude), &attitude);
+	tag_test_publish(long_range_msg);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &long_range_msg);
+	tag_test_publish(attitude);
 	orb_publish(ORB_ID(vehicle_attitude), vehicle_attitude_pub, &attitude);
 	Vector2f modified_setpoint = original_setpoint;
 	cp.modifySetpoint(modified_setpoint, curr_vel);
@@ -1286,9 +1310,11 @@ TEST_F(CollisionPreventionTest, overlappingSensors)
 	// CASE 2
 	// WHEN: we publish the short range message followed by a long range message
 	short_range_msg.timestamp = hrt_absolute_time();
+	tag_test_publish(short_range_msg);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &short_range_msg);
 	cp.modifySetpoint(modified_setpoint, curr_vel);
 	long_range_msg.timestamp = hrt_absolute_time();
+	tag_test_publish(long_range_msg);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &long_range_msg);
 	cp.modifySetpoint(modified_setpoint, curr_vel);
 
@@ -1298,9 +1324,11 @@ TEST_F(CollisionPreventionTest, overlappingSensors)
 	// CASE 3
 	// WHEN: we publish the short range message with values out of range followed by a long range message
 	short_range_msg_no_obstacle.timestamp = hrt_absolute_time();
+	tag_test_publish(short_range_msg_no_obstacle);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &short_range_msg_no_obstacle);
 	cp.modifySetpoint(modified_setpoint, curr_vel);
 	long_range_msg.timestamp = hrt_absolute_time();
+	tag_test_publish(long_range_msg);
 	orb_publish(ORB_ID(obstacle_distance), obstacle_distance_pub, &long_range_msg);
 	cp.modifySetpoint(modified_setpoint, curr_vel);
 

@@ -153,7 +153,7 @@ param_init()
 
 
 void
-param_notify_changes()
+param_notify_changes() // publisher_exception
 {
 // Don't send if this is a remote node. Only the primary
 // sends out update notices
@@ -168,6 +168,8 @@ param_notify_changes()
 	pup.changed = user_config.size();
 	pup.custom_default = runtime_defaults.size();
 	pup.timestamp = hrt_absolute_time();
+	// pup.publisher_id = publisher_id_;
+	// pup.pub_timestamp = hrt_absolute_time();
 
 	if (param_topic == nullptr) {
 		param_topic = orb_advertise(ORB_ID(parameter_update), &pup);

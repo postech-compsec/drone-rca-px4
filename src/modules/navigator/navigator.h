@@ -59,6 +59,7 @@
 
 #if CONFIG_NAVIGATOR_ADSB
 #include <lib/adsb/AdsbConflict.h>
+#include <uORB/ModuleID.h>
 #endif // CONFIG_NAVIGATOR_ADSB
 #include <lib/perf/perf_counter.h>
 #include <px4_platform_common/events.h>
@@ -370,7 +371,7 @@ private:
 	PrecLand	_precland;			/**< class for handling precision land commands */
 	RTL 		_rtl;				/**< class that handles RTL */
 #if CONFIG_NAVIGATOR_ADSB
-	AdsbConflict 	_adsb_conflict;			/**< class that handles ADSB conflict avoidance */
+	AdsbConflict 	_adsb_conflict{M_NAVIGATOR};			/**< class that handles ADSB conflict avoidance */
 	traffic_buffer_s _traffic_buffer{};
 #endif // CONFIG_NAVIGATOR_ADSB
 
