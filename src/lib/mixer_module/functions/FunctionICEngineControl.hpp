@@ -43,12 +43,12 @@
 class FunctionICEControl : public FunctionProviderBase
 {
 public:
-	FunctionICEControl()
-	{
-		resetAllToDisarmedValue();
-	}
+		explicit FunctionICEControl(uint8_t subscriber_id_ = 0) : _subscriber_id(subscriber_id_)
+		{
+			resetAllToDisarmedValue();
+		}
 
-	static FunctionProviderBase *allocate(const Context &context) { return new FunctionICEControl(); }
+		static FunctionProviderBase *allocate(const Context &context) { return new FunctionICEControl(context.subscriber_id); }
 
 	void update() override
 	{
@@ -56,18 +56,19 @@ public:
 
 		// map [0, 1] to [-1, 1] which is the interface for non-motor PWM channels
 		// NAN is mapped to disarmed
-		if (_internal_combustion_engine_control_sub.update(&internal_combustion_engine_control)) {
-			_data[0] = internal_combustion_engine_control.ignition_on * 2.f - 1.f;
-			_data[1] = internal_combustion_engine_control.throttle_control * 2.f - 1.f;
-			_data[2] = internal_combustion_engine_control.choke_control * 2.f - 1.f;
-			_data[3] = internal_combustion_engine_control.starter_engine_control * 2.f - 1.f;
-		}
+			if (_internal_combustion_engine_control_sub.update(&internal_combustion_engine_control, _subscriber_id)) {
+				_data[0] = internal_combustion_engine_control.ignition_on * 2.f - 1.f;
+				_data[1] = internal_combustion_engine_control.throttle_control * 2.f - 1.f;
+				_data[2] = internal_combustion_engine_control.choke_control * 2.f - 1.f;
+				_data[3] = internal_combustion_engine_control.starter_engine_control * 2.f - 1.f;
+			}
 	}
 
 	float value(OutputFunction func) override { return _data[(int)func - (int)OutputFunction::IC_Engine_Ignition]; }
 
 private:
-	static constexpr int num_data_points = 4;
+		static constexpr int num_data_points = 4;
+		uint8_t _subscriber_id{0};
 
 	void resetAllToDisarmedValue()
 	{

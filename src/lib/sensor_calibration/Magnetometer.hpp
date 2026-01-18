@@ -53,8 +53,8 @@ public:
 
 	static constexpr const char *SensorString() { return "MAG"; }
 
-	Magnetometer();
-	explicit Magnetometer(uint32_t device_id);
+	Magnetometer(uint8_t subscriber_id_ = 0);
+	explicit Magnetometer(uint32_t device_id, uint8_t subscriber_id_ = 0);
 
 	~Magnetometer() = default;
 
@@ -141,6 +141,8 @@ private:
 	int32_t _priority{-1};
 
 	bool _external{false};
+
+	uint8_t _subscriber_id{0};
 
 	uint8_t _calibration_count{0};
 };

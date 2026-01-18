@@ -45,8 +45,8 @@ using namespace time_literals;
 class DatamanClient
 {
 public:
-	DatamanClient(uint8_t publisher_id_ = 0);
-	~DatamanClient();
+		DatamanClient(uint8_t publisher_id_ = 0, uint8_t subscriber_id_ = 0);
+		~DatamanClient();
 
 	DatamanClient(const DatamanClient &) = delete;
 	DatamanClient &operator=(const DatamanClient &) = delete;
@@ -191,8 +191,9 @@ private:
 
 	static constexpr uint8_t CLIENT_ID_NOT_SET{0};
 
-	uint8_t _publisher_id{0};
-};
+		uint8_t _publisher_id{0};
+		uint8_t _subscriber_id{0};
+	};
 
 
 class DatamanCache

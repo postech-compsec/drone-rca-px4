@@ -37,8 +37,8 @@
 
 using namespace time_literals;
 
-ActuatorTest::ActuatorTest(const OutputFunction function_assignments[MAX_ACTUATORS])
-	: _function_assignments(function_assignments)
+ActuatorTest::ActuatorTest(const OutputFunction function_assignments[MAX_ACTUATORS], uint8_t subscriber_id_)
+	: _function_assignments(function_assignments), _subscriber_id(subscriber_id_)
 {
 	reset();
 }
@@ -49,7 +49,7 @@ void ActuatorTest::update(int num_outputs, float thrust_curve)
 
 	actuator_test_s actuator_test;
 
-	while (_actuator_test_sub.update(&actuator_test)) {
+	while (_actuator_test_sub.update(&actuator_test, _subscriber_id)) {
 		if (actuator_test.timestamp == 0 ||
 		    hrt_elapsed_time(&actuator_test.timestamp) > 100_ms) {
 			continue;
@@ -75,19 +75,19 @@ void ActuatorTest::update(int num_outputs, float thrust_curve)
 					float value = actuator_test.value;
 
 					// handle motors
-					if ((int)OutputFunction::Motor1 <= actuator_test.function && actuator_test.function <= (int)OutputFunction::MotorMax) {
-						actuator_motors_s motors;
-						motors.reversible_flags = 0;
-						_actuator_motors_sub.copy(&motors);
-						int motor_idx = actuator_test.function - (int)OutputFunction::Motor1;
-						FunctionMotors::updateValues(motors.reversible_flags >> motor_idx, thrust_curve, &value, 1);
-					}
+						if ((int)OutputFunction::Motor1 <= actuator_test.function && actuator_test.function <= (int)OutputFunction::MotorMax) {
+							actuator_motors_s motors;
+							motors.reversible_flags = 0;
+							_actuator_motors_sub.copy(&motors, _subscriber_id);
+							int motor_idx = actuator_test.function - (int)OutputFunction::Motor1;
+							FunctionMotors::updateValues(motors.reversible_flags >> motor_idx, thrust_curve, &value, 1);
+						}
 
 					// handle servos: add trim
-					if ((int)OutputFunction::Servo1 <= actuator_test.function && actuator_test.function <= (int)OutputFunction::ServoMax) {
-						actuator_servos_trim_s trim{};
-						_actuator_servos_trim_sub.copy(&trim);
-						int idx = actuator_test.function - (int)OutputFunction::Servo1;
+						if ((int)OutputFunction::Servo1 <= actuator_test.function && actuator_test.function <= (int)OutputFunction::ServoMax) {
+							actuator_servos_trim_s trim{};
+							_actuator_servos_trim_sub.copy(&trim, _subscriber_id);
+							int idx = actuator_test.function - (int)OutputFunction::Servo1;
 
 						if (idx < actuator_servos_trim_s::NUM_CONTROLS) {
 							value += trim.trim[idx];

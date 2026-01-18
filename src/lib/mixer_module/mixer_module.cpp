@@ -68,7 +68,8 @@ static const FunctionProvider all_function_providers[] = {
 };
 
 MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, OutputModuleInterface &interface,
-			   SchedulingPolicy scheduling_policy, bool support_esc_calibration, bool ramp_up, const uint8_t instance_start, uint8_t publisher_id_) :
+			   SchedulingPolicy scheduling_policy, bool support_esc_calibration, bool ramp_up, const uint8_t instance_start,
+			   uint8_t publisher_id_, uint8_t subscriber_id_) :
 	ModuleParams(&interface),
 	_output_ramp_up(ramp_up),
 	_scheduling_policy(scheduling_policy),
@@ -77,7 +78,9 @@ MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, Ou
 	_interface(interface),
 	_control_latency_perf(perf_alloc(PC_ELAPSED, "control latency")),
 	_param_prefix(param_prefix),
-	_publisher_id(publisher_id_)
+	_publisher_id(publisher_id_),
+	_subscriber_id(subscriber_id_),
+	_actuator_test(_function_assignment, _subscriber_id)
 {
 	/* Safely initialize armed flags */
 	_armed.armed = false;
@@ -261,7 +264,7 @@ bool MixingOutput::updateSubscriptions(bool allow_wq_switch)
 
 	cleanupFunctions();
 
-	const FunctionProviderBase::Context context{_interface, _param_thr_mdl_fac.reference()};
+	const FunctionProviderBase::Context context{_interface, _param_thr_mdl_fac.reference(), _subscriber_id};
 	int provider_indexes[MAX_ACTUATORS] {};
 	int next_provider = 0;
 	int subscription_callback_provider_index = INT_MAX;
@@ -407,7 +410,7 @@ void MixingOutput::unregister()
 bool MixingOutput::update()
 {
 	// check arming state
-	if (_armed_sub.update(&_armed)) {
+	if (_armed_sub.update(&_armed, _subscriber_id)) {
 		_armed.in_esc_calibration_mode &= _support_esc_calibration;
 
 		if (_ignore_lockdown) {

@@ -141,7 +141,7 @@ private:
 	friend class UavcanNode;
 	pthread_mutex_t &_node_mutex;
 	UavcanEscController &_esc_controller;
-	MixingOutput _mixing_output{"UAVCAN_EC", UavcanEscController::MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_UAVCAN};
+	MixingOutput _mixing_output{"UAVCAN_EC", UavcanEscController::MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_UAVCAN, M_UAVCAN};
 };
 
 /**
@@ -170,7 +170,7 @@ private:
 	friend class UavcanNode;
 	pthread_mutex_t &_node_mutex;
 	UavcanServoController &_servo_controller;
-	MixingOutput _mixing_output{"UAVCAN_SV", UavcanServoController::MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_UAVCAN};
+	MixingOutput _mixing_output{"UAVCAN_SV", UavcanServoController::MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_UAVCAN, M_UAVCAN};
 };
 #endif
 

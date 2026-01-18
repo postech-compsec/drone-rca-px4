@@ -52,8 +52,8 @@ public:
 
 	static constexpr const char *SensorString() { return "GYRO"; }
 
-	Gyroscope();
-	explicit Gyroscope(uint32_t device_id);
+	Gyroscope(uint8_t subscriber_id_ = 0);
+	explicit Gyroscope(uint32_t device_id, uint8_t subscriber_id_ = 0);
 
 	~Gyroscope() = default;
 
@@ -117,6 +117,8 @@ private:
 	int32_t _priority{-1};
 
 	bool _external{false};
+
+	uint8_t _subscriber_id{0};
 
 	uint8_t _calibration_count{0};
 };

@@ -68,7 +68,7 @@ public:
 	float getVelocityConstraint() { return _current_velocity_constraint; };
 
 private:
-	CollisionPrevention _collision_prevention{this, M_FLIGHT_MODE_MANAGER};
+	CollisionPrevention _collision_prevention{this, M_FLIGHT_MODE_MANAGER, M_FLIGHT_MODE_MANAGER};
 
 	void applyJerkLimit(const float dt);
 	matrix::Vector2f calculateDrag(matrix::Vector2f drag_coefficient, const float dt, const matrix::Vector2f &stick_xy,

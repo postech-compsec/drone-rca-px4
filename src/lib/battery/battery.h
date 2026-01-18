@@ -68,7 +68,8 @@
 class Battery : public ModuleParams
 {
 public:
-	Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source, uint8_t publisher_id_ = 0);
+	Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source,
+		uint8_t publisher_id_ = 0, uint8_t subscriber_id_ = 0);
 	~Battery() = default;
 
 	/**
@@ -198,4 +199,5 @@ private:
 	static constexpr float OCV_COVARIANCE = 1.5f; // Initial per cell covariance of the open circuit voltage
 
 	uint8_t _publisher_id{0};
+	uint8_t _subscriber_id{0};
 };

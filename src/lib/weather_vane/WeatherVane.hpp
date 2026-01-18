@@ -53,7 +53,7 @@
 class WeatherVane : public ModuleParams
 {
 public:
-	WeatherVane(ModuleParams *parent);
+	WeatherVane(ModuleParams *parent, uint8_t subscriber_id_ = 0);
 
 	~WeatherVane() = default;
 
@@ -70,6 +70,7 @@ private:
 	uORB::Subscription _vehicle_local_position_sub{ORB_ID(vehicle_local_position)};
 	uORB::Subscription _vehicle_control_mode_sub{ORB_ID(vehicle_control_mode)};
 	uORB::Subscription _vehicle_status_sub{ORB_ID(vehicle_status)};
+	uint8_t _subscriber_id{0};
 
 	bool _is_active{false};
 

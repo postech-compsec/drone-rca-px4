@@ -95,7 +95,7 @@ static int remote_sync_thread(int argc, char *argv[])
 			bool updated = true;
 
 			while (updated) {
-				orb_copy(ORB_ID(parameter_reset_request), _reset_req_fd, &_reset_request);
+				orb_copy_w_subid(ORB_ID(parameter_reset_request), _reset_req_fd, &_reset_request, 0);
 
 				if (debug) {
 					PX4_INFO("Got parameter_reset_request for %s", param_name(_reset_request.parameter_index));
@@ -119,7 +119,7 @@ static int remote_sync_thread(int argc, char *argv[])
 			bool updated = true;
 
 			while (updated) {
-				orb_copy(ORB_ID(parameter_primary_set_value_request), _set_value_req_fd, &_set_value_request);
+				orb_copy_w_subid(ORB_ID(parameter_primary_set_value_request), _set_value_req_fd, &_set_value_request, 0);
 
 				if (debug) {
 					PX4_INFO("Got parameter_remote_set_value_request for %s", param_name(_set_value_request.parameter_index));
@@ -292,7 +292,7 @@ void param_remote_set_value(param_t param, const void *val, uint8_t publisher_id
 
 			while (updated) {
 
-				orb_copy(ORB_ID(parameter_primary_set_value_response), param_set_rsp_fd, &rsp);
+				orb_copy_w_subid(ORB_ID(parameter_primary_set_value_response), param_set_rsp_fd, &rsp, 0);
 
 				if ((rsp.request_timestamp == req.timestamp) && (rsp.parameter_index == req.parameter_index)) {
 					if (debug) {

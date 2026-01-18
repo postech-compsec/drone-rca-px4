@@ -43,10 +43,10 @@ int LedController::update(LedControlData &control_data)
 	bool had_changes = false; // did one of the outputs change?
 
 	// check for parameter updates
-	if (_parameter_update_sub.updated()) {
-		// clear update
-		parameter_update_s pupdate;
-		_parameter_update_sub.copy(&pupdate);
+		if (_parameter_update_sub.updated()) {
+			// clear update
+			parameter_update_s pupdate;
+			_parameter_update_sub.copy(&pupdate, _subscriber_id);
 
 		updateParams();
 
@@ -65,13 +65,13 @@ int LedController::update(LedControlData &control_data)
 		}
 	}
 
-	while (_led_control_sub.updated() || _force_update) {
-		const unsigned last_generation = _led_control_sub.get_last_generation();
+		while (_led_control_sub.updated() || _force_update) {
+			const unsigned last_generation = _led_control_sub.get_last_generation();
 
-		// handle new state
-		led_control_s led_control;
+			// handle new state
+			led_control_s led_control;
 
-		if (_led_control_sub.copy(&led_control)) {
+			if (_led_control_sub.copy(&led_control, _subscriber_id)) {
 
 			if ((_led_control_sub.get_last_generation() != last_generation + 1)
 			    && (_led_control_sub.get_last_generation() != last_generation)) {

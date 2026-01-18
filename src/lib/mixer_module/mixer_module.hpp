@@ -119,7 +119,8 @@ public:
 	 */
 	MixingOutput(const char *param_prefix, uint8_t max_num_outputs, OutputModuleInterface &interface,
 		     SchedulingPolicy scheduling_policy,
-		     bool support_esc_calibration, bool ramp_up = true, const uint8_t instance_start = 1, uint8_t publisher_id_ = 0);
+		     bool support_esc_calibration, bool ramp_up = true, const uint8_t instance_start = 1,
+		     uint8_t publisher_id_ = 0, uint8_t subscriber_id_ = 0);
 
 	~MixingOutput();
 
@@ -283,7 +284,6 @@ private:
 	ParamHandles _param_handles[MAX_ACTUATORS];
 	param_t _param_handle_rev_range{PARAM_INVALID};
 	hrt_abstime _lowrate_schedule_interval{300_ms};
-	ActuatorTest _actuator_test{_function_assignment};
 	uint32_t _reversible_mask{0}; ///< per-output bits. If set, the output is configured to be reversible (motors only)
 	bool _was_all_disabled{false};
 
@@ -296,4 +296,6 @@ private:
 	)
 
 	uint8_t _publisher_id{0};
+	uint8_t _subscriber_id{0};
+	ActuatorTest _actuator_test{_function_assignment, _subscriber_id};
 };

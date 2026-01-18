@@ -47,7 +47,7 @@
 #include <drivers/drv_hrt.h>
 #include <uORB/topics/vehicle_status.h>
 
-RtlTimeEstimator::RtlTimeEstimator() : ModuleParams(nullptr)
+RtlTimeEstimator::RtlTimeEstimator(uint8_t subscriber_id_) : ModuleParams(nullptr), _subscriber_id(subscriber_id_)
 {
 	_param_mpc_z_v_auto_up = param_find("MPC_Z_V_AUTO_UP");
 	_param_mpc_z_v_auto_dn = param_find("MPC_Z_V_AUTO_DN");
@@ -78,11 +78,11 @@ rtl_time_estimate_s RtlTimeEstimator::getEstimate() const
 
 void RtlTimeEstimator::update()
 {
-	_wind_sub.update();
+	_wind_sub.update(_subscriber_id);
 
 	if (_parameter_update_sub.updated()) {
 		parameter_update_s param_update;
-		_parameter_update_sub.copy(&param_update);
+		_parameter_update_sub.copy(&param_update, _subscriber_id);
 
 		// If any parameter updated, call updateParams() to check if
 		// this class attributes need updating (and do so).
@@ -194,7 +194,7 @@ float RtlTimeEstimator::getCruiseSpeed()
 
 matrix::Vector2f RtlTimeEstimator::get_wind()
 {
-	_wind_sub.update();
+	_wind_sub.update(_subscriber_id);
 	matrix::Vector2f wind{};
 
 	if (hrt_absolute_time() - _wind_sub.get().timestamp < 1_s) {

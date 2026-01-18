@@ -50,7 +50,7 @@ protected:
 	void _ekfResetHandlerVelocityXY(const matrix::Vector2f &delta_vxy) override;
 
 	StickAccelerationXY _stick_acceleration_xy{this};
-	WeatherVane _weathervane{this}; /**< weathervane library, used to implement a yaw control law that turns the vehicle nose into the wind */
+	WeatherVane _weathervane{this, M_FLIGHT_MODE_MANAGER}; /**< weathervane library, used to implement a yaw control law that turns the vehicle nose into the wind */
 
 	DEFINE_PARAMETERS_CUSTOM_PARENT(FlightTask,
 					(ParamFloat<px4::params::MPC_VEL_MANUAL>) _param_mpc_vel_manual,

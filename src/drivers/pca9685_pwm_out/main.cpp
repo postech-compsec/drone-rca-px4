@@ -97,6 +97,7 @@ private:
 		true,
 		true,
 		1,
+		M_pca9685_pwm_out,
 		M_pca9685_pwm_out
 	};
 

@@ -47,7 +47,8 @@
 static constexpr int32_t DEFAULT_DIRECT_MISSION_LAND_CACHE_SIZE = 5;
 
 RtlDirectMissionLand::RtlDirectMissionLand(Navigator *navigator) :
-	RtlBase(navigator, DEFAULT_DIRECT_MISSION_LAND_CACHE_SIZE)
+	RtlBase(navigator, DEFAULT_DIRECT_MISSION_LAND_CACHE_SIZE),
+	_rtl_time_estimator(M_NAVIGATOR)
 {
 
 }

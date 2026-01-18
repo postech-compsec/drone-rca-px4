@@ -43,12 +43,12 @@ using namespace time_literals;
 namespace calibration
 {
 
-Accelerometer::Accelerometer()
+Accelerometer::Accelerometer(uint8_t subscriber_id) : _subscriber_id(subscriber_id)
 {
 	Reset();
 }
 
-Accelerometer::Accelerometer(uint32_t device_id)
+Accelerometer::Accelerometer(uint32_t device_id, uint8_t subscriber_id) : _subscriber_id(subscriber_id)
 {
 	set_device_id(device_id);
 }
@@ -81,7 +81,7 @@ void Accelerometer::SensorCorrectionsUpdate(bool force)
 
 		sensor_correction_s corrections;
 
-		if (_sensor_correction_sub.copy(&corrections)) {
+		if (_sensor_correction_sub.copy(&corrections, _subscriber_id)) {
 			// find sensor_corrections index
 			for (int i = 0; i < MAX_SENSOR_COUNT; i++) {
 				if (corrections.accel_device_ids[i] == _device_id) {

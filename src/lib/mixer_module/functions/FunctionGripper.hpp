@@ -43,16 +43,16 @@
 class FunctionGripper : public FunctionProviderBase
 {
 public:
-	FunctionGripper() = default;
-	static FunctionProviderBase *allocate(const Context &context) { return new FunctionGripper(); }
+		explicit FunctionGripper(uint8_t subscriber_id_ = 0) : _subscriber_id(subscriber_id_) {}
+		static FunctionProviderBase *allocate(const Context &context) { return new FunctionGripper(context.subscriber_id); }
 
-	void update() override
-	{
-		gripper_s gripper;
+		void update() override
+		{
+			gripper_s gripper;
 
-		if (_gripper_sub.update(&gripper)) {
-			if (gripper.command == gripper_s::COMMAND_RELEASE) {
-				_data = -1.f; // Minimum command for release
+			if (_gripper_sub.update(&gripper, _subscriber_id)) {
+				if (gripper.command == gripper_s::COMMAND_RELEASE) {
+					_data = -1.f; // Minimum command for release
 
 			} else if (gripper.command == gripper_s::COMMAND_GRAB) {
 				_data = 1.f; // Maximum command for grab
@@ -63,7 +63,8 @@ public:
 
 	float value(OutputFunction func) override { return _data; }
 
-private:
-	uORB::Subscription _gripper_sub{ORB_ID(gripper)};
-	float _data{-1.f};
-};
+	private:
+		uORB::Subscription _gripper_sub{ORB_ID(gripper)};
+		uint8_t _subscriber_id{0};
+		float _data{-1.f};
+	};

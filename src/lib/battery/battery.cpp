@@ -48,11 +48,13 @@
 using namespace time_literals;
 using namespace matrix;
 
-Battery::Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source, uint8_t publisher_id_) :
+Battery::Battery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source,
+		 uint8_t publisher_id_, uint8_t subscriber_id_) :
 	ModuleParams(parent),
 	_index(index < 1 || index > 9 ? 1 : index),
 	_source(source),
-	_publisher_id(publisher_id_)
+	_publisher_id(publisher_id_),
+	_subscriber_id(subscriber_id_)
 {
 	const float expected_filter_dt = static_cast<float>(sample_interval_us) / 1_s;
 	_current_average_filter_a.setParameters(expected_filter_dt, 50.f);
@@ -357,7 +359,7 @@ float Battery::computeRemainingTime(float current_a)
 	if (_vehicle_status_sub.updated()) {
 		vehicle_status_s vehicle_status;
 
-		if (_vehicle_status_sub.copy(&vehicle_status)) {
+		if (_vehicle_status_sub.copy(&vehicle_status, _subscriber_id)) {
 			_armed = (vehicle_status.arming_state == vehicle_status_s::ARMING_STATE_ARMED);
 
 			if (vehicle_status.vehicle_type == vehicle_status_s::VEHICLE_TYPE_FIXED_WING && !_vehicle_status_is_fw) {
@@ -368,7 +370,7 @@ float Battery::computeRemainingTime(float current_a)
 		}
 	}
 
-	_flight_phase_estimation_sub.update();
+	_flight_phase_estimation_sub.update(_subscriber_id);
 
 	// reset filter if not feasible, negative or we did a VTOL transition to FW mode
 	if (!PX4_ISFINITE(_current_average_filter_a.getState()) || _current_average_filter_a.getState() < FLT_EPSILON

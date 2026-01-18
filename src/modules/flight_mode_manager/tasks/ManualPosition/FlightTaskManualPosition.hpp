@@ -67,6 +67,6 @@ protected:
 private:
 	uint8_t _reset_counter{0}; /**< counter for estimator resets in xy-direction */
 
-	WeatherVane _weathervane{this}; /**< weathervane library, used to implement a yaw control law that turns the vehicle nose into the wind */
-	CollisionPrevention _collision_prevention{this, M_FLIGHT_MODE_MANAGER}; /**< collision prevention setpoint amendment */
+	WeatherVane _weathervane{this, M_FLIGHT_MODE_MANAGER}; /**< weathervane library, used to implement a yaw control law that turns the vehicle nose into the wind */
+	CollisionPrevention _collision_prevention{this, M_FLIGHT_MODE_MANAGER, M_FLIGHT_MODE_MANAGER}; /**< collision prevention setpoint amendment */
 };

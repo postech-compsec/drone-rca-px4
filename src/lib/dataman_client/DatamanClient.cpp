@@ -37,9 +37,10 @@
 
 #include <dataman_client/DatamanClient.hpp>
 
-DatamanClient::DatamanClient(uint8_t publisher_id_)
+DatamanClient::DatamanClient(uint8_t publisher_id_, uint8_t subscriber_id_)
 {
 	_publisher_id = publisher_id_;
+	_subscriber_id = subscriber_id_;
 	_sync_perf = perf_alloc(PC_ELAPSED, "DatamanClient: sync");
 
 	_dataman_request_pub.advertise();
@@ -51,7 +52,7 @@ DatamanClient::DatamanClient(uint8_t publisher_id_)
 	} else {
 		// make sure we don't get any stale response by doing an orb_copy
 		dataman_response_s response{};
-		orb_copy(ORB_ID(dataman_response), _dataman_response_sub, &response);
+		orb_copy_w_subid(ORB_ID(dataman_response), _dataman_response_sub, &response, _subscriber_id);
 
 		_fds.fd = _dataman_response_sub;
 		_fds.events = POLLIN;
@@ -115,7 +116,7 @@ bool DatamanClient::syncHandler(const dataman_request_s &request, dataman_respon
 			orb_check(_dataman_response_sub, &updated);
 
 			if (updated) {
-				orb_copy(ORB_ID(dataman_response), _dataman_response_sub, &response);
+				orb_copy_w_subid(ORB_ID(dataman_response), _dataman_response_sub, &response, _subscriber_id);
 
 				if (response.client_id == request.client_id) {
 
@@ -375,7 +376,7 @@ void DatamanClient::update()
 		dataman_response_s response;
 
 		if (updated) {
-			orb_copy(ORB_ID(dataman_response), _dataman_response_sub, &response);
+			orb_copy_w_subid(ORB_ID(dataman_response), _dataman_response_sub, &response, _subscriber_id);
 
 			if ((response.client_id == _client_id) &&
 			    (response.request_type == _active_request.request_type) &&

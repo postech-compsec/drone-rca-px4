@@ -49,8 +49,8 @@ static constexpr int DEFAULT_I_CHANNEL[1] = {-1};
 #endif
 
 AnalogBattery::AnalogBattery(int index, ModuleParams *parent, const int sample_interval_us, const uint8_t source,
-			     const uint8_t priority) :
-	Battery(index, parent, sample_interval_us, source)
+			     const uint8_t priority, uint8_t publisher_id_, uint8_t subscriber_id_) :
+	Battery(index, parent, sample_interval_us, source, publisher_id_, subscriber_id_)
 {
 	Battery::setPriority(priority);
 	char param_name[17];

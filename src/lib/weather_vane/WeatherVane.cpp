@@ -41,15 +41,16 @@
 #include <mathlib/mathlib.h>
 
 
-WeatherVane::WeatherVane(ModuleParams *parent) :
-	ModuleParams(parent)
+WeatherVane::WeatherVane(ModuleParams *parent, uint8_t subscriber_id_) :
+	ModuleParams(parent),
+	_subscriber_id(subscriber_id_)
 { }
 
 void WeatherVane::update()
 {
 	vehicle_control_mode_s vehicle_control_mode;
 
-	if (_vehicle_control_mode_sub.update(&vehicle_control_mode)) {
+	if (_vehicle_control_mode_sub.update(&vehicle_control_mode, _subscriber_id)) {
 		_flag_control_manual_enabled = vehicle_control_mode.flag_control_manual_enabled;
 		_flag_control_position_enabled = vehicle_control_mode.flag_control_position_enabled;
 	}
@@ -63,16 +64,16 @@ void WeatherVane::update()
 }
 
 float WeatherVane::getWeathervaneYawrate()
-{
-	// direction of desired body z axis represented in earth frame
-	vehicle_attitude_setpoint_s vehicle_attitude_setpoint;
-	_vehicle_attitude_setpoint_sub.copy(&vehicle_attitude_setpoint);
-	matrix::Vector3f body_z_sp(matrix::Quatf(vehicle_attitude_setpoint.q_d).dcm_z()); // attitude setpoint body z axis
+	{
+		// direction of desired body z axis represented in earth frame
+		vehicle_attitude_setpoint_s vehicle_attitude_setpoint;
+		_vehicle_attitude_setpoint_sub.copy(&vehicle_attitude_setpoint, _subscriber_id);
+		matrix::Vector3f body_z_sp(matrix::Quatf(vehicle_attitude_setpoint.q_d).dcm_z()); // attitude setpoint body z axis
 
-	// rotate desired body z axis into new frame which is rotated in z by the current
-	// heading of the vehicle. we refer to this as the heading frame.
-	vehicle_local_position_s vehicle_local_position{};
-	_vehicle_local_position_sub.copy(&vehicle_local_position);
+		// rotate desired body z axis into new frame which is rotated in z by the current
+		// heading of the vehicle. we refer to this as the heading frame.
+		vehicle_local_position_s vehicle_local_position{};
+		_vehicle_local_position_sub.copy(&vehicle_local_position, _subscriber_id);
 	matrix::Dcmf R_yaw = matrix::Eulerf(0.0f, 0.0f, -vehicle_local_position.heading);
 	body_z_sp = R_yaw * body_z_sp;
 	body_z_sp.normalize();

@@ -40,7 +40,7 @@ using namespace time_literals;
 EscBattery::EscBattery() :
 	ModuleParams(nullptr),
 	WorkItem(MODULE_NAME, px4::wq_configurations::lp_default),
-	_battery(1, this, ESC_BATTERY_INTERVAL_US, battery_status_s::SOURCE_ESCS, M_ESC_BATTERY)
+	_battery(1, this, ESC_BATTERY_INTERVAL_US, battery_status_s::SOURCE_ESCS, M_ESC_BATTERY, M_ESC_BATTERY)
 {
 }
 

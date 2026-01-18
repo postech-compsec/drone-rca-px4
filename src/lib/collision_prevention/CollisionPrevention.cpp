@@ -43,9 +43,10 @@
 
 using namespace matrix;
 
-CollisionPrevention::CollisionPrevention(ModuleParams *parent, uint8_t publisher_id_) :
+CollisionPrevention::CollisionPrevention(ModuleParams *parent, uint8_t publisher_id_, uint8_t subscriber_id_) :
 	ModuleParams(parent),
-	_publisher_id(publisher_id_)
+	_publisher_id(publisher_id_),
+	_subscriber_id(subscriber_id_)
 {
 	static_assert(BIN_SIZE >= 5, "BIN_SIZE must be at least 5");
 	static_assert(360 % BIN_SIZE == 0, "BIN_SIZE must divide 360 evenly");
@@ -87,7 +88,7 @@ void CollisionPrevention::modifySetpoint(Vector2f &setpoint_accel, const Vector2
 	if (_vehicle_attitude_sub.updated()) {
 		vehicle_attitude_s vehicle_attitude;
 
-		if (_vehicle_attitude_sub.copy(&vehicle_attitude)) {
+		if (_vehicle_attitude_sub.copy(&vehicle_attitude, _subscriber_id)) {
 			_vehicle_attitude = Quatf(vehicle_attitude.q);
 			_vehicle_yaw = Eulerf(_vehicle_attitude).psi();
 		}
@@ -115,7 +116,7 @@ void CollisionPrevention::_updateObstacleMap()
 	for (auto &dist_sens_sub : _distance_sensor_subs) {
 		distance_sensor_s distance_sensor;
 
-		if (dist_sens_sub.update(&distance_sensor)) {
+			if (dist_sens_sub.update(&distance_sensor, _subscriber_id)) {
 			// consider only instances with valid data and orientations useful for collision prevention
 			if ((getElapsedTime(&distance_sensor.timestamp) < RANGE_STREAM_TIMEOUT_US) &&
 			    (distance_sensor.orientation != distance_sensor_s::ROTATION_DOWNWARD_FACING) &&
@@ -134,7 +135,7 @@ void CollisionPrevention::_updateObstacleMap()
 	}
 
 	// add obstacle distance data
-	if (_sub_obstacle_distance.update()) {
+	if (_sub_obstacle_distance.update(_subscriber_id)) {
 		const obstacle_distance_s &obstacle_distance = _sub_obstacle_distance.get();
 
 		// Update map with obstacle data if the data is not stale

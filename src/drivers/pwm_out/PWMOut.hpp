@@ -80,7 +80,7 @@ private:
 	void update_params();
 	bool update_pwm_out_state(bool on);
 
-	MixingOutput _mixing_output{PARAM_PREFIX, DIRECT_PWM_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, true, true, 1, M_pwm_out};
+	MixingOutput _mixing_output{PARAM_PREFIX, DIRECT_PWM_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, true, true, 1, M_pwm_out, M_pwm_out};
 
 	int _timer_rates[MAX_IO_TIMERS] {};
 

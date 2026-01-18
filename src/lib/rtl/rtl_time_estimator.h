@@ -59,7 +59,7 @@ class Navigator;
 class RtlTimeEstimator : public ModuleParams
 {
 public:
-	RtlTimeEstimator();
+	RtlTimeEstimator(uint8_t subscriber_id_ = 0);
 	~RtlTimeEstimator() = default;
 
 	void update();
@@ -134,6 +134,7 @@ private:
 
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s}; /**< Parameter update topic */
 	uORB::SubscriptionData<wind_s>		_wind_sub{ORB_ID(wind)};		/**< wind topic */
+	uint8_t _subscriber_id{0};
 };
 
 #endif /* RTL_TIME_ESTIMATOR_H_ */

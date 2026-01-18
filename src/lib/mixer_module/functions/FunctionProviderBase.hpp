@@ -48,6 +48,7 @@ public:
 	struct Context {
 		px4::WorkItem &work_item;
 		const float &thrust_factor;
+		uint8_t subscriber_id;
 	};
 
 	FunctionProviderBase() = default;

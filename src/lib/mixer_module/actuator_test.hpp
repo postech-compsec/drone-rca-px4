@@ -53,7 +53,7 @@ class ActuatorTest
 public:
 	static constexpr int MAX_ACTUATORS = PWM_OUTPUT_MAX_CHANNELS;
 
-	ActuatorTest(const OutputFunction function_assignments[MAX_ACTUATORS]);
+	ActuatorTest(const OutputFunction function_assignments[MAX_ACTUATORS], uint8_t subscriber_id_ = 0);
 
 	void reset();
 
@@ -74,4 +74,5 @@ private:
 	float _current_outputs[MAX_ACTUATORS];
 	bool _output_overridden[MAX_ACTUATORS];
 	const OutputFunction *_function_assignments;
+	uint8_t _subscriber_id{0};
 };

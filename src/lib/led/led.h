@@ -69,7 +69,7 @@ struct LedControlData {
 class LedController : public ModuleParams
 {
 public:
-	LedController() : ModuleParams(nullptr) {}
+		LedController(uint8_t subscriber_id_ = 0) : ModuleParams(nullptr), _subscriber_id(subscriber_id_) {}
 	~LedController() override
 	{
 		perf_free(_led_control_sub_lost_perf);
@@ -181,12 +181,14 @@ private:
 
 	PerLedData _states[BOARD_MAX_LEDS]; ///< keep current LED states
 
-	uORB::Subscription _led_control_sub{ORB_ID(led_control)}; ///< uorb subscription
-	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
+		uORB::Subscription _led_control_sub{ORB_ID(led_control)}; ///< uorb subscription
+		uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
-	hrt_abstime _last_update_call{0};
+		hrt_abstime _last_update_call{0};
 
-	perf_counter_t _led_control_sub_lost_perf{perf_alloc(PC_COUNT, MODULE_NAME": led_control message missed")};
+		uint8_t _subscriber_id{0};
+
+		perf_counter_t _led_control_sub_lost_perf{perf_alloc(PC_COUNT, MODULE_NAME": led_control message missed")};
 
 	uint8_t _max_brightness{UINT8_MAX};
 

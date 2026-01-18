@@ -52,7 +52,8 @@ using namespace math;
 
 RtlDirect::RtlDirect(Navigator *navigator) :
 	MissionBlock(navigator, vehicle_status_s::NAVIGATION_STATE_AUTO_RTL),
-	ModuleParams(navigator)
+	ModuleParams(navigator),
+	_rtl_time_estimator(M_NAVIGATOR)
 {
 	_destination.lat = static_cast<double>(NAN);
 	_destination.lon = static_cast<double>(NAN);

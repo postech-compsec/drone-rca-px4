@@ -105,7 +105,7 @@ private:
 	enum MISSION_STATE _mission_state {MISSION_STATE_UNKNOWN}; ///< Current mission state machine state
 	enum MISSION_MODE _mission_mode {MISSION_MODE_UNKNOWN}; ///< Current mission mode
 
-	DatamanClient _dataman_client{M_MAVLINK};
+	DatamanClient _dataman_client{M_MAVLINK, M_MAVLINK};
 
 	void update_mission_state();
 
