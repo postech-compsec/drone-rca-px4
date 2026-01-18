@@ -32,6 +32,7 @@
  ****************************************************************************/
 
 #include "ADIS16448.hpp"
+#include <uORB/ModuleID.h>
 
 using namespace time_literals;
 
@@ -100,8 +101,8 @@ ADIS16448::ADIS16448(const I2CSPIDriverConfig &config) :
 	I2CSPIDriver(config),
 	_drdy_gpio(config.drdy_gpio), // TODO: DRDY disabled
 	_px4_accel(get_device_id(), config.rotation, M_ADIS16448),
-	_px4_gyro(get_device_id(), config.rotation),
-	_px4_mag(get_device_id(), config.rotation)
+	_px4_gyro(get_device_id(), config.rotation, M_ADIS16448),
+	_px4_mag(get_device_id(), config.rotation, M_ADIS16448)
 {
 	if (_drdy_gpio != 0) {
 		_drdy_missed_perf = perf_alloc(PC_COUNT, MODULE_NAME": DRDY missed");

@@ -41,7 +41,7 @@ using namespace time_literals;
 FakeMagnetometer::FakeMagnetometer() :
 	ModuleParams(nullptr),
 	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default),
-	_px4_mag(0, ROTATION_NONE)
+	_px4_mag(0, ROTATION_NONE, M_FAKE_MAGNETOMETER)
 {
 	_px4_mag.set_device_type(DRV_MAG_DEVTYPE_MAGSIM);
 }

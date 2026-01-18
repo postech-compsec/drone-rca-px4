@@ -41,6 +41,7 @@
 #include <systemlib/err.h>
 
 #include <lib/drivers/magnetometer/PX4Magnetometer.hpp>
+#include <uORB/ModuleID.h>
 
 const char *const UavcanMagnetometerBridge::NAME = "mag";
 
@@ -127,7 +128,7 @@ int UavcanMagnetometerBridge::init_driver(uavcan_bridge::Channel *channel)
 	device_id.devid_s.devtype = DRV_MAG_DEVTYPE_UAVCAN;
 	device_id.devid_s.address = static_cast<uint8_t>(channel->node_id);
 
-	channel->h_driver = new PX4Magnetometer(device_id.devid, ROTATION_NONE);
+	channel->h_driver = new PX4Magnetometer(device_id.devid, ROTATION_NONE, M_UAVCAN);
 
 	if (channel->h_driver == nullptr) {
 		return PX4_ERROR;

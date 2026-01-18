@@ -35,12 +35,14 @@
 
 #include <lib/drivers/device/Device.hpp>
 
-PX4Rangefinder::PX4Rangefinder(const uint32_t device_id, const uint8_t device_orientation)
+PX4Rangefinder::PX4Rangefinder(const uint32_t device_id, const uint8_t device_orientation, uint8_t publisher_id_)
 {
 	set_device_id(device_id);
 	set_orientation(device_orientation);
 	set_rangefinder_type(distance_sensor_s::MAV_DISTANCE_SENSOR_LASER);
 	set_mode(distance_sensor_s::MODE_UNKNOWN);
+
+	_publisher_id = publisher_id_;
 }
 
 PX4Rangefinder::~PX4Rangefinder()
@@ -81,5 +83,7 @@ void PX4Rangefinder::update(const hrt_abstime &timestamp_sample, const float dis
 		}
 	}
 
+	report.publisher_id = _publisher_id;
+	report.pub_timestamp = hrt_absolute_time();
 	_distance_sensor_pub.update();
 }

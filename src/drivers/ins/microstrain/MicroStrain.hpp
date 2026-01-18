@@ -64,6 +64,7 @@
 #include <uORB/topics/vehicle_odometry.h>
 #include <uORB/topics/debug_array.h>
 #include <uORB/topics/estimator_status.h>
+#include <uORB/ModuleID.h>
 
 
 #include "mip_sdk/src/mip/mip_all.h"
@@ -234,9 +235,9 @@ private:
 	)
 
 	// Sensor types needed for message creation / updating / publishing
-	PX4Accelerometer _px4_accel{0};
-	PX4Gyroscope _px4_gyro{0};
-	PX4Magnetometer _px4_mag{0};
+	PX4Accelerometer _px4_accel{0, ROTATION_NONE, M_MICROSTRAIN};
+	PX4Gyroscope _px4_gyro{0, ROTATION_NONE, M_MICROSTRAIN};
+	PX4Magnetometer _px4_mag{0, ROTATION_NONE, M_MICROSTRAIN};
 	sensor_baro_s _sensor_baro{0};
 
 	// Must publish to prevent sensor stale failure (sensors module)

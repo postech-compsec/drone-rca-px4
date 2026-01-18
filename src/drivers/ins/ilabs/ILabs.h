@@ -53,6 +53,7 @@
 #include <uORB/topics/sensor_baro.h>
 #include <uORB/topics/sensor_gps.h>
 #include <uORB/topics/sensor_selection.h>
+#include <uORB/ModuleID.h>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_local_position.h>
@@ -93,9 +94,9 @@ private:
 	px4::atomic<hrt_abstime> _time_initialized{0};
 	px4::atomic<hrt_abstime> _time_last_valid_imu_data{0};
 
-	PX4Accelerometer _px4_accel{0};
-	PX4Gyroscope     _px4_gyro{0};
-	PX4Magnetometer  _px4_mag{0};
+	PX4Accelerometer _px4_accel{0, ROTATION_NONE, M_ILABS};
+	PX4Gyroscope     _px4_gyro{0, ROTATION_NONE, M_ILABS};
+	PX4Magnetometer  _px4_mag{0, ROTATION_NONE, M_ILABS};
 
 	MapProjection _pos_ref{};
 

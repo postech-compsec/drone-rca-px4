@@ -40,6 +40,7 @@
 #include <px4_platform_common/module_params.h>
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
 #include <uORB/Publication.hpp>
+#include <uORB/ModuleID.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/SubscriptionInterval.hpp>
 #include <uORB/topics/parameter_update.h>
@@ -78,7 +79,7 @@ private:
 	uORB::Subscription _vehicle_attitude_sub{ORB_ID(vehicle_attitude_groundtruth)};
 	uORB::Subscription _vehicle_global_position_sub{ORB_ID(vehicle_global_position_groundtruth)};
 
-	PX4Magnetometer _px4_mag{197388, ROTATION_NONE}; // 197388: DRV_MAG_DEVTYPE_MAGSIM, BUS: 1, ADDR: 3, TYPE: SIMULATION
+	PX4Magnetometer _px4_mag{197388, ROTATION_NONE, M_SENSOR_MAG_SIM}; // 197388: DRV_MAG_DEVTYPE_MAGSIM, BUS: 1, ADDR: 3, TYPE: SIMULATION
 
 	bool _mag_earth_available{false};
 

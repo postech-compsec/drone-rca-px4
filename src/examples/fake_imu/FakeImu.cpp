@@ -38,8 +38,8 @@ using namespace time_literals;
 FakeImu::FakeImu() :
 	ModuleParams(nullptr),
 	ScheduledWorkItem(MODULE_NAME, px4::wq_configurations::hp_default),
-	_px4_accel(1310988), // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
-	_px4_gyro(1310988)   // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
+	_px4_accel(1310988, ROTATION_NONE, M_FAKE_IMU), // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
+	_px4_gyro(1310988, ROTATION_NONE, M_FAKE_IMU)   // 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
 {
 	_sensor_interval_us = roundf(1.e6f / _px4_gyro.get_max_rate_hz());
 

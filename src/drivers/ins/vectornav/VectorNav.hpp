@@ -72,6 +72,7 @@ extern "C" {
 #include <uORB/topics/vehicle_global_position.h>
 #include <uORB/topics/vehicle_local_position.h>
 #include <uORB/topics/vehicle_odometry.h>
+#include <uORB/ModuleID.h>
 
 using namespace time_literals;
 
@@ -125,9 +126,9 @@ private:
 
 	uORB::SubscriptionInterval _parameter_update_sub{ORB_ID(parameter_update), 1_s};
 
-	PX4Accelerometer _px4_accel{0};
-	PX4Gyroscope     _px4_gyro{0};
-	PX4Magnetometer  _px4_mag{0};
+	PX4Accelerometer _px4_accel{0, ROTATION_NONE, M_VECTORNAV};
+	PX4Gyroscope     _px4_gyro{0, ROTATION_NONE, M_VECTORNAV};
+	PX4Magnetometer  _px4_mag{0, ROTATION_NONE, M_VECTORNAV};
 
 	MapProjection _pos_ref{};
 	float _gps_alt_ref{NAN};		///< WGS-84 height (m)

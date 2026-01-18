@@ -40,6 +40,7 @@
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
 #include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
 #include <lib/drivers/gyroscope/PX4Gyroscope.hpp>
+#include <uORB/ModuleID.h>
 #include <uORB/PublicationMulti.hpp>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/sensor_gyro_fifo.h>

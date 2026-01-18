@@ -48,6 +48,7 @@
 #include <px4_platform_common/px4_work_queue/ScheduledWorkItem.hpp>
 #include <drivers/drv_sensor.h>
 #include <lib/drivers/magnetometer/PX4Magnetometer.hpp>
+#include <uORB/ModuleID.h>
 #include <uORB/Subscription.hpp>
 #include <uORB/topics/vehicle_attitude.h>
 #include <uORB/topics/sensor_gps.h>

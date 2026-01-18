@@ -41,7 +41,7 @@
 class PX4Magnetometer
 {
 public:
-	PX4Magnetometer(uint32_t device_id, enum Rotation rotation = ROTATION_NONE);
+	PX4Magnetometer(uint32_t device_id, enum Rotation rotation = ROTATION_NONE, uint8_t publisher_id_ = 0);
 	~PX4Magnetometer();
 
 	void set_device_id(uint32_t device_id) { _device_id = device_id; }
@@ -63,4 +63,6 @@ private:
 	float			_scale{1.f};
 	float			_temperature{NAN};
 	uint32_t		_error_count{0};
+
+	uint8_t _publisher_id{0};
 };

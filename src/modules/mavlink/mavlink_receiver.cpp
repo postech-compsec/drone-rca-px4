@@ -63,6 +63,7 @@
 
 #include <lib/drivers/device/Device.hpp> // For DeviceId union
 #include <containers/LockGuard.hpp>
+#include <uORB/ModuleID.h>
 
 #ifdef CONFIG_NET
 #define MAVLINK_RECEIVER_NET_ADDED_STACK 1360
@@ -2319,7 +2320,7 @@ MavlinkReceiver::handle_message_hil_sensor(mavlink_message_t *msg)
 	if ((hil_sensor.fields_updated & SensorSource::GYRO) == SensorSource::GYRO) {
 		if (_px4_gyro == nullptr) {
 			// 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
-			_px4_gyro = new PX4Gyroscope(1310988);
+			_px4_gyro = new PX4Gyroscope(1310988, ROTATION_NONE, M_MAVLINK);
 		}
 
 		if (_px4_gyro != nullptr) {
@@ -2351,7 +2352,7 @@ MavlinkReceiver::handle_message_hil_sensor(mavlink_message_t *msg)
 	if ((hil_sensor.fields_updated & SensorSource::MAG) == SensorSource::MAG) {
 		if (_px4_mag == nullptr) {
 			// 197388: DRV_MAG_DEVTYPE_MAGSIM, BUS: 3, ADDR: 1, TYPE: SIMULATION
-			_px4_mag = new PX4Magnetometer(197388);
+			_px4_mag = new PX4Magnetometer(197388, ROTATION_NONE, M_MAVLINK);
 		}
 
 		if (_px4_mag != nullptr) {
@@ -2705,7 +2706,7 @@ MavlinkReceiver::handle_message_hil_state_quaternion(mavlink_message_t *msg)
 	{
 		if (_px4_accel == nullptr) {
 			// 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
-			_px4_accel = new PX4Accelerometer(1310988);
+			_px4_accel = new PX4Accelerometer(1310988, ROTATION_NONE, M_MAVLINK);
 
 			if (_px4_accel == nullptr) {
 				PX4_ERR("PX4Accelerometer alloc failed");
@@ -2723,7 +2724,7 @@ MavlinkReceiver::handle_message_hil_state_quaternion(mavlink_message_t *msg)
 	{
 		if (_px4_gyro == nullptr) {
 			// 1310988: DRV_IMU_DEVTYPE_SIM, BUS: 1, ADDR: 1, TYPE: SIMULATION
-			_px4_gyro = new PX4Gyroscope(1310988);
+			_px4_gyro = new PX4Gyroscope(1310988, ROTATION_NONE, M_MAVLINK);
 
 			if (_px4_gyro == nullptr) {
 				PX4_ERR("PX4Gyroscope alloc failed");

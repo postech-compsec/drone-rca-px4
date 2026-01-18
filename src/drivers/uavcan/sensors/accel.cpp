@@ -37,6 +37,7 @@
 
 #include "accel.hpp"
 #include <lib/drivers/accelerometer/PX4Accelerometer.hpp>
+#include <uORB/ModuleID.h>
 
 const char *const UavcanAccelBridge::NAME = "accel";
 
@@ -87,7 +88,7 @@ int UavcanAccelBridge::init_driver(uavcan_bridge::Channel *channel)
 	device_id.devid_s.devtype = DRV_ACC_DEVTYPE_UAVCAN;
 	device_id.devid_s.address = static_cast<uint8_t>(channel->node_id);
 
-	channel->h_driver = new PX4Accelerometer(device_id.devid);
+	channel->h_driver = new PX4Accelerometer(device_id.devid, ROTATION_NONE, M_UAVCAN);
 
 	if (channel->h_driver == nullptr) {
 		return PX4_ERROR;

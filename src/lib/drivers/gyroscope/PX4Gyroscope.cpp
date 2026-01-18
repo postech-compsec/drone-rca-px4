@@ -66,9 +66,10 @@ static constexpr uint8_t clipping(const int16_t samples[], uint8_t len)
 	return clip_count;
 }
 
-PX4Gyroscope::PX4Gyroscope(uint32_t device_id, enum Rotation rotation) :
+PX4Gyroscope::PX4Gyroscope(uint32_t device_id, enum Rotation rotation, uint8_t publisher_id_) :
 	_device_id{device_id},
-	_rotation{rotation}
+	_rotation{rotation},
+	_publisher_id{publisher_id_}
 {
 	// advertise immediately to keep instance numbering in sync
 	_sensor_pub.advertise();
@@ -131,6 +132,8 @@ void PX4Gyroscope::update(const hrt_abstime &timestamp_sample, float x, float y,
 	report.samples = 1;
 	report.timestamp = hrt_absolute_time();
 
+	report.publisher_id = _publisher_id;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_pub.publish(report);
 }
 
@@ -146,6 +149,8 @@ void PX4Gyroscope::updateFIFO(sensor_gyro_fifo_s &sample)
 	sample.device_id = _device_id;
 	sample.scale = _scale;
 	sample.timestamp = hrt_absolute_time();
+	sample.publisher_id = _publisher_id;
+	sample.pub_timestamp = hrt_absolute_time();
 	_sensor_fifo_pub.publish(sample);
 
 
@@ -172,6 +177,8 @@ void PX4Gyroscope::updateFIFO(sensor_gyro_fifo_s &sample)
 	report.samples = N;
 	report.timestamp = hrt_absolute_time();
 
+	report.publisher_id = _publisher_id;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_pub.publish(report);
 }
 

@@ -36,9 +36,10 @@
 
 #include <lib/drivers/device/Device.hpp>
 
-PX4Magnetometer::PX4Magnetometer(uint32_t device_id, enum Rotation rotation) :
+PX4Magnetometer::PX4Magnetometer(uint32_t device_id, enum Rotation rotation, uint8_t publisher_id_) :
 	_device_id{device_id},
-	_rotation{rotation}
+	_rotation{rotation},
+	_publisher_id{publisher_id_}
 {
 }
 
@@ -76,5 +77,7 @@ void PX4Magnetometer::update(const hrt_abstime &timestamp_sample, float x, float
 	report.z = z * _scale;
 
 	report.timestamp = hrt_absolute_time();
+	report.publisher_id = _publisher_id;
+	report.pub_timestamp = hrt_absolute_time();
 	_sensor_pub.publish(report);
 }
