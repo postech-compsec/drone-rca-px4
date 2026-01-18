@@ -94,7 +94,10 @@ private:
 		PCA9685_PWM_CHANNEL_COUNT,
 		*this,
 		MixingOutput::SchedulingPolicy::Disabled,
-		true
+		true,
+		true,
+		1,
+		M_pca9685_pwm_out
 	};
 
 	float param_pwm_freq, previous_pwm_freq;

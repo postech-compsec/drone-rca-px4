@@ -103,7 +103,7 @@ private:
 	friend class CyphalNode;
 	pthread_mutex_t &_node_mutex;
 	PublicationManager &_pub_manager;
-	MixingOutput _mixing_output{"UCAN1_ESC", MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false};
+	MixingOutput _mixing_output{"UCAN1_ESC", MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_CYPHAL};
 };
 
 class CyphalNode : public ModuleParams, public px4::ScheduledWorkItem

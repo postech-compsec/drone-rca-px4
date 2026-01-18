@@ -139,7 +139,7 @@ private:
 
 	uint16_t convert_output_to_3d_scaling(uint16_t output);
 
-	MixingOutput _mixing_output{PARAM_PREFIX, DIRECT_PWM_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false};
+	MixingOutput _mixing_output{PARAM_PREFIX, DIRECT_PWM_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_DSHOT};
 	uint32_t _reversible_outputs{};
 
 	DShotTelemetry *_telemetry{nullptr};

@@ -119,7 +119,7 @@ public:
 	 */
 	MixingOutput(const char *param_prefix, uint8_t max_num_outputs, OutputModuleInterface &interface,
 		     SchedulingPolicy scheduling_policy,
-		     bool support_esc_calibration, bool ramp_up = true, const uint8_t instance_start = 1);
+		     bool support_esc_calibration, bool ramp_up = true, const uint8_t instance_start = 1, uint8_t publisher_id_ = 0);
 
 	~MixingOutput();
 
@@ -294,4 +294,6 @@ private:
 		(ParamInt<px4::params::MC_AIRMODE>) _param_mc_airmode,   ///< multicopter air-mode
 		(ParamFloat<px4::params::THR_MDL_FAC>) _param_thr_mdl_fac ///< thrust to motor control signal modelling factor
 	)
+
+	uint8_t _publisher_id{0};
 };

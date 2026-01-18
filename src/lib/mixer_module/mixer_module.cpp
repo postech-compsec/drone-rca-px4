@@ -68,7 +68,7 @@ static const FunctionProvider all_function_providers[] = {
 };
 
 MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, OutputModuleInterface &interface,
-			   SchedulingPolicy scheduling_policy, bool support_esc_calibration, bool ramp_up, const uint8_t instance_start) :
+			   SchedulingPolicy scheduling_policy, bool support_esc_calibration, bool ramp_up, const uint8_t instance_start, , uint8_t publisher_id_) :
 	ModuleParams(&interface),
 	_output_ramp_up(ramp_up),
 	_scheduling_policy(scheduling_policy),
@@ -76,7 +76,8 @@ MixingOutput::MixingOutput(const char *param_prefix, uint8_t max_num_outputs, Ou
 	_max_num_outputs(max_num_outputs < MAX_ACTUATORS ? max_num_outputs : MAX_ACTUATORS),
 	_interface(interface),
 	_control_latency_perf(perf_alloc(PC_ELAPSED, "control latency")),
-	_param_prefix(param_prefix)
+	_param_prefix(param_prefix),
+	_publisher_id(publisher_id_)
 {
 	/* Safely initialize armed flags */
 	_armed.armed = false;
@@ -631,6 +632,8 @@ MixingOutput::setAndPublishActuatorOutputs(unsigned num_outputs, actuator_output
 	}
 
 	actuator_outputs.timestamp = hrt_absolute_time();
+	actuator_outputs.publisher_id = _publisher_id;
+	actuator_outputs.pub_timestamp = hrt_absolute_time();
 	_outputs_pub.publish(actuator_outputs);
 }
 

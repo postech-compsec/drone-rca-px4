@@ -169,8 +169,10 @@ enum ModuleID {
     M_BST,
     M_MC_HOVER_THRUST_ESTIMATOR,
     // added
-    M_drivers__ina22,
-    M_drivers__ina226,
-    M_drivers__ina228,
-    M_drivers__ina238
+    M_ina226,
+    M_ina228,
+    M_ina238,
+    M_linux_pwm_out,
+    M_pca9685_pwm_out,
+    M_pwm_out
 };

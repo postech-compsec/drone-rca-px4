@@ -123,7 +123,7 @@ private:
 	static px4::atomic_bool
 	_request_telemetry_init; //Determines whether or not we should initialize or re-initialize the serial connection
 
-	MixingOutput _mixing_output{"VTQ_IO", MAX_SUPPORTABLE_IFCI_CVS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 0};
+	MixingOutput _mixing_output{"VTQ_IO", MAX_SUPPORTABLE_IFCI_CVS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 0, M_VERTIQ_IO};
 
 	static char _telemetry_device[20]; //The name of the device we're connecting to. this will be something like /dev/ttyS3
 

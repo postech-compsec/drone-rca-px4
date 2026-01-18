@@ -44,7 +44,7 @@ const char *_device;
 
 VoxlEsc::VoxlEsc() :
 	OutputModuleInterface(MODULE_NAME, px4::serial_port_to_wq(VOXL_ESC_DEFAULT_PORT)),
-	_mixing_output{"VOXL_ESC", VOXL_ESC_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false},
+	_mixing_output{"VOXL_ESC", VOXL_ESC_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_VOXL_ESC},
 	_cycle_perf(perf_alloc(PC_ELAPSED, MODULE_NAME": cycle")),
 	_output_update_perf(perf_alloc(PC_INTERVAL, MODULE_NAME": output update interval")),
 	_battery(1, nullptr, _battery_report_interval, battery_status_s::SOURCE_POWER_MODULE)

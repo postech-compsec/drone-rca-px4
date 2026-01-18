@@ -36,7 +36,7 @@
 
 Voxl2IO::Voxl2IO() :
 	OutputModuleInterface(MODULE_NAME, px4::serial_port_to_wq(VOXL2_IO_DEFAULT_PORT)),
-	_mixing_output{"VOXL2_IO", VOXL2_IO_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false},
+	_mixing_output{"VOXL2_IO", VOXL2_IO_OUTPUT_CHANNELS, *this, MixingOutput::SchedulingPolicy::Auto, false, false, 1, M_VOXL2_IO},
 	_cycle_perf{perf_alloc(PC_ELAPSED, MODULE_NAME": module cycle")},
 	_output_update_perf(perf_alloc(PC_INTERVAL, MODULE_NAME": output update interval"))
 {
