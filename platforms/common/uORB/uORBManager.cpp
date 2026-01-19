@@ -399,7 +399,14 @@ int uORB::Manager::orb_copy(const struct orb_metadata *meta, int handle, void *b
 	ORB_ID _orb_id = (meta == nullptr) ? ORB_ID::INVALID : static_cast<ORB_ID>(meta->o_id);
 	sub_info.topic_id = static_cast<uint8_t>(_orb_id);
 
-	if(sub_info.topic_id == 242){
+	if(sub_info.topic_id == 242 // subscription_info
+	|| sub_info.topic_id == 150 // mavlink_log
+	|| sub_info.topic_id == 151 // mavlink_tunnel
+	|| sub_info.topic_id == 142 // log_message
+	|| sub_info.topic_id == 143 // logger_status
+	|| sub_info.subscriber_id == M_LOGGER
+	|| sub_info.subscriber_id == M_MAVLINK
+	){
 		return PX4_OK;
 	}
 
@@ -490,7 +497,14 @@ bool uORB::Manager::orb_data_copy(void *node_handle, void *dst, unsigned &genera
 		sub_info.subscriber_id = _subscriber_id;
 		sub_info.topic_id = orb_id;
 
-		if(sub_info.topic_id == 242){
+		if(sub_info.topic_id == 242 // subscription_info
+		|| sub_info.topic_id == 150 // mavlink_log
+		|| sub_info.topic_id == 151 // mavlink_tunnel
+		|| sub_info.topic_id == 142 // log_message
+		|| sub_info.topic_id == 143 // logger_status
+		|| sub_info.subscriber_id == M_LOGGER
+		|| sub_info.subscriber_id == M_MAVLINK
+		){
 			return static_cast<DeviceNode *>(node_handle)->copy(dst, generation);
 		}
 
