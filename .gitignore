@@ -1,3 +1,5 @@
+make_qgc_plan/plans/
+
 *.dSYM
 *.o
 *.gch
