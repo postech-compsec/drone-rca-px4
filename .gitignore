@@ -1,4 +1,5 @@
 make_qgc_plan/plans/
+datasets/
 
 *.dSYM
 *.o

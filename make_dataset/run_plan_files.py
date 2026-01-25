@@ -111,7 +111,7 @@ def run_single_plan(plan: Path, args) -> RunResult:
 
 
 def parse_args() -> argparse.Namespace:
-    default_plans = Path(__file__).resolve().parents[1] / "make_qgc_plan" / "ver2" / "plans"
+    default_plans = Path(__file__).resolve().parents[1] / "make_qgc_plan" / "plans"
     ap = argparse.ArgumentParser(description="Run multiple QGC .plan files with retries and log clean-up.")
     ap.add_argument(
         "targets",
