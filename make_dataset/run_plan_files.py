@@ -13,6 +13,7 @@ Usage examples:
 
 Required:
   --command (or env QGC_PLAN_CMD) must be a shell snippet with {plan} placeholder.
+  If omitted, run_one_plan_mavsdk.py is used when present.
 """
 
 from __future__ import annotations
@@ -83,12 +84,23 @@ class RunResult:
     output: str
 
 
-def run_single_plan(plan: Path, args) -> RunResult:
+def resolve_command(plan: Path, args) -> str:
     cmd_template = args.command or os.environ.get("QGC_PLAN_CMD")
-    if not cmd_template:
-        raise SystemExit("No command provided. Use --command or set QGC_PLAN_CMD.")
+    if cmd_template:
+        return cmd_template.format(plan=str(plan), plan_name=plan.name, plan_stem=plan.stem)
 
-    cmd = cmd_template.format(plan=str(plan), plan_name=plan.name, plan_stem=plan.stem)
+    default_runner = Path(__file__).resolve().parent / "run_one_plan_mavsdk.py"
+    if default_runner.exists():
+        return (
+            f"{shlex.quote(sys.executable)} {shlex.quote(str(default_runner))} "
+            f"--plan {shlex.quote(str(plan))} --allow-skip-complex"
+        )
+
+    raise SystemExit("No command provided. Use --command or set QGC_PLAN_CMD.")
+
+
+def run_single_plan(plan: Path, args) -> RunResult:
+    cmd = resolve_command(plan, args)
     before = snapshot_logs(args.log_root)
 
     proc = subprocess.run(
@@ -123,7 +135,8 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--command",
         "-c",
-        help="Command template to run a single plan. Use {plan}, {plan_name}, {plan_stem}.",
+        help="Command template to run a single plan. Use {plan}, {plan_name}, {plan_stem}. "
+             "If omitted, run_one_plan_mavsdk.py is used when available.",
     )
     ap.add_argument("--log-root", type=Path, default=Path("build/px4_sitl_default/rootfs/log"), help="Root directory where .ulg/.ulog are written.")
     ap.add_argument("--start-from", type=str, default=None, help="Plan filename or path to resume from (matches basename if path not found).")
@@ -132,6 +145,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--shell", action="store_true", help="Run command template through the shell.")
     ap.add_argument("--require-log", action=argparse.BooleanOptionalAction, default=True, help="Require new log file(s) for success (default: True).")
     ap.add_argument("--run-log-dir", type=Path, default=None, help="Optional dir to store stdout per plan.")
+    ap.add_argument("--print-output", action=argparse.BooleanOptionalAction, default=True, help="Print command output on failure (default: True).")
     return ap.parse_args()
 
 
@@ -176,6 +190,8 @@ def main() -> None:
             if res.new_logs:
                 delete_logs(res.new_logs, args.log_root)
             print(f"[warn] failed {plan} attempt {attempt}/{args.retries} (rc={res.returncode}, logs={len(res.new_logs)})")
+            if args.print_output and res.output:
+                print("[output]\n" + res.output.rstrip())
 
             if attempt >= args.retries:
                 print(f"[fatal] plan failed repeatedly: {plan}")

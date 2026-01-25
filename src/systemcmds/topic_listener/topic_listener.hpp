@@ -60,7 +60,7 @@ inline int listener_print_topic(const orb_id_t &orb_id, int subscription)
 		return -1;
 	}
 
-	int ret = orb_copy(orb_id, subscription, &container);
+	int ret = orb_copy(orb_id, subscription, &container, M_listener);
 
 	if (ret == PX4_OK) {
 		orb_print_message_internal(orb_id, &container, true);

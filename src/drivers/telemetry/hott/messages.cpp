@@ -123,9 +123,13 @@ publish_gam_message(const uint8_t *buffer)
 
 	/* announce the esc if needed, just publish else */
 	if (_esc_pub != nullptr) {
+		esc.publisher_id = M_hott_sensors;
+		esc.pub_timestamp = hrt_absolute_time();
 		orb_publish(ORB_ID(esc_status), _esc_pub, &esc);
 
 	} else {
+		esc.publisher_id = M_hott_sensors;
+		esc.pub_timestamp = hrt_absolute_time();
 		_esc_pub = orb_advertise(ORB_ID(esc_status), &esc);
 	}
 }
@@ -135,12 +139,12 @@ build_eam_response(uint8_t *buffer, size_t *size)
 {
 	/* get a local copy of the current sensor values */
 	vehicle_air_data_s airdata = {};
-	orb_copy(ORB_ID(vehicle_air_data), _airdata_sub, &airdata);
+	orb_copy(ORB_ID(vehicle_air_data), _airdata_sub, &airdata, M_hott_telemetry);
 
 	/* get a local copy of the battery data */
 	struct battery_status_s battery;
 	memset(&battery, 0, sizeof(battery));
-	orb_copy(ORB_ID(battery_status), _battery_sub, &battery);
+	orb_copy(ORB_ID(battery_status), _battery_sub, &battery, M_hott_telemetry);
 
 	struct eam_module_msg msg;
 	*size = sizeof(msg);
@@ -162,7 +166,7 @@ build_eam_response(uint8_t *buffer, size_t *size)
 	/* get a local copy of the airspeed data */
 	struct airspeed_s airspeed;
 	memset(&airspeed, 0, sizeof(airspeed));
-	orb_copy(ORB_ID(airspeed), _airspeed_sub, &airspeed);
+	orb_copy(ORB_ID(airspeed), _airspeed_sub, &airspeed, M_hott_telemetry);
 
 	uint16_t speed = (uint16_t)(airspeed.indicated_airspeed_m_s * 3.6f);
 	msg.speed_L = (uint8_t)speed & 0xff;
@@ -178,7 +182,7 @@ build_gam_response(uint8_t *buffer, size_t *size)
 	/* get a local copy of the ESC Status values */
 	struct esc_status_s esc;
 	memset(&esc, 0, sizeof(esc));
-	orb_copy(ORB_ID(esc_status), _esc_sub, &esc);
+	orb_copy(ORB_ID(esc_status), _esc_sub, &esc, M_hott_telemetry);
 
 	struct gam_module_msg msg;
 	*size = sizeof(msg);
@@ -215,7 +219,7 @@ build_gps_response(uint8_t *buffer, size_t *size)
 	/* get a local copy of the battery data */
 	struct sensor_gps_s gps;
 	memset(&gps, 0, sizeof(gps));
-	orb_copy(ORB_ID(vehicle_gps_position), _gps_sub, &gps);
+	orb_copy(ORB_ID(vehicle_gps_position), _gps_sub, &gps, M_hott_telemetry);
 
 	struct gps_module_msg msg;
 	*size = sizeof(msg);
@@ -297,7 +301,7 @@ build_gps_response(uint8_t *buffer, size_t *size)
 			/* get a local copy of the home position data */
 			struct home_position_s home;
 			memset(&home, 0, sizeof(home));
-			orb_copy(ORB_ID(home_position), _home_sub, &home);
+			orb_copy(ORB_ID(home_position), _home_sub, &home, M_hott_telemetry);
 
 			if (home.valid_hpos) {
 				_home_lat = home.lat;

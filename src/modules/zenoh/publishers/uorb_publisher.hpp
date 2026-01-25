@@ -64,7 +64,7 @@ public:
 	virtual int8_t update() override
 	{
 		uint8_t data[_uorb_meta->o_size];
-		orb_copy(_uorb_meta, _uorb_sub, data);
+		orb_copy(_uorb_meta, _uorb_sub, data, M_zenoh);
 
 		uint8_t buf[_uorb_meta->o_size + 4 + CDR_SAFETY_MARGIN];
 		memcpy(buf, ros2_header, sizeof(ros2_header));

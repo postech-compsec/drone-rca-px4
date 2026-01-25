@@ -175,5 +175,10 @@ enum ModuleID {
     M_linux_pwm_out,
     M_pca9685_pwm_out,
     M_pwm_out,
-    M_dsp_hitl
+    M_dsp_hitl,
+    M_hott_sensors,
+    M_hott_telemetry,
+    M_replay,
+    M_zenoh,
+    M_listener
 };

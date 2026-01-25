@@ -82,6 +82,8 @@ public:
 			memcpy(&data[8], data, sizeof(hrt_abstime));
 		}
 
+		data.publisher_id = M_zenoh;
+		data.pub_timestamp = hrt_absolute_time();
 		orb_publish(_uorb_meta, _uorb_pub_handle, &data);
 	};
 
