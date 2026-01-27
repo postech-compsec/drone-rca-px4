@@ -1093,15 +1093,17 @@ Replay::publishTopic(Subscription &sub, void *data)
 	}
 
 	if (sub.orb_advert) {
-		data.publisher_id = M_replay;
-		data.pub_timestamp = hrt_absolute_time();
+		// data->publisher_id = M_replay;
+		// data->pub_timestamp = hrt_absolute_time();
+		// publisher_exception
 		orb_publish(sub.orb_meta, sub.orb_advert, data);
 		published = true;
 
 	} else {
 		if (sub.multi_id == 0) {
-			data.publisher_id = M_replay;
-			data.pub_timestamp = hrt_absolute_time();
+			// data.publisher_id = M_replay;
+			// data.pub_timestamp = hrt_absolute_time();
+			// publisher_exception
 			sub.orb_advert = orb_advertise(sub.orb_meta, data);
 			published = true;
 
@@ -1124,8 +1126,9 @@ Replay::publishTopic(Subscription &sub, void *data)
 
 			if (advertised) {
 				int instance;
-				data.publisher_id = M_replay;
-				data.pub_timestamp = hrt_absolute_time();
+				// data.publisher_id = M_replay;
+				// data.pub_timestamp = hrt_absolute_time();
+				// publisher_exception
 				sub.orb_advert = orb_advertise_multi(sub.orb_meta, data, &instance);
 				published = true;
 			}

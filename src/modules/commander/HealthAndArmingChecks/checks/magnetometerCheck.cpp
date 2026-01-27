@@ -53,7 +53,7 @@ void MagnetometerChecks::checkAndReport(const Context &context, Report &reporter
 
 		if (exists) {
 			sensor_mag_s mag_data;
-			is_valid = _sensor_mag_sub[instance].copy(&mag_data) && (mag_data.device_id != 0) && (mag_data.timestamp != 0)
+			is_valid = _sensor_mag_sub[instance].copy(&mag_data, M_COMMANDER) && (mag_data.device_id != 0) && (mag_data.timestamp != 0)
 				   && (hrt_elapsed_time(&mag_data.timestamp) < 1_s);
 
 			if (context.status().hil_state == vehicle_status_s::HIL_STATE_ON) {
@@ -162,7 +162,7 @@ bool MagnetometerChecks::isMagRequired(int instance, bool &mag_fault)
 {
 	sensor_mag_s sensor_mag;
 
-	if (!_sensor_mag_sub[instance].copy(&sensor_mag)) {
+	if (!_sensor_mag_sub[instance].copy(&sensor_mag, M_COMMANDER)) {
 		return false;
 	}
 
@@ -177,7 +177,7 @@ bool MagnetometerChecks::isMagRequired(int instance, bool &mag_fault)
 	for (int i = 0; i < _estimator_status_sub.size(); i++) {
 		estimator_status_s estimator_status;
 
-		if (_estimator_status_sub[i].copy(&estimator_status) && estimator_status.mag_device_id == device_id) {
+		if (_estimator_status_sub[i].copy(&estimator_status, M_COMMANDER) && estimator_status.mag_device_id == device_id) {
 			mag_fault = estimator_status.control_mode_flags & (1 << estimator_status_s::CS_MAG_FAULT);
 			is_used_by_nav = true;
 			break;
