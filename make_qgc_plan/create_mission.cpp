@@ -31,7 +31,7 @@ static int irand(std::mt19937& r, int a, int b){
   std::uniform_int_distribution<int> d(a,b); return d(r);
 }
 
-std::string create_mission(Ctx& ctx, int vehicleType){
+std::string create_mission(Ctx& ctx, int vehicleType, bool simpleOnly){
   // Mission per spec: required keys+versions :contentReference[oaicite:8]{index=8}
   // firmwareType: MAV_AUTOPILOT_PX4 (example uses 12). We'll set 12.
   double cruiseSpeed = (vehicleType==1) ? urand(ctx.rng, 15.0, 28.0) : urand(ctx.rng, 10.0, 18.0);
@@ -57,7 +57,7 @@ std::string create_mission(Ctx& ctx, int vehicleType){
   // Middle: random mix of Simple and (sometimes) Complex
   int midCount = irand(ctx.rng, 3, 7);
   for(int k=0;k<midCount;k++){
-    int pick = irand(ctx.rng, 0, 6);
+    int pick = irand(ctx.rng, 0, simpleOnly ? 3 : 6);
     double lat = homeLat + urand(ctx.rng, -0.01, 0.01);
     double lon = homeLon + urand(ctx.rng, -0.01, 0.01);
     double alt = urand(ctx.rng, 25, (vehicleType==1?140.0:90.0));

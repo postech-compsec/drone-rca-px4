@@ -108,8 +108,6 @@ def run_single_plan(plan: Path, args) -> RunResult:
         shell=args.shell,
         check=False,
         text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
     )
 
     if args.post_sleep > 0:

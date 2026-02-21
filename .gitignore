@@ -1,6 +1,7 @@
 make_qgc_plan/plans/
 datasets/
 
+venv/
 *.dSYM
 *.o
 *.gch

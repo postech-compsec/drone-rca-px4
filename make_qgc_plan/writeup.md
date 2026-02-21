@@ -2,7 +2,11 @@
 ```bash
 clang++ -std=c++17 -O2 -Wall -Wextra -pedantic create_plan_files.cpp -o create_plan_files
 ```
+```bash
+./create_plan_files 5 plans --simple-only
+```
 
 # usage:
-#   create_plan_files <count> <output_dir> [vehicleType]
+#   create_plan_files <count> <output_dir> [vehicleType] [--simple-only]
 #     vehicleType (optional): 1=fixed-wing, 2=multirotor; default: random {1,2}
+#     --simple-only (optional): only simple items (no complex items)

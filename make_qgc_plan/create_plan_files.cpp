@@ -2,6 +2,7 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
 #include <cstdio>
 #include <fstream>
 #include <iomanip>
@@ -33,7 +34,7 @@ namespace plan {
     double homeAltAmsl;
   };
 
-  std::string create_mission(Ctx& ctx, int vehicleType);
+  std::string create_mission(Ctx& ctx, int vehicleType, bool simpleOnly);
   std::string create_geoFence(Ctx& ctx);
   std::string create_rally_points(Ctx& ctx);
 }
@@ -69,14 +70,32 @@ static double clamp_lon(double lon){
 
 int main(int argc, char** argv){
   if(argc < 3){
-    cerr << "Usage: " << argv[0] << " <count> <output_dir> [vehicleType]\n"
-         << "  vehicleType: 1=fixed-wing, 2=multirotor (default: random)\n";
+    cerr << "Usage: " << argv[0] << " <count> <output_dir> [vehicleType] [--simple-only]\n"
+         << "  vehicleType: 1=fixed-wing, 2=multirotor (default: random)\n"
+         << "  --simple-only: generate missions with only simple items (no complex items)\n";
     return 1;
   }
   int count = stoi(argv[1]);
   fs::path outDir = fs::path(argv[2]);
   int forcedVehicle = -1;
-  if(argc >= 4) forcedVehicle = stoi(argv[3]);
+  bool simpleOnly = false;
+  if(argc >= 4){
+    for(int i=3;i<argc;i++){
+      string arg = argv[i];
+      if(arg == "--simple-only" || arg == "--simple_only" || arg == "--simple"){
+        simpleOnly = true;
+        continue;
+      }
+      char* end = nullptr;
+      long v = std::strtol(arg.c_str(), &end, 10);
+      if(end && *end == '\0' && (v == 1 || v == 2)){
+        forcedVehicle = static_cast<int>(v);
+        continue;
+      }
+      cerr << "Unknown argument: " << arg << "\n";
+      return 1;
+    }
+  }
 
   if(!fs::exists(outDir)) fs::create_directories(outDir);
 
@@ -98,7 +117,7 @@ int main(int argc, char** argv){
       vehicleType = pick(ctx.rng) ? 2 : 1; // 2=quad, 1=fixed
     }
 
-    std::string mission   = plan::create_mission(ctx, vehicleType);
+    std::string mission   = plan::create_mission(ctx, vehicleType, simpleOnly);
     std::string geofence  = plan::create_geoFence(ctx);
     std::string rally     = plan::create_rally_points(ctx);
     std::string json      = make_top_level(mission, geofence, rally);
