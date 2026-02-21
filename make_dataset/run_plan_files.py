@@ -141,7 +141,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--retries", type=int, default=3, help="Max attempts per plan (default: 3).")
     ap.add_argument("--post-sleep", type=float, default=0.0, help="Seconds to sleep after each run (default: 0).")
     ap.add_argument("--shell", action="store_true", help="Run command template through the shell.")
-    ap.add_argument("--require-log", action=argparse.BooleanOptionalAction, default=True, help="Require new log file(s) for success (default: True).")
+    ap.add_argument("--require-log", action=argparse.BooleanOptionalAction, default=False, help="Require new log file(s) for success (default: False).")
     ap.add_argument("--run-log-dir", type=Path, default=None, help="Optional dir to store stdout per plan.")
     ap.add_argument("--print-output", action=argparse.BooleanOptionalAction, default=True, help="Print command output on failure (default: True).")
     return ap.parse_args()

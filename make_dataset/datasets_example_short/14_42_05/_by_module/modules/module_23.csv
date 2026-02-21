@@ -1,0 +1,4 @@
+module_id,dir,topic_name,timestamp,__srcfile
+23,out,vehicle_command,1771684922296000,14_42_05_vehicle_command_0.csv
+23,out,gripper,1771684922300000,14_42_05_gripper_0.csv
+23,out,vehicle_command_ack,1771684923396000,14_42_05_vehicle_command_ack_0.csv

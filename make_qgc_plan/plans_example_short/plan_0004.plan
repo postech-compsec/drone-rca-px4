@@ -1,0 +1,58 @@
+{
+  "fileType": "Plan",
+  "geoFence": {
+  "circles": [
+    { "circle": { "center": [47.39494492, 8.541540919], "radius": 566.46 }, "inclusion": true, "version": 1 }
+  ],
+  "polygons": [
+    { "inclusion": true, "polygon": [[47.40666263, 8.536673273], [47.40666263, 8.554514727], [47.38882117, 8.554514727], [47.38882117, 8.536673273]], "version": 1 }
+  ],
+  "version": 2
+},
+  "groundStation": "QGroundControl",
+  "mission": {
+  "cruiseSpeed": 27.714,
+  "firmwareType": 12,
+  "globalPlanAltitudeMode": 1,
+  "hoverSpeed": 0.000,
+  "items": [
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 85.545,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 1,
+      "frame": 3,
+      "command": 22,
+      "params": [15, 0, 0, null, 47.39724724, 8.54708782, 85.545],
+      "type": "SimpleItem"
+    },
+    {
+      "AMSLAltAboveTerrain": null,
+      "Altitude": 0.000,
+      "AltitudeMode": 0,
+      "autoContinue": true,
+      "doJumpId": 2,
+      "frame": 3,
+      "command": 21,
+      "params": [0, 0, 0, null, 47.39869315, 8.546181317, 0.0],
+      "type": "SimpleItem"
+    }
+  ],
+  "plannedHomePosition": [
+    47.3985208598,
+    8.5461620054,
+    488.000
+  ],
+  "vehicleType": 1,
+  "version": 2
+},
+  "rallyPoints": {
+  "points": [
+    [47.40237314, 8.540152862, 52.3],
+    [47.3933655566, 8.5505114655, 67.0]
+  ],
+  "version": 2
+},
+  "version": 1
+}

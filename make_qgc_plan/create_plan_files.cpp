@@ -34,7 +34,7 @@ namespace plan {
     double homeAltAmsl;
   };
 
-  std::string create_mission(Ctx& ctx, int vehicleType, bool simpleOnly);
+  std::string create_mission(Ctx& ctx, int vehicleType, bool simpleOnly, int maxMissionItems);
   std::string create_geoFence(Ctx& ctx);
   std::string create_rally_points(Ctx& ctx);
 }
@@ -70,20 +70,49 @@ static double clamp_lon(double lon){
 
 int main(int argc, char** argv){
   if(argc < 3){
-    cerr << "Usage: " << argv[0] << " <count> <output_dir> [vehicleType] [--simple-only]\n"
+    cerr << "Usage: " << argv[0] << " <count> <output_dir> [vehicleType] [--simple-only] [--max-mission-items N]\n"
          << "  vehicleType: 1=fixed-wing, 2=multirotor (default: random)\n"
-         << "  --simple-only: generate missions with only simple items (no complex items)\n";
+         << "  --simple-only: generate missions with only simple items (no complex items)\n"
+         << "  --max-mission-items N: maximum number of mission items (>=2, includes takeoff and land)\n";
     return 1;
   }
   int count = stoi(argv[1]);
   fs::path outDir = fs::path(argv[2]);
   int forcedVehicle = -1;
   bool simpleOnly = false;
+  int maxMissionItems = -1;
   if(argc >= 4){
     for(int i=3;i<argc;i++){
       string arg = argv[i];
       if(arg == "--simple-only" || arg == "--simple_only" || arg == "--simple"){
         simpleOnly = true;
+        continue;
+      }
+      if(arg == "--max-mission-items" || arg == "--max_mission_items"){
+        if(i+1 >= argc){
+          cerr << "Missing value for " << arg << "\n";
+          return 1;
+        }
+        char* end = nullptr;
+        long v = std::strtol(argv[++i], &end, 10);
+        if(end && *end == '\0' && v >= 2){
+          maxMissionItems = static_cast<int>(v);
+        }else{
+          cerr << "Invalid value for " << arg << " (must be >= 2)\n";
+          return 1;
+        }
+        continue;
+      }
+      if(arg.rfind("--max-mission-items=", 0) == 0 || arg.rfind("--max_mission_items=", 0) == 0){
+        string val = arg.substr(arg.find('=') + 1);
+        char* end = nullptr;
+        long v = std::strtol(val.c_str(), &end, 10);
+        if(end && *end == '\0' && v >= 2){
+          maxMissionItems = static_cast<int>(v);
+        }else{
+          cerr << "Invalid value for " << arg << " (must be >= 2)\n";
+          return 1;
+        }
         continue;
       }
       char* end = nullptr;
@@ -117,7 +146,7 @@ int main(int argc, char** argv){
       vehicleType = pick(ctx.rng) ? 2 : 1; // 2=quad, 1=fixed
     }
 
-    std::string mission   = plan::create_mission(ctx, vehicleType, simpleOnly);
+    std::string mission   = plan::create_mission(ctx, vehicleType, simpleOnly, maxMissionItems);
     std::string geofence  = plan::create_geoFence(ctx);
     std::string rally     = plan::create_rally_points(ctx);
     std::string json      = make_top_level(mission, geofence, rally);

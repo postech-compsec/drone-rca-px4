@@ -1,0 +1,2 @@
+timestamp,pub_timestamp,timestamp_sample,roll,pitch,yaw,throttle,flaps,aux1,aux2,aux3,aux4,aux5,aux6,buttons,publisher_id,valid,data_source,sticks_moving
+0,1771684919384000,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,54,0,0,0

@@ -1,0 +1,3 @@
+timestamp,pub_timestamp,current_seq,land_start_index,land_index,mission_id,geofence_id,safe_points_id,count,mission_dataman_id,fence_dataman_id,safepoint_dataman_id,publisher_id
+1771685522292000,0,0,1,1,414967616,0,1850428874,2,7,3,0,0
+1771685589828000,1771685589828000,1,1,1,414967616,0,1850428874,2,7,3,0,96

@@ -1,0 +1,3 @@
+timestamp,pub_timestamp,can_arm_mode_flags,can_run_mode_flags,health_is_present_flags,health_warning_flags,health_error_flags,arming_check_warning_flags,arming_check_error_flags,publisher_id
+1771685723848000,1771685723848000,8338352,8338352,939662602,0,0,128,1048576,93
+1771685725864000,1771685725864000,8338360,8338360,939662602,0,0,128,1048576,93

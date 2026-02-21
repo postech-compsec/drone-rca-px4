@@ -1,9 +1,11 @@
 # run_plan_files.py, run_one_plan_mavsdk.py
 ```bash
 pip install mavsdk
+pkill -f mavsdk_server || true
+pkill -f run_one_plan_mavsdk.py || true
 make px4_sitl jmavsim
 pxh> mavlink status
-python make_dataset/run_plan_files.py --command "python make_dataset/run_one_plan_mavsdk.py  --skip-geofence --plan {plan} --system-address 'udpin://0.0.0.0:14540' "
+python make_dataset/run_plan_files.py --command "python make_dataset/run_one_plan_mavsdk.py  --skip-geofence --clear-first --plan {plan} --system-address 'udpin://0.0.0.0:14540' "
 ```
 
 ### plan 경로 지정
